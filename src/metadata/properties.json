@@ -1,0 +1,179 @@
+{
+  "byElementType": {
+    "ELEMENT": [
+      {
+        "code": "title",
+        "name": "Наименование",
+        "type": "string"
+      }
+    ],
+    "PAGES": [],
+    "PAGE": [],
+    "GROUP": [
+      {
+        "code": "direction",
+        "name": "Ориентация",
+        "type": "list",
+        "options": [
+          "FORCE_HORIZONTAL",
+          "HORIZONTAL",
+          "VERTICAL"
+        ]
+      },
+      {
+        "code": "showTitle",
+        "name": "Отображать заголовок",
+        "type": "boolean"
+      }
+    ],
+    "CONTROL": [
+      {
+        "code": "readonly",
+        "name": "Только чтение",
+        "type": "boolean"
+      },
+      {
+        "code": "hidden",
+        "name": "Скрытый",
+        "type": "boolean"
+      },
+      {
+        "code": "info",
+        "name": "Информационное поле",
+        "type": "boolean"
+      },
+      {
+        "code": "hint",
+        "name": "Подсказка",
+        "type": "string"
+      }
+    ]
+  },
+  "byParameterType": {
+    "STRING": [
+      {
+        "code": "multiline",
+        "name": "Многострочный",
+        "type": "boolean"
+      },
+      {
+        "code": "length",
+        "name": "Длина",
+        "type": "integer"
+      },
+      {
+        "code": "counter",
+        "name": "Счетчик символов",
+        "type": "boolean"
+      }
+    ],
+    "INTEGER": [
+      {
+        "code": "minValue",
+        "name": "Минимальное значение",
+        "type": "integer"
+      },
+      {
+        "code": "maxValue",
+        "name": "Максимальное значение",
+        "type": "integer"
+      }
+    ],
+    "NUMBER": [
+      {
+        "code": "minValue",
+        "name": "Минимальное значение",
+        "type": "integer"
+      },
+      {
+        "code": "maxValue",
+        "name": "Максимальное значение",
+        "type": "integer"
+      },
+      {
+        "code": "scale",
+        "name": "Точность",
+        "type": "integer"
+      }
+    ],
+    "BOOLEAN": [
+      {
+        "code": "view",
+        "name": "Вариант отображения",
+        "type": "list",
+        "options": [
+          "CHECKBOX",
+          "SWITCH"
+        ]
+      }
+    ],
+    "DATE": [
+      {
+        "code": "minValue",
+        "name": "Минимальное значение",
+        "type": "date"
+      },
+      {
+        "code": "maxValue",
+        "name": "Максимальное значение",
+        "type": "date"
+      }
+    ],
+    "DATETIME": [
+      {
+        "code": "minValue",
+        "name": "Минимальное значение",
+        "type": "date"
+      },
+      {
+        "code": "maxValue",
+        "name": "Максимальное значение",
+        "type": "date"
+      }
+    ],
+    "FILE": [
+      {
+        "code": "multiple",
+        "name": "Выбирать несколько",
+        "type": "boolean"
+      }
+    ],
+    "REF": [
+      {
+        "code": "view",
+        "name": "Вариант отображения",
+        "type": "list",
+        "options": [
+          "COMBOBOX",
+          "RADIOGROUP"
+        ]
+      }
+    ]
+  },
+  "byControlType": {
+    "CHECKBOX": [],
+    "SWITCH": [],
+    "DATEPICKER": [],
+    "DATETIMEPICKER": [],
+    "FILE": [],
+    "TEXT": [
+      {
+        "code": "mask",
+        "name": "Маска ввода",
+        "type": "string"
+      }
+    ],
+    "TEXTAREA": [
+      {
+        "code": "lineCount",
+        "name": "Количество строк",
+        "type": "integer"
+      }
+    ],
+    "COMBOBOX": [],
+    "NUMBER": [],
+    "LINK": [],
+    "RADIOGROUP": [],
+    "SELECT": []
+  }
+}

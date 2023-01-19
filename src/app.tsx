@@ -1,7 +1,8 @@
 import React from 'react';
+import { FormEditor } from './components/form-editor';
 
 export const App: React.FC = () => {
-  return <div>Template app</div>;
+  return <FormEditor />;
 };
 
 App.displayName = 'App';
