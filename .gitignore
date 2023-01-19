@@ -1,0 +1,20 @@
+# Created by .ignore support plugin (hsz.mobi)
+/node_modules/
+/.idea/
+.history
+/dist/
+/build/
+/coverage/
+npm-debug.log
+/.vscode/
+.cache
+.eslintcache
+/.scannerwork/
+
+# ignore macOS file
+.DS_Store
+
+Dockerfile
+docker
+package-lock.json
+
