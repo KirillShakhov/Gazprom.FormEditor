@@ -1,0 +1,46 @@
+{
+  "code": "FormCode",
+  "name": "Пример формы",
+  "description": "FormDescription",
+  "items": [
+    {
+      "code": "TabGroup",
+      "name": "Группа табы",
+      "pages": [
+        {
+          "code": "Page1",
+          "name": "Страница 1",
+          "items": [
+            {
+              "code": "Group1",
+              "name": "Группа 1",
+              "direction": "FORCE_HORIZONTAL",
+              "items": [
+                {
+                  "code": "Element1",
+                  "name": "Элемент 1",
+                  "dataSource": "Parameter1",
+                  "type": "NUMBER",
+                  "properties": {
+                    "minValue": 0,
+                    "maxValue": 100
+                  }
+                },
+                {
+                  "code": "Element2",
+                  "name": "Элемент 2",
+                  "dataSource": "Parameter2",
+                  "type": "TEXT",
+                  "properties": {
+                    "multiline": true,
+                    "lineCount": 2
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+[
+  {
+      "code": "Parameter1",
+      "name": "Параметр 1",
+      "type": "number"
+  },
+  {
+      "code": "Parameter2",
+      "name": "Параметр 2",
+      "type": "string"
+  }
+]
