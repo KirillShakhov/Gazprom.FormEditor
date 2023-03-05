@@ -1,0 +1,31 @@
+
+.layout {
+    display: grid;
+    gap: 10px;
+    /*grid-auto-rows: 100%;*/
+    /*grid-auto-columns: auto;*/
+    grid-template-rows: 5% auto;
+}
+
+header {
+    display: flex;
+    grid-column: 1 / 4;
+    background: #bee1c3;
+}
+
+.left-side {
+    grid-column: 1 / 2;
+    background: #cfbee1;
+}
+
+main {
+    height: auto;
+    width: 100%;
+    grid-column: 2 / 3;
+    background: #bee1e1;
+}
+
+.right-side {
+    grid-column: 3 / 3;
+    background: #e1dfbe;
+}
