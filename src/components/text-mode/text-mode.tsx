@@ -11,6 +11,5 @@ export const TextMode: React.FC<TextModeProps> = (obj) => {
     obj.onChange(event.target.value);
     console.log('data: ' + event.target.value);
   };
-
-  return <textarea value={obj.value} onChange={handleChange} className="json-editor" />;
+  return <textarea spellCheck={false} value={obj.value} onChange={handleChange} className="json-editor" />;
 };

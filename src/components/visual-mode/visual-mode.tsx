@@ -1,5 +1,9 @@
 import React from 'react';
 
-export const VisualMode: React.FC = () => {
-  return <div>Visual Form Edit</div>;
+interface VisualModeProps {
+  value: string;
+}
+
+export const VisualMode: React.FC<VisualModeProps> = (props) => {
+  return <div>{props.value}</div>;
 };

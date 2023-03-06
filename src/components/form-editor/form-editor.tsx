@@ -1,9 +1,9 @@
-import {Box, Tab, Tabs} from '@mui/material';
+import { Box, Tab, Tabs } from '@mui/material';
 import React from 'react';
-import {CommandLine} from '../command-line/command-line';
+import { CommandLine } from '../command-line/command-line';
 import './form-editor.css';
-import {VisualMode} from '../visual-mode/visual-mode';
-import {TextMode} from '../text-mode/text-mode';
+import { VisualMode } from '../visual-mode/visual-mode';
+import { TextMode } from '../text-mode/text-mode';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -30,7 +30,7 @@ export const FormEditor: React.FC = () => {
   };
 
   function TabPanel(props: TabPanelProps) {
-    const {children, value, index, ...other} = props;
+    const { children, value, index, ...other } = props;
     return (
       <div
         role="tabpanel"
@@ -76,7 +76,7 @@ export const FormEditor: React.FC = () => {
         </CommandLine>
       </header>
       <div className="left-side">
-        <Box sx={{borderBottom: 1, borderColor: 'divider'}}>
+        <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
           <Tabs value={value} onChange={handleChange}>
             <Tab label="Параметры" {...a11yProps(0)} />
             <Tab label="Форма" {...a11yProps(1)} />
@@ -84,7 +84,7 @@ export const FormEditor: React.FC = () => {
           </Tabs>
         </Box>
         <TabPanel value={value} index={0}>
-          Item One
+          {data}
         </TabPanel>
         <TabPanel value={value} index={1}>
           Item Two
@@ -95,7 +95,7 @@ export const FormEditor: React.FC = () => {
       </div>
       <main>
         <div hidden={mode != Modes.Visual}>
-          <VisualMode></VisualMode>
+          <VisualMode value={data}></VisualMode>
         </div>
         <div hidden={mode != Modes.Text} className="text-mode">
           <TextMode value={data} onChange={setData}></TextMode>

@@ -20,7 +20,7 @@ export const CommandLine: React.FC<CommandLineProps> = (props) => {
     // anchor link
     const element = document.createElement('a');
     element.href = URL.createObjectURL(file);
-    element.download = 'form-' + Date.now() + '.txt';
+    element.download = 'form-' + Date.now() + '.json';
     // simulate link click
     document.body.appendChild(element);
     // Required for this to work in FireFox
@@ -30,7 +30,12 @@ export const CommandLine: React.FC<CommandLineProps> = (props) => {
   const readFile = async (event: any) => {
     const file = event.target.files[0];
     const text = await file.text();
-    props.setData(text);
+    try {
+      JSON.parse(text);
+      props.setData(text);
+    } catch (e) {
+      alert('Неправильная структура json');
+    }
   };
 
   return (
@@ -43,7 +48,7 @@ export const CommandLine: React.FC<CommandLineProps> = (props) => {
         </Tooltip>
         <Tooltip title="Импорт">
           <IconButton aria-label="upload" component="label">
-            <input hidden accept="text/*" type="file" onChange={readFile} />
+            <input hidden accept="application/json,.txt" type="file" onChange={readFile} />
             <FileUploadRoundedIcon />
           </IconButton>
         </Tooltip>
