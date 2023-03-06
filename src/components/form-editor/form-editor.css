@@ -1,16 +1,20 @@
 
 .layout {
     display: grid;
-    gap: 10px;
+    /*gap: 6px;*/
     /*grid-auto-rows: 100%;*/
     /*grid-auto-columns: auto;*/
     grid-template-rows: 5% auto;
+    grid-template-columns: 25% 45% auto;
+    grid-gap: 1px;
+    background-color: #c9c9c9;
+    /*border: 1px solid #8d8d8d;*/
 }
 
 header {
     display: flex;
     grid-column: 1 / 4;
-    background: #bee1c3;
+    background: #ffffff;
 }
 
 .left-side {
@@ -19,8 +23,6 @@ header {
 }
 
 main {
-    height: auto;
-    width: 100%;
     grid-column: 2 / 3;
     background: #bee1e1;
 }
@@ -28,4 +30,12 @@ main {
 .right-side {
     grid-column: 3 / 3;
     background: #e1dfbe;
+}
+
+.red{
+    background: #ff0000;
+}
+
+.text-mode{
+    height: 100%;
 }

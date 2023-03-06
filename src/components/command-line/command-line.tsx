@@ -1,23 +1,22 @@
 import React, { useRef, useState } from 'react';
-import { IconButton, Stack } from '@mui/material';
+import { IconButton, Stack, Tooltip } from '@mui/material';
 import DownloadRoundedIcon from '@mui/icons-material/DownloadRounded';
 import FileUploadRoundedIcon from '@mui/icons-material/FileUploadRounded';
 import ClearAllRoundedIcon from '@mui/icons-material/ClearAllRounded';
 import './command-line.css';
 
-/** Редактор форм. */
-export const CommandLine: React.FC = () => {
-  const hiddenFileInput = React.useRef(null);
-  const handleChange = () => {
-    // const fileUploaded = hiddenFileInput.files[0];
-    // fileUploaded
-    // handleFile(fileUploaded);
-  };
+interface CommandLineProps {
+  getData: () => string;
+  setData: (value: string) => void;
+  changeMode: () => void;
+}
 
+/** Командная панель */
+export const CommandLine: React.FC<CommandLineProps> = (props) => {
   function downloadTxtFile() {
-    const texts = ['line 1', 'line 2', 'line 3'];
+    const text = props.getData();
     // file object
-    const file = new Blob(texts, { type: 'text/plain' });
+    const file = new Blob([text], { type: 'application/json' });
     // anchor link
     const element = document.createElement('a');
     element.href = URL.createObjectURL(file);
@@ -28,19 +27,31 @@ export const CommandLine: React.FC = () => {
     element.click();
   }
 
+  const readFile = async (event: any) => {
+    const file = event.target.files[0];
+    const text = await file.text();
+    props.setData(text);
+  };
+
   return (
     <div className="main">
       <Stack direction="row" justifyContent="flex-start" alignItems="center" spacing={0}>
-        <IconButton aria-label="download" component="label" onClick={downloadTxtFile}>
-          <DownloadRoundedIcon />
-        </IconButton>
-        <IconButton aria-label="upload" component="label">
-          <input hidden accept="image/*" type="file" ref={hiddenFileInput} onChange={handleChange} />
-          <FileUploadRoundedIcon />
-        </IconButton>
-        <IconButton aria-label="mode">
-          <ClearAllRoundedIcon />
-        </IconButton>
+        <Tooltip title="Экспорт">
+          <IconButton aria-label="download" component="label" onClick={downloadTxtFile}>
+            <DownloadRoundedIcon />
+          </IconButton>
+        </Tooltip>
+        <Tooltip title="Импорт">
+          <IconButton aria-label="upload" component="label">
+            <input hidden accept="text/*" type="file" onChange={readFile} />
+            <FileUploadRoundedIcon />
+          </IconButton>
+        </Tooltip>
+        <Tooltip title="Режим">
+          <IconButton aria-label="mode" onClick={props.changeMode}>
+            <ClearAllRoundedIcon />
+          </IconButton>
+        </Tooltip>
       </Stack>
     </div>
   );
