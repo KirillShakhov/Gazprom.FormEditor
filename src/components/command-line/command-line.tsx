@@ -1,8 +1,9 @@
-import React, { useRef, useState } from 'react';
+import React from 'react';
 import { IconButton, Stack, Tooltip } from '@mui/material';
 import DownloadRoundedIcon from '@mui/icons-material/DownloadRounded';
 import FileUploadRoundedIcon from '@mui/icons-material/FileUploadRounded';
 import ClearAllRoundedIcon from '@mui/icons-material/ClearAllRounded';
+import AddBoxRoundedIcon from '@mui/icons-material/AddBoxRounded';
 import './command-line.css';
 
 interface CommandLineProps {
@@ -13,6 +14,11 @@ interface CommandLineProps {
 
 /** Командная панель */
 export const CommandLine: React.FC<CommandLineProps> = (props) => {
+  function createTxtFile() {
+    const text = '{}';
+    props.setData(text);
+  }
+
   function downloadTxtFile() {
     const text = props.getData();
     // file object
@@ -41,6 +47,11 @@ export const CommandLine: React.FC<CommandLineProps> = (props) => {
   return (
     <div className="main">
       <Stack direction="row" justifyContent="flex-start" alignItems="center" spacing={0}>
+        <Tooltip title="Создать">
+          <IconButton aria-label="create" component="label" onClick={createTxtFile}>
+            <AddBoxRoundedIcon />
+          </IconButton>
+        </Tooltip>
         <Tooltip title="Экспорт">
           <IconButton aria-label="download" component="label" onClick={downloadTxtFile}>
             <DownloadRoundedIcon />

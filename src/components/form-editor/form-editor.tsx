@@ -21,6 +21,13 @@ export const FormEditor: React.FC = () => {
   const [value, setValue] = React.useState(0);
   const [mode, setMode] = React.useState(Modes.Text);
 
+  const tabStyle = {
+    minWidth: 50,
+    paddingLeft: 20,
+    paddingRight: 20,
+    backgroundColor: 'white',
+  };
+
   const standardData =
     '{"glossary":{"title":"example glossary","GlossDiv":{"title":"S","GlossList":{"GlossEntry":{"ID":"SGML","SortAs":"SGML","GlossTerm":"Standard Generalized Markup Language","Acronym":"SGML","Abbrev":"ISO 8879:1986","GlossDef":{"para":"A meta-markup language, used to create markup languages such as DocBook.","GlossSeeAlso":["GML","XML"]},"GlossSee":"markup"}}}}}';
   const [data, setData] = React.useState(standardData);
@@ -78,9 +85,9 @@ export const FormEditor: React.FC = () => {
       <div className="left-side">
         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
           <Tabs value={value} onChange={handleChange}>
-            <Tab label="Параметры" {...a11yProps(0)} />
-            <Tab label="Форма" {...a11yProps(1)} />
-            <Tab label="Компоненты" {...a11yProps(2)} />
+            <Tab label="Параметры" {...a11yProps(0)} style={tabStyle} />
+            <Tab label="Форма" {...a11yProps(1)} style={tabStyle} />
+            <Tab label="Компоненты" {...a11yProps(2)} style={tabStyle} />
           </Tabs>
         </Box>
         <TabPanel value={value} index={0}>
