@@ -12,8 +12,8 @@ export const parameters: IParameter[] = [
     code: 'Parameter2',
     name: 'Параметр 2',
     type: PARAMETER_TYPE.STRING,
-  }
-]
+  },
+];
 
 /** Пример объекта. */
 export const form: IForm = {
