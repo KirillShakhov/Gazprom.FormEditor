@@ -4,7 +4,7 @@ import DownloadRoundedIcon from '@mui/icons-material/DownloadRounded';
 import FileUploadRoundedIcon from '@mui/icons-material/FileUploadRounded';
 import ClearAllRoundedIcon from '@mui/icons-material/ClearAllRounded';
 import AddBoxRoundedIcon from '@mui/icons-material/AddBoxRounded';
-import './command-line.css';
+import './style.css';
 
 interface CommandLineProps {
   getData: () => string;

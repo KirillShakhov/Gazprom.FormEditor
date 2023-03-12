@@ -1,6 +1,6 @@
 import { Box } from '@mui/material';
 import React from 'react';
-import './visual-mode.css';
+import './style.css';
 
 interface VisualModeProps {
   value: string;

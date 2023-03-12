@@ -1,8 +1,8 @@
 import { Box, Tab, Tabs } from '@mui/material';
 import React from 'react';
-import { CommandLine } from '../command-line/command-line';
-import './form-editor.css';
-import { VisualMode } from '../visual-mode/visual-mode';
+import { CommandLine } from '../command-line';
+import './style.css';
+import { VisualMode } from '../visual-mode';
 import { TextMode } from '../text-mode/text-mode';
 
 interface TabPanelProps {
