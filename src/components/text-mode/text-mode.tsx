@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactJson from 'react-json-view';
 import './text-mode.css';
 
 interface TextModeProps {
@@ -7,9 +8,22 @@ interface TextModeProps {
 }
 
 export const TextMode: React.FC<TextModeProps> = (obj) => {
-  const handleChange = function (event: any) {
+  // const jsonConfiguration = useAppConfigurationModel(
+  //   (state) => state.configuration
+  // );
+  /*const handleChange = function (event: any) {
     obj.onChange(event.target.value);
     console.log('data: ' + event.target.value);
-  };
-  return <textarea spellCheck={false} value={obj.value} onChange={handleChange} className="json-editor" />;
+  };*/
+  return (
+    <ReactJson
+      src={JSON.parse(obj.value) || {}}
+      collapsed={false}
+      displayDataTypes={false}
+      displayObjectSize={false}
+      enableClipboard={false}
+      name="config"
+    />
+  );
+  // <textarea spellCheck={false} value={obj.value} onChange={handleChange} className="json-editor" />;
 };
