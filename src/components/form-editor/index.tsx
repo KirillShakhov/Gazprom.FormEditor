@@ -1,10 +1,11 @@
 import { Box, Tab, Tabs } from '@mui/material';
-import React from 'react';
+import React, {useState} from 'react';
 import { CommandLine } from '../command-line';
 import './style.css';
 import { VisualMode } from '../visual-mode';
 import { TextMode } from '../text-mode/text-mode';
 import { ComponentSettings } from '../component-settings';
+import {ParametersTab} from "../parameters-tab";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -21,6 +22,7 @@ enum Modes {
 export const FormEditor: React.FC = () => {
   const [value, setValue] = React.useState(0);
   const [mode, setMode] = React.useState(Modes.Text);
+  const [lists, setLists] = useState(['banana', 'hogehoge', 'tomato']);
 
   const tabStyle = {
     minWidth: 20,
@@ -92,7 +94,7 @@ export const FormEditor: React.FC = () => {
           </Tabs>
         </Box>
         <TabPanel value={value} index={0}>
-          {data}
+          <ParametersTab lists={lists} setLists={setLists}></ParametersTab>
         </TabPanel>
         <TabPanel value={value} index={1}>
           Item Two

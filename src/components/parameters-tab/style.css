@@ -1,0 +1,11 @@
+.parameters-tab{
+    padding: 15px;
+    height: 100%;
+    background: #ffffff;
+}
+
+.parameter-item{
+    padding-bottom: 10px;
+    font-family: 'Roboto', monospace;
+    font-size: 14px;
+}
