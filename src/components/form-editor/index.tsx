@@ -4,6 +4,7 @@ import { CommandLine } from '../command-line';
 import './style.css';
 import { VisualMode } from '../visual-mode';
 import { TextMode } from '../text-mode/text-mode';
+import { ComponentSettings } from '../component-settings';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -22,9 +23,9 @@ export const FormEditor: React.FC = () => {
   const [mode, setMode] = React.useState(Modes.Text);
 
   const tabStyle = {
-    minWidth: 50,
-    paddingLeft: 20,
-    paddingRight: 20,
+    minWidth: 20,
+    paddingLeft: 10,
+    paddingRight: 10,
     backgroundColor: 'white',
   };
 
@@ -108,7 +109,9 @@ export const FormEditor: React.FC = () => {
           <TextMode value={data} onChange={setData}></TextMode>
         </div>
       </main>
-      <div className="right-side">Right Sidebar</div>
+      <div className="right-side">
+        <ComponentSettings value={0} onChange={setData} />
+      </div>
     </div>
   );
 };

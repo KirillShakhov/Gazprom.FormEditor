@@ -22,25 +22,36 @@ export const TextMode: React.FC<TextModeProps> = (obj) => {
     } catch (e) {}
   };
   return (
-    <JSONInput
-      placeholder={JSON.parse(obj.value)}
-      locale={locale}
-      height="100%"
-      width="100%"
-      confirmGood={true}
-      theme="light_mitsuketa_tribute"
-      colors={{
-        default: 'black',
-        background: 'white',
-        string: 'red',
-      }}
-      style={{
-        contentBox: {
-          color: 'black',
-        },
-      }}
-      onChange={handleChange}
-    />
+    <div className="json-editor">
+      <JSONInput
+        placeholder={JSON.parse(obj.value)}
+        locale={locale}
+        confirmGood={true}
+        theme="light_mitsuketa_tribute"
+        colors={{
+          default: 'black',
+          background: 'white',
+          string: 'red',
+        }}
+        height="750px"
+        style={{
+          container: {
+            width: '100%',
+          },
+          outerBox: {
+            width: '100%',
+          },
+          contentBox: {
+            color: 'black',
+            width: '100%',
+          },
+          warningBox: {
+            width: '100%',
+          },
+        }}
+        onChange={handleChange}
+      />
+    </div>
     // <ReactJson
     //   src={JSON.parse(obj.value) || {}}
     //   collapsed={false}
