@@ -27,7 +27,7 @@ export const ParametersTab: React.FC<ParametersTabProps> = () => {
   };
 
   return (
-    <div className="parameters-tab">
+    <div className="tab-item parameters-tab">
       <Container onDrop={onDrop}>
         {lists.map((item) => {
           return (

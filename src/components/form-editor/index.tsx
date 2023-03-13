@@ -1,13 +1,12 @@
 import { Box, Tab, Tabs } from '@mui/material';
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import { CommandLine } from '../command-line';
 import './style.css';
 import { VisualMode } from '../visual-mode';
 import { TextMode } from '../text-mode/text-mode';
 import { ComponentSettings } from '../component-settings';
-import {ParametersTab} from "../left-menu/parameters-tab";
-import {LeftMenu} from "../left-menu";
-
+import { ParametersTab } from '../left-menu/parameters-tab';
+import { LeftMenu } from '../left-menu';
 
 enum Modes {
   Visual,
@@ -16,7 +15,7 @@ enum Modes {
 
 /** Редактор форм. */
 export const FormEditor: React.FC = () => {
-  const [mode, setMode] = React.useState(Modes.Text);
+  const [mode, setMode] = React.useState(Modes.Visual);
 
   const standardData =
     '{"glossary":{"title":"example glossary","GlossDiv":{"title":"S","GlossList":{"GlossEntry":{"ID":"SGML","SortAs":"SGML","GlossTerm":"Standard Generalized Markup Language","Acronym":"SGML","Abbrev":"ISO 8879:1986","GlossDef":{"para":"A meta-markup language, used to create markup languages such as DocBook.","GlossSeeAlso":["GML","XML"]},"GlossSee":"markup"}}}}}';
@@ -50,10 +49,10 @@ export const FormEditor: React.FC = () => {
         <LeftMenu></LeftMenu>
       </div>
       <main>
-        <div hidden={mode != Modes.Visual}>
+        <div hidden={mode != Modes.Visual} style={{ height: '100%' }}>
           <VisualMode value={data}></VisualMode>
         </div>
-        <div hidden={mode != Modes.Text} className="text-mode">
+        <div hidden={mode != Modes.Text} style={{ height: '100%' }}>
           <TextMode value={data} onChange={setData}></TextMode>
         </div>
       </main>

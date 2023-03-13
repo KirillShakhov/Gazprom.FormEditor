@@ -79,7 +79,7 @@ function StyledTreeItem(props: StyledTreeItemProps) {
 
 export const FormTab: React.FC = () => {
   return (
-    <div className="from-tab">
+    <div className="tab-item">
       <TreeView
         defaultExpanded={['3']}
         defaultCollapseIcon={<ArrowDropDownIcon />}

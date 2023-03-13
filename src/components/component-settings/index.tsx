@@ -23,7 +23,7 @@ export const ComponentSettings: React.FC<VisualModeProps> = (props) => {
 
   return (
     <div className="component-settings">
-      <span>Настройки компоненты</span>
+      <span style={{ fontSize: 16 }}>Настройки компоненты</span>
       <FormControl sx={{ minWidth: 120 }} size="small">
         <InputLabel id="data-source-label">Источник данных</InputLabel>
         <Select

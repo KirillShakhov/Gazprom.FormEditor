@@ -3,6 +3,7 @@ import './style.css';
 import { Box, Tab, Tabs } from '@mui/material';
 import { ParametersTab } from './parameters-tab';
 import { FormTab } from './form-tab';
+import {ComponentsTab} from "./components-tab";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -47,7 +48,7 @@ export const LeftMenu: React.FC = () => {
     minWidth: 20,
     minHeight: 30,
     height: 30,
-    padding: 5,
+    padding: 10,
     fontSize: 12,
   };
 
@@ -57,6 +58,7 @@ export const LeftMenu: React.FC = () => {
         <Tabs
           value={value}
           onChange={handleChange}
+          textColor="inherit"
           style={{
             minHeight: 0,
           }}
@@ -73,7 +75,7 @@ export const LeftMenu: React.FC = () => {
         <FormTab></FormTab>
       </TabPanel>
       <TabPanel value={value} index={2}>
-        <div className="red">Item Three</div>
+        <ComponentsTab></ComponentsTab>
       </TabPanel>
     </div>
   );
