@@ -1,5 +1,8 @@
 import React from 'react';
-import ReactJson from 'react-json-view';
+import JSONInput from 'react-json-editor-ajrm';
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+import locale from 'react-json-editor-ajrm/locale/ru';
 import './text-mode.css';
 
 interface TextModeProps {
@@ -11,19 +14,41 @@ export const TextMode: React.FC<TextModeProps> = (obj) => {
   // const jsonConfiguration = useAppConfigurationModel(
   //   (state) => state.configuration
   // );
-  /*const handleChange = function (event: any) {
-    obj.onChange(event.target.value);
-    console.log('data: ' + event.target.value);
-  };*/
+  const handleChange = function (event: any) {
+    try {
+      JSON.parse(event.json);
+      obj.onChange(event.json);
+      console.log('event: ' + event.json);
+    } catch (e) {}
+  };
   return (
-    <ReactJson
-      src={JSON.parse(obj.value) || {}}
-      collapsed={false}
-      displayDataTypes={false}
-      displayObjectSize={false}
-      enableClipboard={false}
-      name="config"
+    <JSONInput
+      placeholder={JSON.parse(obj.value)}
+      locale={locale}
+      height="100%"
+      width="100%"
+      confirmGood={true}
+      theme="light_mitsuketa_tribute"
+      colors={{
+        default: 'black',
+        background: 'white',
+        string: 'red',
+      }}
+      style={{
+        contentBox: {
+          color: 'black',
+        },
+      }}
+      onChange={handleChange}
     />
+    // <ReactJson
+    //   src={JSON.parse(obj.value) || {}}
+    //   collapsed={false}
+    //   displayDataTypes={false}
+    //   displayObjectSize={false}
+    //   enableClipboard={false}
+    //   name="config"
+    // />
   );
   // <textarea spellCheck={false} value={obj.value} onChange={handleChange} className="json-editor" />;
 };
