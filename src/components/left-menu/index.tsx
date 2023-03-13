@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import './style.css';
 import { Box, Tab, Tabs } from '@mui/material';
 import { ParametersTab } from './parameters-tab';
+import { FormTab } from './form-tab';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -17,7 +18,7 @@ const tabStyle = {
 };
 
 export const LeftMenu: React.FC = () => {
-  const [value, setValue] = React.useState(0);
+  const [value, setValue] = React.useState(1);
   const [lists, setLists] = useState(['banana', 'hogehoge', 'tomato']);
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
@@ -32,6 +33,9 @@ export const LeftMenu: React.FC = () => {
         hidden={value !== index}
         id={`simple-tabpanel-${index}`}
         aria-labelledby={`simple-tab-${index}`}
+        style={{
+          height: '100%',
+        }}
         {...other}
       >
         {children}
@@ -59,7 +63,7 @@ export const LeftMenu: React.FC = () => {
         <ParametersTab lists={lists} setLists={setLists}></ParametersTab>
       </TabPanel>
       <TabPanel value={value} index={1}>
-        Item Two
+        <FormTab></FormTab>
       </TabPanel>
       <TabPanel value={value} index={2}>
         <div className="red">Item Three</div>
