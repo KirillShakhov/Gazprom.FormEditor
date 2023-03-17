@@ -58,7 +58,7 @@ export const ComponentSettings: React.FC<VisualModeProps> = (props) => {
         style={{ width: '100%' }}
         control={<Switch color="primary" />}
         label="Подсказки к полю"
-        labelPlacement="start"
+        labelPlacement="end"
       />
       <TextField
         id="outlined-multiline-flexible"

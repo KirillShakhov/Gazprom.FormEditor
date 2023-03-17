@@ -85,7 +85,7 @@ export const FormTab: React.FC = () => {
         defaultCollapseIcon={<ArrowDropDownIcon />}
         defaultExpandIcon={<ArrowRightIcon />}
         defaultEndIcon={<div style={{ width: 24 }} />}
-        sx={{ flexGrow: 1, overflowY: 'auto' }}
+        sx={{ flexGrow: 1, overflowY: 'auto', height: '100%' }}
       >
         <StyledTreeItem nodeId="1" labelText="Группа страниц" labelIcon={Label}>
           <StyledTreeItem nodeId="2" labelText="Страница 1" labelIcon={Label}>

@@ -1,12 +1,12 @@
 import { Box, Tab, Tabs } from '@mui/material';
 import React, { useState } from 'react';
-import { CommandLine } from '../command-line';
+import { CommandLine } from './command-line';
 import './style.css';
-import { VisualMode } from '../visual-mode';
-import { TextMode } from '../text-mode/text-mode';
-import { ComponentSettings } from '../component-settings';
-import { ParametersTab } from '../left-menu/parameters-tab';
-import { LeftMenu } from '../left-menu';
+import { VisualMode } from './visual-mode';
+import { TextMode } from './text-mode/text-mode';
+import { ComponentSettings } from './component-settings';
+import { ParametersTab } from './left-menu/parameters-tab';
+import { LeftMenu } from './left-menu';
 
 enum Modes {
   Visual,
