@@ -36,10 +36,6 @@ export const FormEditor: React.FC = () => {
   const [data, setData] = React.useState<IForm>(form);
   // const [form, setForm] = React.useState();
 
-  const standardData =
-    '{"glossary":{"title":"example glossary","GlossDiv":{"title":"S","GlossList":{"GlossEntry":{"ID":"SGML","SortAs":"SGML","GlossTerm":"Standard Generalized Markup Language","Acronym":"SGML","Abbrev":"ISO 8879:1986","GlossDef":{"para":"A meta-markup language, used to create markup languages such as DocBook.","GlossSeeAlso":["GML","XML"]},"GlossSee":"markup"}}}}}';
-  const [str, setStr] = React.useState(standardData);
-
   const changeMode = () => {
     if (mode === Modes.Text) {
       setMode(Modes.Visual);
@@ -58,11 +54,11 @@ export const FormEditor: React.FC = () => {
 
   const loadProperties = (data: string) => {
     try {
-      // const p: IParameter[] = JSON.parse(data);
-      const f: IForm = JSON.parse(data);
+      const p: IParameter[] = JSON.parse(data);
+      // const f: IForm = JSON.parse(data);
       // console.log(JSON.stringify(p));
-      // setProperties(p);
-      setData(f);
+      setProperties(p);
+      // setData(f);
     } catch (e) {
       alert('Неверный формат');
     }
@@ -95,11 +91,21 @@ export const FormEditor: React.FC = () => {
             <VisualMode form={data}></VisualMode>
           </div>
           <div hidden={mode != Modes.Text} style={{ height: '100%' }}>
-            <TextMode value={str} onChange={setStr}></TextMode>
+            <TextMode
+              value={JSON.stringify(data)}
+              onChange={(data) => {
+                setData(JSON.parse(data));
+              }}
+            ></TextMode>
           </div>
         </main>
         <div className="right-side">
-          <ComponentSettings value={0} onChange={setStr} />
+          <ComponentSettings
+            properties={properties}
+            onChangeProperty={(property) => {
+              console.log('event: ' + JSON.stringify(property));
+            }}
+          />
         </div>
       </div>
     </ThemeProvider>

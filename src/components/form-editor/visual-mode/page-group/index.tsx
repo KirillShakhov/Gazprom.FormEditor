@@ -2,7 +2,7 @@ import React from 'react';
 import { Box, Tab, Tabs } from '@mui/material';
 import { TabPanel } from '@mui/lab';
 import { Page } from '../page';
-import { ITabPage, ITabPageController } from '../../../../interfaces/form-config';
+import {ITabPageController} from '../../../../interfaces/form-config';
 
 interface PageGroupProps {
   value: ITabPageController;

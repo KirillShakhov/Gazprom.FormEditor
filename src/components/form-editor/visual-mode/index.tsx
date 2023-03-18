@@ -2,8 +2,7 @@ import React from 'react';
 import './style.css';
 import { Button } from '@mui/material';
 import { PageGroup } from './page-group';
-import { IForm, ITabPageController } from '../../../interfaces/form-config';
-import { Draggable } from 'react-smooth-dnd';
+import {IForm, ITabPageController} from '../../../interfaces/form-config';
 
 interface VisualModeProps {
   form: IForm;
@@ -21,7 +20,7 @@ export const VisualMode: React.FC<VisualModeProps> = (props) => {
       <div className="box">
         <div style={{ overflowY: 'auto', height: 640 }}>
           {form.items?.map((item) => {
-            return <PageGroup value={item} key={item.code}></PageGroup>;
+            return <PageGroup value={item as ITabPageController} key={item.code}></PageGroup>;
           })}
         </div>
         <div style={{ display: 'flex', gap: 20, marginTop: 20 }}>
