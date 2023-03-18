@@ -34,7 +34,6 @@ export const FormEditor: React.FC = () => {
   const [mode, setMode] = React.useState(Modes.Visual);
   const [properties, setProperties] = React.useState<IParameter[]>(parameters);
   const [data, setData] = React.useState<IForm>(form);
-  // const [form, setForm] = React.useState();
 
   const changeMode = () => {
     if (mode === Modes.Text) {
@@ -43,14 +42,6 @@ export const FormEditor: React.FC = () => {
       setMode(Modes.Text);
     }
   };
-
-  //
-  // const safeJsonParse = <T>(guard: (o: any) => o is T) =>
-  // (text: string): ParseResult<T> => {
-  //   const parsed = JSON.parse(text)
-  //   return guard(parsed) ? { parsed, hasError: false } : { hasError: true }
-  // }
-  //
 
   const loadProperties = (data: string) => {
     try {

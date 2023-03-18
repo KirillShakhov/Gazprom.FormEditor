@@ -1,5 +1,6 @@
 import React from 'react';
-import {ITabPage} from "../../../../interfaces/form-config";
+import { IFormGroup, ITabPage } from '../../../../interfaces/form-config';
+import { Group } from '../group';
 
 interface PageProps {
   value: ITabPage;
@@ -9,15 +10,15 @@ export const Page: React.FC<PageProps> = (props) => {
   const { value } = props;
 
   return (
-    <div>
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-        }}
-      >
-        <span style={{ fontSize: 16, margin: 0, marginTop: 10 }}>{value.name}</span>
-      </div>
+    <div
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+      }}
+    >
+      {value.items?.map((item) => {
+        return <Group value={item as IFormGroup} key={item.code}></Group>;
+      })}
     </div>
   );
 };
