@@ -2,12 +2,10 @@ import React from 'react';
 import { Box, Tab, Tabs } from '@mui/material';
 import { TabPanel } from '@mui/lab';
 import { Page } from '../page';
+import { ITabPage, ITabPageController } from '../../../../interfaces/form-config';
 
 interface PageGroupProps {
-  children?: React.ReactNode;
-  // pages: React.ReactNode[];
-  // index: number;
-  // value: number;
+  value: ITabPageController;
 }
 
 interface TabPanelProps {
@@ -17,12 +15,11 @@ interface TabPanelProps {
 }
 
 export const PageGroup: React.FC<PageGroupProps> = (props) => {
-  // const { children, value, index, ...other } = props;
-  const { children, ...other } = props;
-  const [value, setValue] = React.useState(0);
+  const { value } = props;
+  const [tabIndex, setTabIndex] = React.useState(0);
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
-    setValue(newValue);
+    setTabIndex(newValue);
   };
 
   function TabPanel(props: TabPanelProps) {
@@ -73,27 +70,29 @@ export const PageGroup: React.FC<PageGroupProps> = (props) => {
     // </div>
 
     <div>
-      <span style={{ fontSize: 18, margin: 0 }}>Заголовок операции</span>
+      <span style={{ fontSize: 18, margin: 0 }}>{value.name}</span>
       <div style={{ marginTop: 20, height: '90%' }}>
         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
           <Tabs
-            value={value}
+            value={tabIndex}
             onChange={handleChange}
             textColor="inherit"
             style={{
               minHeight: 0,
             }}
           >
-            <Tab label="Шаг 1" {...a11yProps(0)} style={tabStyle} />
-            <Tab label="Шаг 2" {...a11yProps(1)} style={tabStyle} />
+            {value.pages.map((item, index) => {
+              return <Tab label={item.name} {...a11yProps(index)} key={item.code} style={tabStyle} />;
+            })}
           </Tabs>
         </Box>
-        <TabPanel value={value} index={0}>
-          <Page title={'Заголовок 1'}></Page>
-        </TabPanel>
-        <TabPanel value={value} index={1}>
-          <Page title={'Заголовок 2'}></Page>
-        </TabPanel>
+        {value.pages.map((item, index) => {
+          return (
+            <TabPanel value={tabIndex} index={index}>
+              <Page value={item}></Page>
+            </TabPanel>
+          );
+        })}
       </div>
     </div>
   );

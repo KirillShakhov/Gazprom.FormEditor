@@ -1,34 +1,33 @@
-import React, { useState } from 'react';
+import React from 'react';
 import './style.css';
-import { Box, Button, ButtonProps, Tab, Tabs } from '@mui/material';
-import { ParametersTab } from '../left-menu/parameters-tab';
-import { FormTab } from '../left-menu/form-tab';
-import { ComponentsTab } from '../left-menu/components-tab';
-import { styled } from '@mui/material/styles';
-import { grey } from '@mui/material/colors';
+import { Button } from '@mui/material';
 import { PageGroup } from './page-group';
+import { IForm, ITabPageController } from '../../../interfaces/form-config';
+import { Draggable } from 'react-smooth-dnd';
 
 interface VisualModeProps {
-  value: string;
+  form: IForm;
 }
 
 export const VisualMode: React.FC<VisualModeProps> = (props) => {
+  const { form } = props;
+
+  const print = () => {
+    console.log(JSON.stringify(form.items));
+  };
+
   return (
     <div className="visual-mode">
       <div className="box">
         <div style={{ overflowY: 'auto', height: 640 }}>
-          <PageGroup></PageGroup>
-          <PageGroup></PageGroup>
-          <PageGroup></PageGroup>
-          <PageGroup></PageGroup>
-          <PageGroup></PageGroup>
-          <PageGroup></PageGroup>
-          <PageGroup></PageGroup>
-          <PageGroup></PageGroup>
-          <PageGroup></PageGroup>
+          {form.items?.map((item) => {
+            return <PageGroup value={item} key={item.code}></PageGroup>;
+          })}
         </div>
         <div style={{ display: 'flex', gap: 20, marginTop: 20 }}>
-          <Button variant="contained">Ок</Button>
+          <Button variant="contained" onClick={print}>
+            Ок
+          </Button>
           <Button color="secondary" variant="contained">
             Отменить
           </Button>

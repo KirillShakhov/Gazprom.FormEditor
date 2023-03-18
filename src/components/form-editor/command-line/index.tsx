@@ -7,8 +7,8 @@ import AddBoxRoundedIcon from '@mui/icons-material/AddBoxRounded';
 import './style.css';
 
 interface CommandLineProps {
-  getData: () => string;
-  setData: (value: string) => void;
+  saveData: () => string;
+  loadData: (value: string) => void;
   changeMode: () => void;
 }
 
@@ -16,11 +16,11 @@ interface CommandLineProps {
 export const CommandLine: React.FC<CommandLineProps> = (props) => {
   function createTxtFile() {
     const text = '{}';
-    props.setData(text);
+    props.loadData(text);
   }
 
   function downloadTxtFile() {
-    const text = props.getData();
+    const text = props.saveData();
     // file object
     const file = new Blob([text], { type: 'application/json' });
     // anchor link
@@ -36,12 +36,7 @@ export const CommandLine: React.FC<CommandLineProps> = (props) => {
   const readFile = async (event: any) => {
     const file = event.target.files[0];
     const text = await file.text();
-    try {
-      JSON.parse(text);
-      props.setData(text);
-    } catch (e) {
-      alert('Неправильная структура json');
-    }
+    props.loadData(text);
   };
 
   return (

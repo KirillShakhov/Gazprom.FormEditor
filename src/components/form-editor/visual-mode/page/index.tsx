@@ -1,13 +1,12 @@
 import React from 'react';
+import {ITabPage} from "../../../../interfaces/form-config";
 
 interface PageProps {
-  children?: React.ReactNode;
-  title: string;
+  value: ITabPage;
 }
 
 export const Page: React.FC<PageProps> = (props) => {
-  // const { children, value, index, ...other } = props;
-  const { children, title, ...other } = props;
+  const { value } = props;
 
   return (
     <div>
@@ -17,8 +16,7 @@ export const Page: React.FC<PageProps> = (props) => {
           flexDirection: 'column',
         }}
       >
-        <span style={{ fontSize: 16, margin: 0, marginTop: 10 }}>{title}</span>
-        <span style={{ marginTop: 10 }}>Страница 1</span>
+        <span style={{ fontSize: 16, margin: 0, marginTop: 10 }}>{value.name}</span>
       </div>
     </div>
   );

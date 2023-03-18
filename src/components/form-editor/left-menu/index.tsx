@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React from 'react';
 import './style.css';
 import { Box, Tab, Tabs } from '@mui/material';
 import { ParametersTab } from './parameters-tab';
 import { FormTab } from './form-tab';
 import {ComponentsTab} from "./components-tab";
+import {IParameter} from "../../../interfaces/parameter";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -11,9 +12,14 @@ interface TabPanelProps {
   value: number;
 }
 
-export const LeftMenu: React.FC = () => {
+interface LeftMenuProps {
+  properties: IParameter[];
+  setProperties: (value: IParameter[]) => void;
+}
+
+export const LeftMenu: React.FC<LeftMenuProps> = (props) => {
+  const { properties } = props;
   const [value, setValue] = React.useState(1);
-  const [lists, setLists] = useState(['banana', 'hogehoge', 'tomato']);
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
@@ -45,11 +51,11 @@ export const LeftMenu: React.FC = () => {
   }
 
   const tabStyle = {
-    minWidth: 20,
-    minHeight: 30,
-    height: 30,
-    padding: 10,
     fontSize: 12,
+    minHeight: 30,
+    minWidth: 20,
+    padding: 10,
+    height: 30,
   };
 
   return (
@@ -69,7 +75,7 @@ export const LeftMenu: React.FC = () => {
         </Tabs>
       </Box>
       <TabPanel value={value} index={0}>
-        <ParametersTab lists={lists} setLists={setLists}></ParametersTab>
+        <ParametersTab properties={properties}></ParametersTab>
       </TabPanel>
       <TabPanel value={value} index={1}>
         <FormTab></FormTab>
