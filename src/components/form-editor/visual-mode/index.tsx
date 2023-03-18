@@ -12,27 +12,26 @@ interface VisualModeProps {
   value: string;
 }
 
-const CancelButton = styled(Button)<ButtonProps>(({ theme }) => ({
-  fontSize: 12,
-  // contrastText: '#666974',
-  color: theme.palette.getContrastText('#E4E5EC'),
-  backgroundColor: '#E4E5EC',
-  '&:hover': {
-    backgroundColor: '#E4E5EC',
-  },
-}));
-
 export const VisualMode: React.FC<VisualModeProps> = (props) => {
   return (
     <div className="visual-mode">
-      <div
-        className="box"
-        style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', height: '80%' }}
-      >
-        <PageGroup></PageGroup>
-        <div style={{ display: 'flex', gap: 20 }}>
+      <div className="box">
+        <div style={{ overflowY: 'auto', height: 640 }}>
+          <PageGroup></PageGroup>
+          <PageGroup></PageGroup>
+          <PageGroup></PageGroup>
+          <PageGroup></PageGroup>
+          <PageGroup></PageGroup>
+          <PageGroup></PageGroup>
+          <PageGroup></PageGroup>
+          <PageGroup></PageGroup>
+          <PageGroup></PageGroup>
+        </div>
+        <div style={{ display: 'flex', gap: 20, marginTop: 20 }}>
           <Button variant="contained">Ок</Button>
-          <CancelButton>Отменить</CancelButton>
+          <Button color="secondary" variant="contained">
+            Отменить
+          </Button>
         </div>
       </div>
     </div>
