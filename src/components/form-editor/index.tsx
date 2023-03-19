@@ -55,11 +55,16 @@ export const FormEditor: React.FC = () => {
     }
   };
 
+  const newBlankJson = () => {
+    setData(form);
+  };
+
   return (
     <ThemeProvider theme={theme}>
       <div className="layout">
         <header>
           <CommandLine
+            newData={newBlankJson}
             loadData={loadProperties}
             saveData={() => {
               return JSON.stringify(data);

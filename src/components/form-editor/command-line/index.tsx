@@ -7,6 +7,7 @@ import AddBoxRoundedIcon from '@mui/icons-material/AddBoxRounded';
 import './style.css';
 
 interface CommandLineProps {
+  newData: () => void;
   saveData: () => string;
   loadData: (value: string) => void;
   changeMode: () => void;
@@ -15,8 +16,9 @@ interface CommandLineProps {
 /** Командная панель */
 export const CommandLine: React.FC<CommandLineProps> = (props) => {
   function createTxtFile() {
-    const text = '{}';
-    props.loadData(text);
+    // const text = '{}';
+    // props.loadData(text);
+    props.newData();
   }
 
   function downloadTxtFile() {
