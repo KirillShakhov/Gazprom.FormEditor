@@ -29,8 +29,15 @@ export const Group: React.FC<GroupProps> = (props) => {
       value.items = list;
       props.setValue(value);
       console.log('list ' + list);
+    } else {
+      if (removedIndex == null || addedIndex == null) return;
+      const item = list[removedIndex];
+      list.splice(removedIndex, 1);
+      list.splice(addedIndex, 0, item);
+      setList([...list]);
+      value.items = list;
+      props.setValue(value);
     }
-    if (removedIndex == null || addedIndex == null) return;
   };
 
   const onDragEnter = () => {
