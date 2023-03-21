@@ -20,11 +20,11 @@ export const Group: React.FC<GroupProps> = (props) => {
       <span style={{ fontSize: 16, margin: 0, marginTop: 10 }}>
         {value.name} {value.direction}
       </span>
-      {value.items?.map((item) => {
+      {value.items?.map((item, index) => {
         return (
           <Element
             value={item as IFormControl}
-            key={item.code}
+            key={index}
             isSelected={false}
             onClick={() => {
               console.log('click');

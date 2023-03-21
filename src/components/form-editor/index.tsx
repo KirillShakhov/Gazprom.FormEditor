@@ -9,6 +9,7 @@ import { LeftMenu } from './left-menu';
 import { IParameter } from '../../interfaces/parameter';
 import { form, parameters } from '../../interfaces/example';
 import { IForm } from '../../interfaces/form-config';
+import { generateStandardForm } from '../../utils/generate-form';
 
 enum Modes {
   Visual,
@@ -47,13 +48,14 @@ export const FormEditor: React.FC = () => {
     try {
       const p: IParameter[] = JSON.parse(data);
       setProperties(p);
+      setData(generateStandardForm(p));
     } catch (e) {
       alert('Неверный формат');
     }
   };
 
   const newBlankJson = () => {
-    setData(form);
+    setData(generateStandardForm(properties));
   };
 
   return (

@@ -16,8 +16,8 @@ export const Page: React.FC<PageProps> = (props) => {
         flexDirection: 'column',
       }}
     >
-      {value.items?.map((item) => {
-        return <Group value={item as IFormGroup} key={item.code}></Group>;
+      {value.items?.map((item, index) => {
+        return <Group value={item as IFormGroup} key={index}></Group>;
       })}
     </div>
   );

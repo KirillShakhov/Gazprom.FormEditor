@@ -82,7 +82,7 @@ export const PageGroup: React.FC<PageGroupProps> = (props) => {
             }}
           >
             {value.pages.map((item, index) => {
-              return <Tab label={item.name} {...a11yProps(index)} key={item.code} style={tabStyle} />;
+              return <Tab label={item.name} {...a11yProps(index)} key={index} style={tabStyle} />;
             })}
           </Tabs>
         </Box>
