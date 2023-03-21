@@ -4,23 +4,25 @@ import DownloadRoundedIcon from '@mui/icons-material/DownloadRounded';
 import FileUploadRoundedIcon from '@mui/icons-material/FileUploadRounded';
 import ClearAllRoundedIcon from '@mui/icons-material/ClearAllRounded';
 import AddBoxRoundedIcon from '@mui/icons-material/AddBoxRounded';
-import './command-line.css';
+import './style.css';
 
 interface CommandLineProps {
-  getData: () => string;
-  setData: (value: string) => void;
+  newData: () => void;
+  saveData: () => string;
+  loadData: (value: string) => void;
   changeMode: () => void;
 }
 
 /** Командная панель */
 export const CommandLine: React.FC<CommandLineProps> = (props) => {
   function createTxtFile() {
-    const text = '{}';
-    props.setData(text);
+    // const text = '{}';
+    // props.loadData(text);
+    props.newData();
   }
 
   function downloadTxtFile() {
-    const text = props.getData();
+    const text = props.saveData();
     // file object
     const file = new Blob([text], { type: 'application/json' });
     // anchor link
@@ -34,14 +36,12 @@ export const CommandLine: React.FC<CommandLineProps> = (props) => {
   }
 
   const readFile = async (event: any) => {
+    event.preventDefault();
     const file = event.target.files[0];
     const text = await file.text();
-    try {
-      JSON.parse(text);
-      props.setData(text);
-    } catch (e) {
-      alert('Неправильная структура json');
-    }
+    event.target.files = null;
+    props.loadData(text);
+    event.target.value = null;
   };
 
   return (

@@ -1,6 +1,6 @@
 .json-editor {
-    resize: none;
-    overflow: hidden;
+    overflow: auto;
+    /*resize: none;*/
     height: 100%;
     width: 100%;
     font-family: 'Roboto', monospace;

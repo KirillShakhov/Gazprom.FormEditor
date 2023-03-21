@@ -1,0 +1,19 @@
+.visual-mode{
+    /*display: flex;*/
+    /*align-items: center;*/
+    /*justify-content: center;*/
+    height: 100%;
+    background: #565963;
+    padding: 20px;
+}
+
+.box{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    height: 80%;
+    padding: 30px;
+    border-radius: 10px;
+    background: #ffffff;
+}
