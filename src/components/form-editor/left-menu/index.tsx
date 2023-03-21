@@ -19,7 +19,7 @@ interface LeftMenuProps {
 
 export const LeftMenu: React.FC<LeftMenuProps> = (props) => {
   const { properties } = props;
-  const [value, setValue] = React.useState(1);
+  const [value, setValue] = React.useState(0);
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);

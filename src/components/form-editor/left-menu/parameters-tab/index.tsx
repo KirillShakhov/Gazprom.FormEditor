@@ -23,7 +23,7 @@ export const ParametersTab: React.FC<ParametersTabProps> = (props) => {
 
   return (
     <div className="tab-item parameters-tab">
-      <Container onDrop={onDrop}>
+      <Container getChildPayload={(i) => properties[i]} groupName={'parameters'} onDrop={onDrop}>
         {properties.map((param, index) => {
           return (
             <Draggable key={index}>
