@@ -7,7 +7,6 @@ import { generateStandardElement } from '../../../../utils/generate-form';
 
 interface GroupProps {
   value: IFormGroup;
-  setValue: (value: IFormGroup) => void;
 }
 
 export const Group: React.FC<GroupProps> = (props) => {
@@ -27,7 +26,6 @@ export const Group: React.FC<GroupProps> = (props) => {
       list.splice(addedIndex, 0, item);
       setList([...list]);
       value.items = list;
-      props.setValue(value);
       console.log('list ' + list);
     } else {
       if (removedIndex == null || addedIndex == null) return;
@@ -36,7 +34,6 @@ export const Group: React.FC<GroupProps> = (props) => {
       list.splice(addedIndex, 0, item);
       setList([...list]);
       value.items = list;
-      props.setValue(value);
     }
   };
 
