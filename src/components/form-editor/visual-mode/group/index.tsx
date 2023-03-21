@@ -1,11 +1,13 @@
 import React from 'react';
 import { IFormGroup } from '../../../../interfaces/form-config';
 import { Element } from '../element';
-import { CONTROL_TYPE, IFormControl } from '../../../../interfaces/form-control';
+import { IFormControl } from '../../../../interfaces/form-control';
 import { Container, Draggable, DropResult } from 'react-smooth-dnd';
+import { generateStandardElement } from '../../../../utils/generate-form';
 
 interface GroupProps {
   value: IFormGroup;
+  setValue: (value: IFormGroup) => void;
 }
 
 export const Group: React.FC<GroupProps> = (props) => {
@@ -21,24 +23,14 @@ export const Group: React.FC<GroupProps> = (props) => {
     if (dropResult.payload != null) {
       if (addedIndex == null) return;
       const param = dropResult.payload;
-      const items = [...list];
-      const item = {
-        code: param.name,
-        name: param.name,
-        dataSource: param.code,
-        type: CONTROL_TYPE.TEXT,
-        properties: {},
-      };
-      items.splice(addedIndex, 0, item);
-      setList(items);
+      const item = generateStandardElement(param);
+      list.splice(addedIndex, 0, item);
+      setList([...list]);
+      value.items = list;
+      props.setValue(value);
       console.log('list ' + list);
     }
     if (removedIndex == null || addedIndex == null) return;
-    // const items = [...lists];
-    // const item = items[removedIndex];
-    // items.splice(removedIndex, 1);
-    // items.splice(addedIndex, 0, item);
-    // setLists(items);
   };
 
   const onDragEnter = () => {

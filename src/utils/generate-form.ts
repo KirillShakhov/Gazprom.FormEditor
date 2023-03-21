@@ -79,3 +79,53 @@ export const generateStandardForm = (parameters: IParameter[]): IForm => {
     ],
   };
 };
+
+/** Генерация стандартного поля. */
+export const generateStandardElement = (parameter: IParameter): IFormItem => {
+  const item: IFormItem = {
+    code: `Element(${parameter.code})`,
+    name: `Элемент(${parameter.name})`,
+    dataSource: parameter.code,
+    type: CONTROL_TYPE.TEXT,
+    properties: {},
+  };
+  switch (parameter.type) {
+    case PARAMETER_TYPE.STRING:
+      item.type = CONTROL_TYPE.TEXT;
+      item.properties = {
+        multiline: true,
+        lineCount: 2,
+      };
+      break;
+    case PARAMETER_TYPE.NUMBER:
+      item.type = CONTROL_TYPE.NUMBER;
+      item.properties = {
+        minValue: 0,
+        maxValue: 100,
+      };
+      break;
+    case PARAMETER_TYPE.INTEGER:
+      item.type = CONTROL_TYPE.NUMBER;
+      item.properties = {
+        minValue: 0,
+        maxValue: 100,
+      };
+      break;
+    case PARAMETER_TYPE.BOOLEAN:
+      item.type = CONTROL_TYPE.CHECKBOX;
+      break;
+    case PARAMETER_TYPE.DATE:
+      item.type = CONTROL_TYPE.DATEPICKER;
+      break;
+    case PARAMETER_TYPE.DATETIME:
+      item.type = CONTROL_TYPE.DATETIMEPICKER;
+      break;
+    case PARAMETER_TYPE.REF:
+      item.type = CONTROL_TYPE.SELECT;
+      break;
+    case PARAMETER_TYPE.FILE:
+      item.type = CONTROL_TYPE.FILE;
+      break;
+  }
+  return item;
+};
