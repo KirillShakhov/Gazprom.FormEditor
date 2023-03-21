@@ -1,16 +1,18 @@
 import React from 'react';
-import {CONTROL_TYPE, IFormControl} from '../../../../interfaces/form-control';
-import {DefaultType} from './types/default-type';
-import {NumberType} from './types/number-type';
-import {TextType} from './types/text-type';
-import {TextAreaType} from "./types/textarea-type";
-import {DatePickerType} from "./types/datepicker-type";
-import {SwitchType} from "./types/switch-type";
-import {CheckBoxType} from "./types/checkbox-type";
-import {RadioGroupType} from "./types/radiogroup-type";
+import { CONTROL_TYPE, IFormControl } from '../../../../interfaces/form-control';
+import { DefaultType } from './types/default-type';
+import { NumberType } from './types/number-type';
+import { TextType } from './types/text-type';
+import { TextAreaType } from './types/textarea-type';
+import { DatePickerType } from './types/datepicker-type';
+import { SwitchType } from './types/switch-type';
+import { CheckBoxType } from './types/checkbox-type';
+import { RadioGroupType } from './types/radiogroup-type';
 
 interface ElementProps {
   value: IFormControl;
+  isSelected: boolean;
+  onClick: () => void;
 }
 
 function renderSwitch(value: IFormControl) {
@@ -35,7 +37,25 @@ function renderSwitch(value: IFormControl) {
 }
 
 export const Element: React.FC<ElementProps> = (props) => {
-  const { value } = props;
+  const { value, isSelected } = props;
 
-  return <div style={{ marginTop: 20 }}>{renderSwitch(value)}</div>;
+  const onClick = () => {
+    if (!isSelected) console.log(JSON.stringify(value));
+  };
+
+  return (
+    <div
+      style={{
+        marginTop: 20,
+        border: 1,
+        borderColor: isSelected ? '#3373d9' : '#e0e0e0',
+        borderStyle: 'dotted',
+        padding: 5,
+      }}
+      role="presentation"
+      onClick={onClick}
+    >
+      {renderSwitch(value)}
+    </div>
+  );
 };

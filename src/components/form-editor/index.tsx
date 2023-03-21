@@ -46,10 +46,7 @@ export const FormEditor: React.FC = () => {
   const loadProperties = (data: string) => {
     try {
       const p: IParameter[] = JSON.parse(data);
-      // const f: IForm = JSON.parse(data);
-      // console.log(JSON.stringify(p));
       setProperties(p);
-      // setData(f);
     } catch (e) {
       alert('Неверный формат');
     }

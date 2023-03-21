@@ -21,7 +21,16 @@ export const Group: React.FC<GroupProps> = (props) => {
         {value.name} {value.direction}
       </span>
       {value.items?.map((item) => {
-        return <Element value={item as IFormControl} key={item.code}></Element>;
+        return (
+          <Element
+            value={item as IFormControl}
+            key={item.code}
+            isSelected={false}
+            onClick={() => {
+              console.log('click');
+            }}
+          ></Element>
+        );
       })}
     </div>
   );

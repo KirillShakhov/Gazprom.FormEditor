@@ -15,6 +15,8 @@ interface CommandLineProps {
 
 /** Командная панель */
 export const CommandLine: React.FC<CommandLineProps> = (props) => {
+  const inputRef = React.createRef<HTMLInputElement>();
+
   function createTxtFile() {
     // const text = '{}';
     // props.loadData(text);
@@ -35,9 +37,15 @@ export const CommandLine: React.FC<CommandLineProps> = (props) => {
     element.click();
   }
 
+  function clearInput(event: any) {
+    console.log(JSON.stringify(event.child));
+    event.children.target.files = null;
+  }
+
   const readFile = async (event: any) => {
     const file = event.target.files[0];
     const text = await file.text();
+    event.target.files = null;
     props.loadData(text);
   };
 
@@ -55,8 +63,8 @@ export const CommandLine: React.FC<CommandLineProps> = (props) => {
           </IconButton>
         </Tooltip>
         <Tooltip title="Импорт">
-          <IconButton aria-label="upload" component="label">
-            <input hidden accept="application/json,.txt" type="file" onChange={readFile} />
+          <IconButton aria-label="upload" component="label" onClick={clearInput}>
+            <input ref={inputRef} hidden accept="application/json,.txt" type="file" onChange={readFile} />
             <FileUploadRoundedIcon />
           </IconButton>
         </Tooltip>
