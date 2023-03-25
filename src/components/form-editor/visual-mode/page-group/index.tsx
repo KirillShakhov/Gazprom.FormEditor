@@ -2,7 +2,8 @@ import React from 'react';
 import { Box, Tab, Tabs } from '@mui/material';
 import { TabPanel } from '@mui/lab';
 import { Page } from '../page';
-import {ITabPageController} from '../../../../interfaces/form-config';
+import { ITabPageController } from '../../../../interfaces/form-config';
+import { Container, Draggable } from 'react-smooth-dnd';
 
 interface PageGroupProps {
   value: ITabPageController;
@@ -73,22 +74,24 @@ export const PageGroup: React.FC<PageGroupProps> = (props) => {
       <span style={{ fontSize: 18, margin: 0 }}>{value.name}</span>
       <div style={{ marginTop: 20, height: '90%' }}>
         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-          <Tabs
-            value={tabIndex}
-            onChange={handleChange}
-            textColor="inherit"
-            style={{
-              minHeight: 0,
-            }}
-          >
-            {value.pages.map((item, index) => {
-              return <Tab label={item.name} {...a11yProps(index)} key={index} style={tabStyle} />;
-            })}
-          </Tabs>
+          <Container groupName={'pages'} orientation={'horizontal'}>
+            <Tabs
+              value={tabIndex}
+              onChange={handleChange}
+              textColor="inherit"
+              style={{
+                minHeight: 0,
+              }}
+            >
+              {value.pages.map((item, index) => {
+                return <Tab label={item.name} {...a11yProps(index)} key={index} style={tabStyle} />;
+              })}
+            </Tabs>
+          </Container>
         </Box>
         {value.pages.map((item, index) => {
           return (
-            <TabPanel value={tabIndex} index={index}>
+            <TabPanel value={tabIndex} index={index} key={index}>
               <Page value={item}></Page>
             </TabPanel>
           );
