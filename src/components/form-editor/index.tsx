@@ -1,5 +1,5 @@
 import { createTheme, Shadows, ThemeProvider } from '@mui/material';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { CommandLine } from './command-line';
 import './style.css';
 import { VisualMode } from './visual-mode';
@@ -7,10 +7,11 @@ import { TextMode } from './text-mode/text-mode';
 import { ComponentSettings } from './component-settings';
 import { LeftMenu } from './left-menu';
 import { IParameter } from '../../interfaces/parameter';
-import { form, parameters } from '../../interfaces/example';
 import { IForm } from '../../interfaces/form-config';
 import { generateStandardForm } from '../../utils/generate-form';
 import { checkImplementForm, checkImplementParameters } from '../../utils/check-objects';
+import { form, parameters } from '../../interfaces/example';
+import { IFormControl } from '../../interfaces/form-control';
 
 enum Modes {
   Visual,
@@ -36,6 +37,7 @@ export const FormEditor: React.FC = () => {
   const [mode, setMode] = React.useState(Modes.Visual);
   const [properties, setProperties] = React.useState<IParameter[]>(parameters);
   const [data, setData] = React.useState<IForm>(form);
+  const [selectedItem, setSelectedItem] = React.useState<IFormControl>();
 
   const changeMode = () => {
     if (mode === Modes.Text) {
@@ -67,6 +69,12 @@ export const FormEditor: React.FC = () => {
     setData(generateStandardForm(properties));
   };
 
+  const onSelectItem = (value: IFormControl) => {
+    console.log(`IFormControl ${JSON.stringify(value)}`);
+    setSelectedItem(undefined);
+    setSelectedItem(value);
+  };
+
   return (
     <ThemeProvider theme={theme}>
       <div className="layout">
@@ -92,7 +100,7 @@ export const FormEditor: React.FC = () => {
         </div>
         <main>
           <div hidden={mode != Modes.Visual} style={{ height: '100%' }}>
-            <VisualMode form={data}></VisualMode>
+            <VisualMode form={data} onSelectItem={onSelectItem}></VisualMode>
           </div>
           <div hidden={mode != Modes.Text} style={{ height: '100%' }}>
             <TextMode
@@ -104,12 +112,7 @@ export const FormEditor: React.FC = () => {
           </div>
         </main>
         <div className="right-side">
-          <ComponentSettings
-            properties={properties}
-            onChangeProperty={(property) => {
-              console.log('event: ' + JSON.stringify(property));
-            }}
-          />
+          <ComponentSettings value={selectedItem} properties={properties} />
         </div>
       </div>
     </ThemeProvider>

@@ -4,9 +4,11 @@ import { TabPanel } from '@mui/lab';
 import { Page } from '../page';
 import { ITabPageController } from '../../../../interfaces/form-config';
 import { Container, Draggable } from 'react-smooth-dnd';
+import {IFormControl} from "../../../../interfaces/form-control";
 
 interface PageGroupProps {
   value: ITabPageController;
+  onSelectItem: (value: IFormControl) => void;
 }
 
 interface TabPanelProps {
@@ -16,7 +18,7 @@ interface TabPanelProps {
 }
 
 export const PageGroup: React.FC<PageGroupProps> = (props) => {
-  const { value } = props;
+  const { value, onSelectItem } = props;
   const [tabIndex, setTabIndex] = React.useState(0);
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
@@ -92,7 +94,7 @@ export const PageGroup: React.FC<PageGroupProps> = (props) => {
         {value.pages.map((item, index) => {
           return (
             <TabPanel value={tabIndex} index={index} key={index}>
-              <Page value={item}></Page>
+              <Page value={item} onSelectItem={onSelectItem}></Page>
             </TabPanel>
           );
         })}

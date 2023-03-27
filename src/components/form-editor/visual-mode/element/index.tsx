@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import { CONTROL_TYPE, IFormControl } from '../../../../interfaces/form-control';
 import { DefaultType } from './types/default-type';
 import { NumberType } from './types/number-type';
@@ -12,7 +12,7 @@ import { RadioGroupType } from './types/radiogroup-type';
 interface ElementProps {
   value: IFormControl;
   isSelected: boolean;
-  onClick: () => void;
+  onSelectItem: (value: IFormControl) => void;
 }
 
 function renderSwitch(value: IFormControl) {
@@ -37,10 +37,13 @@ function renderSwitch(value: IFormControl) {
 }
 
 export const Element: React.FC<ElementProps> = (props) => {
-  const { value, isSelected } = props;
+  const { value, isSelected, onSelectItem } = props;
 
   const onClick = () => {
-    if (!isSelected) console.log(JSON.stringify(value));
+    if (!isSelected) {
+      // console.log(JSON.stringify(value));
+      onSelectItem(value);
+    }
   };
 
   return (

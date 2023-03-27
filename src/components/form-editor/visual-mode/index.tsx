@@ -4,13 +4,15 @@ import { Button } from '@mui/material';
 import { PageGroup } from './page-group';
 import { IForm, ITabPageController } from '../../../interfaces/form-config';
 import { Container } from 'react-smooth-dnd';
+import { IFormControl } from '../../../interfaces/form-control';
 
 interface VisualModeProps {
   form: IForm;
+  onSelectItem: (value: IFormControl) => void;
 }
 
 export const VisualMode: React.FC<VisualModeProps> = (props) => {
-  const { form } = props;
+  const { form, onSelectItem } = props;
 
   const print = () => {
     console.log(JSON.stringify(form.items));
@@ -22,7 +24,7 @@ export const VisualMode: React.FC<VisualModeProps> = (props) => {
         <div style={{ overflowY: 'auto', height: 640 }}>
           <Container groupName={'pages-groups'}>
             {form.items?.map((item, index) => {
-              return <PageGroup value={item as ITabPageController} key={index}></PageGroup>;
+              return <PageGroup value={item as ITabPageController} key={index} onSelectItem={onSelectItem}></PageGroup>;
             })}
           </Container>
         </div>

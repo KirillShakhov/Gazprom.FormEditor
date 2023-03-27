@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import { IFormGroup } from '../../../../interfaces/form-config';
 import { Element } from '../element';
 import { IFormControl } from '../../../../interfaces/form-control';
@@ -8,10 +8,11 @@ import { checkImplementFormControl, checkImplementParameter } from '../../../../
 
 interface GroupProps {
   value: IFormGroup;
+  onSelectItem: (value: IFormControl) => void;
 }
 
 export const Group: React.FC<GroupProps> = (props) => {
-  const { value } = props;
+  const { value, onSelectItem } = props;
   const [list, setList] = React.useState(value.items ?? []);
 
   const onDrop = (dropResult: DropResult) => {
@@ -61,9 +62,7 @@ export const Group: React.FC<GroupProps> = (props) => {
                 value={item as IFormControl}
                 key={index}
                 isSelected={false}
-                onClick={() => {
-                  console.log('click');
-                }}
+                onSelectItem={onSelectItem}
               ></Element>
             </Draggable>
           );
