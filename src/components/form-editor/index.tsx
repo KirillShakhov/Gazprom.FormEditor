@@ -10,6 +10,7 @@ import { IParameter } from '../../interfaces/parameter';
 import { form, parameters } from '../../interfaces/example';
 import { IForm } from '../../interfaces/form-config';
 import { generateStandardForm } from '../../utils/generate-form';
+import { checkImplementForm, checkImplementParameters } from '../../utils/check-objects';
 
 enum Modes {
   Visual,
@@ -46,9 +47,17 @@ export const FormEditor: React.FC = () => {
 
   const loadProperties = (data: string) => {
     try {
-      const p: IParameter[] = JSON.parse(data);
-      setProperties(p);
-      setData(generateStandardForm(p));
+      const params: IParameter[] = JSON.parse(data);
+      if (checkImplementParameters(params)) {
+        setProperties(params);
+        setData(generateStandardForm(params));
+        return;
+      }
+      const form: IForm = JSON.parse(data);
+      if (checkImplementForm(form)) {
+        setData(form);
+        return;
+      }
     } catch (e) {
       alert('Неверный формат');
     }
