@@ -12,7 +12,7 @@ import { generateStandardForm } from '../../utils/generate-form';
 import { checkImplementForm, checkImplementParameters } from '../../utils/check-objects';
 import { form, parameters } from '../../interfaces/example';
 import { IFormControl } from '../../interfaces/form-control';
-import {IPropertyMetadata, metadata} from "../../interfaces/property-metadata";
+import { IPropertyMetadata, metadata } from '../../interfaces/property-metadata';
 
 enum Modes {
   Visual,
@@ -98,11 +98,11 @@ export const FormEditor: React.FC = () => {
             setProperties={() => {
               return;
             }}
-          ></LeftMenu>
+          />
         </div>
         <main>
           <div hidden={mode != Modes.Visual} style={{ height: '100%' }}>
-            <VisualMode form={data} onSelectItem={onSelectItem}></VisualMode>
+            <VisualMode form={data} onSelectItem={onSelectItem} />
           </div>
           <div hidden={mode != Modes.Text} style={{ height: '100%' }}>
             <TextMode
@@ -110,7 +110,7 @@ export const FormEditor: React.FC = () => {
               onChange={(data) => {
                 setData(JSON.parse(data));
               }}
-            ></TextMode>
+            />
           </div>
         </main>
         <div className="right-side">

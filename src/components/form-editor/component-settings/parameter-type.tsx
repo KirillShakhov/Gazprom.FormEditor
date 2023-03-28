@@ -27,6 +27,7 @@ export const ParameterType: React.FC<ElementProps> = (props) => {
   }, [propertiesConfig.code, value.properties]);
 
   const [config, setConfig] = React.useState(haveProperty());
+  const [index, setIndex] = React.useState(0);
 
   const changeValue = (val: any) => {
     if (value.properties === undefined) value.properties = {};
@@ -94,6 +95,7 @@ export const ParameterType: React.FC<ElementProps> = (props) => {
                     cleanValue();
                   }
                 }}
+                size={'small'}
                 inputProps={{ 'aria-label': 'controlled' }}
               />
             }
@@ -102,7 +104,7 @@ export const ParameterType: React.FC<ElementProps> = (props) => {
           />
         );
       case PROPERTY_VALUE_TYPE.DATE:
-        return <TextField></TextField>;
+        return <TextField />;
       case PROPERTY_VALUE_TYPE.LIST:
         return (
           <FormControl size="small" fullWidth>
@@ -110,12 +112,13 @@ export const ParameterType: React.FC<ElementProps> = (props) => {
             <Select
               labelId="data-source-label"
               id="data-source"
-              value={undefined}
+              value={index}
               label={value.name}
               onChange={(event: SelectChangeEvent<number>) => {
                 if (value.options !== undefined) {
                   const index = Number(event.target.value);
                   changeValue(value.options[index]);
+                  setIndex(index);
                 }
               }}
               fullWidth

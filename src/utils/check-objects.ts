@@ -1,6 +1,6 @@
 import { IParameter } from '../interfaces/parameter';
 import { IFormControl } from '../interfaces/form-control';
-import {IForm} from "../interfaces/form-config";
+import { IForm } from '../interfaces/form-config';
 
 export const checkImplementFormControl = (p: any): p is IFormControl => {
   return p.hasOwnProperty('dataSource') && p.hasOwnProperty('type');

@@ -20,7 +20,8 @@ export const ComponentSettings: React.FC<VisualModeProps> = (props) => {
       <span style={{ fontSize: 16 }}>Настройки компоненты</span>
       {!value && <span style={{ fontSize: 12 }}>Компонент не выбран</span>}
       {value && <DatasourceSetting value={value} properties={properties} />}
-      {value && <ComponentSettingProperties value={value} config={config.byParameterType}></ComponentSettingProperties>}
+      {value && <ComponentSettingProperties value={value} config={config}></ComponentSettingProperties>}
+      {/*{value && <ParameterTypesElements value={value} propertiesConfig={config.byElementType.CONTROL} />}*/}
     </div>
   );
 };
