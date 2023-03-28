@@ -7,7 +7,7 @@ import './text-mode.css';
 import { IForm } from '../../../interfaces/form-config';
 
 interface TextModeProps {
-  value: IForm;
+  value: string;
   onChange: (value: string) => void;
 }
 
@@ -24,7 +24,7 @@ export const TextMode: React.FC<TextModeProps> = (props) => {
   return (
     <div className="json-editor">
       <JSONInput
-        placeholder={value}
+        placeholder={JSON.parse(value)}
         locale={locale}
         confirmGood={true}
         theme="light_mitsuketa_tribute"
