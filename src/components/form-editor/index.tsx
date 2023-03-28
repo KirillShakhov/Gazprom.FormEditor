@@ -12,6 +12,7 @@ import { generateStandardForm } from '../../utils/generate-form';
 import { checkImplementForm, checkImplementParameters } from '../../utils/check-objects';
 import { form, parameters } from '../../interfaces/example';
 import { IFormControl } from '../../interfaces/form-control';
+import {IPropertyMetadata, metadata} from "../../interfaces/property-metadata";
 
 enum Modes {
   Visual,
@@ -37,6 +38,7 @@ export const FormEditor: React.FC = () => {
   const [mode, setMode] = React.useState(Modes.Visual);
   const [properties, setProperties] = React.useState<IParameter[]>(parameters);
   const [data, setData] = React.useState<IForm>(form);
+  const [config, setConfig] = React.useState<IPropertyMetadata>(metadata);
   const [selectedItem, setSelectedItem] = React.useState<IFormControl>();
 
   const changeMode = () => {
@@ -104,7 +106,7 @@ export const FormEditor: React.FC = () => {
           </div>
           <div hidden={mode != Modes.Text} style={{ height: '100%' }}>
             <TextMode
-              value={JSON.stringify(data)}
+              value={data}
               onChange={(data) => {
                 setData(JSON.parse(data));
               }}
@@ -112,7 +114,7 @@ export const FormEditor: React.FC = () => {
           </div>
         </main>
         <div className="right-side">
-          <ComponentSettings value={selectedItem} properties={properties} />
+          <ComponentSettings value={selectedItem} properties={properties} config={config} />
         </div>
       </div>
     </ThemeProvider>

@@ -2,8 +2,6 @@ import React, { useCallback, useEffect } from 'react';
 import { IFormControl } from '../../../interfaces/form-control';
 import { FormControl, InputLabel, MenuItem, Select, SelectChangeEvent } from '@mui/material';
 import { IParameter } from '../../../interfaces/parameter';
-import { IFormElement } from '../../../interfaces/form-element';
-import { parameters } from '../../../interfaces/example';
 import { datasourceMatch } from '../../../utils/datasource-match';
 
 interface ElementProps {

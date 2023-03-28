@@ -4,27 +4,27 @@ import JSONInput from 'react-json-editor-ajrm';
 // @ts-ignore
 import locale from 'react-json-editor-ajrm/locale/ru';
 import './text-mode.css';
+import { IForm } from '../../../interfaces/form-config';
 
 interface TextModeProps {
-  value: string;
+  value: IForm;
   onChange: (value: string) => void;
 }
 
-export const TextMode: React.FC<TextModeProps> = (obj) => {
-  // const jsonConfiguration = useAppConfigurationModel(
-  //   (state) => state.configuration
-  // );
+export const TextMode: React.FC<TextModeProps> = (props) => {
+  const { value, onChange } = props;
+
   const handleChange = function (event: any) {
     try {
       JSON.parse(event.json);
-      obj.onChange(event.json);
+      onChange(event.json);
       console.log('event: ' + event.json);
     } catch (e) {}
   };
   return (
     <div className="json-editor">
       <JSONInput
-        placeholder={JSON.parse(obj.value)}
+        placeholder={value}
         locale={locale}
         confirmGood={true}
         theme="light_mitsuketa_tribute"
