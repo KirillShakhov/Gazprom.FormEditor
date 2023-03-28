@@ -1,7 +1,17 @@
 import React, { useCallback } from 'react';
 import { IPropertyConfig, PROPERTY_VALUE_TYPE } from '../../../interfaces/property-metadata';
-import { Checkbox, FormControlLabel, TextField } from '@mui/material';
+import {
+  Checkbox,
+  FormControl,
+  FormControlLabel,
+  InputLabel,
+  MenuItem,
+  Select,
+  SelectChangeEvent,
+  TextField,
+} from '@mui/material';
 import { IFormElement } from '../../../interfaces/form-element';
+import { NumericFormat } from 'react-number-format';
 
 interface ElementProps {
   value: IFormElement;
@@ -37,9 +47,38 @@ export const ParameterType: React.FC<ElementProps> = (props) => {
     console.log('value.type: ' + value.type);
     switch (value.type) {
       case PROPERTY_VALUE_TYPE.STRING:
-        return <TextField id="outlined" label={value.name} size={'small'} />;
+        return (
+          <TextField
+            id="outlined"
+            label={value.name}
+            size={'small'}
+            onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+              if (event.target.value !== '') {
+                changeValue(event.target.value);
+              } else {
+                cleanValue();
+              }
+            }}
+          />
+        );
       case PROPERTY_VALUE_TYPE.INTEGER:
-        return <TextField id="outlined" label={value.name} size={'small'} />;
+        return (
+          <TextField
+            id="outlined"
+            label={value.name}
+            size={'small'}
+            onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+              if (event.target.value !== '') {
+                changeValue(event.target.value);
+              } else {
+                cleanValue();
+              }
+            }}
+            InputProps={{
+              inputComponent: NumericFormat as never,
+            }}
+          />
+        );
       case PROPERTY_VALUE_TYPE.BOOLEAN:
         return (
           <FormControlLabel
@@ -65,7 +104,32 @@ export const ParameterType: React.FC<ElementProps> = (props) => {
       case PROPERTY_VALUE_TYPE.DATE:
         return <TextField></TextField>;
       case PROPERTY_VALUE_TYPE.LIST:
-        return <TextField></TextField>;
+        return (
+          <FormControl size="small" fullWidth>
+            <InputLabel id="data-source-label">{value.name}</InputLabel>
+            <Select
+              labelId="data-source-label"
+              id="data-source"
+              value={undefined}
+              label={value.name}
+              onChange={(event: SelectChangeEvent<number>) => {
+                if (value.options !== undefined) {
+                  const index = Number(event.target.value);
+                  changeValue(value.options[index]);
+                }
+              }}
+              fullWidth
+            >
+              {value.options?.map((param, index) => {
+                return (
+                  <MenuItem value={index} key={index}>
+                    {param}
+                  </MenuItem>
+                );
+              })}
+            </Select>
+          </FormControl>
+        );
     }
   };
 

@@ -1,19 +1,7 @@
 import React from 'react';
 import './style.css';
-import {
-  Collapse,
-  Fade,
-  FormControl,
-  FormControlLabel,
-  InputLabel,
-  MenuItem,
-  Select,
-  SelectChangeEvent,
-  Switch,
-  TextField,
-} from '@mui/material';
 import { IParameter } from '../../../interfaces/parameter';
-import { CONTROL_TYPE, IFormControl } from '../../../interfaces/form-control';
+import { IFormControl } from '../../../interfaces/form-control';
 import { ComponentSettingProperties } from './types/component-setting-properties';
 import { DatasourceSetting } from './datasource-setting';
 import { IPropertyMetadata } from '../../../interfaces/property-metadata';
