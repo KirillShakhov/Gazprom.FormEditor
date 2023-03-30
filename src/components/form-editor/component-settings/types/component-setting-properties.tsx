@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react';
-import { FormControlLabel, Switch, TextField } from '@mui/material';
+import React, { useCallback, useEffect } from 'react';
+import { TextField } from '@mui/material';
 import { CONTROL_TYPE, IFormControl } from '../../../../interfaces/form-control';
 import { IPropertyConfig, IPropertyMetadata } from '../../../../interfaces/property-metadata';
 import { ParameterTypesElements } from '../parameter-types';
@@ -7,26 +7,28 @@ import { ParameterTypesElements } from '../parameter-types';
 interface ElementProps {
   value: IFormControl;
   config: IPropertyMetadata;
+  update: () => void;
 }
 
 export const ComponentSettingProperties: React.FC<ElementProps> = (props) => {
-  const { value, config } = props;
-  const [isHaveHelperText, setIsHaveHelperText] = React.useState(false);
+  const { value, config, update } = props;
+  // const [isHaveHelperText, setIsHaveHelperText] = React.useState(false);
   const [name, setName] = React.useState<string>(value.name);
   useEffect(() => {
     setName(value.name);
   }, [value]);
 
-  const handleSwitchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setIsHaveHelperText(event.target.checked);
-  };
+  // const handleSwitchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  //   setIsHaveHelperText(event.target.checked);
+  // };
 
   const handleChangeName = (event: React.ChangeEvent<HTMLInputElement>) => {
     setName(event.target.value);
     value.name = event.target.value;
+    update();
   };
 
-  function getSettingComponent(): IPropertyConfig[] | undefined {
+  const getSettingComponent = (): IPropertyConfig[] | undefined => {
     switch (value.type) {
       case CONTROL_TYPE.TEXT:
         return config.byParameterType.STRING;
@@ -55,7 +57,15 @@ export const ComponentSettingProperties: React.FC<ElementProps> = (props) => {
       default:
         return [];
     }
-  }
+  };
+
+  const getAllProperties = useCallback(() => {
+    const list: IPropertyConfig[] = [];
+    list.push(...(config.byElementType.CONTROL ?? []));
+    list.push(...(getSettingComponent() ?? []));
+    list.push(...(config.byControlType[value.type] ?? []));
+    return list;
+  }, [config.byControlType, config.byElementType.CONTROL, getSettingComponent, value.type]);
 
   return (
     <div
@@ -69,28 +79,24 @@ export const ComponentSettingProperties: React.FC<ElementProps> = (props) => {
     >
       <h5 style={{ margin: 0 }}>Text Input</h5>
       <TextField id="outlined" label="Название поля" size={'small'} value={name} onChange={handleChangeName} />
-      {/*<FormControlLabel*/}
-      {/*  style={{ width: '100%' }}*/}
-      {/*  control={<Switch checked={isHaveHelperText} onChange={handleSwitchChange} color="primary" />}*/}
-      {/*  label="Подсказки к полю"*/}
-      {/*  labelPlacement="end"*/}
-      {/*/>*/}
-      {/*{isHaveHelperText && (*/}
-      {/*  <TextField*/}
-      {/*    id="outlined-multiline-flexible"*/}
-      {/*    placeholder="Текст подсказки"*/}
-      {/*    size="small"*/}
-      {/*    multiline*/}
-      {/*    minRows={4}*/}
-      {/*    maxRows={6}*/}
-      {/*    fullWidth*/}
-      {/*  />*/}
-      {/*)}*/}
-      {config && <ParameterTypesElements propertiesConfig={config.byElementType.CONTROL} value={value} />}
-      {config && <ParameterTypesElements propertiesConfig={getSettingComponent()} value={value} />}
-      {config && config.byControlType[value.type] !== undefined && (
-        <ParameterTypesElements propertiesConfig={config.byControlType[value.type]} value={value} />
-      )}
+      {/*<FormControlLabel
+        style={{ width: '100%' }}
+        control={<Switch checked={isHaveHelperText} onChange={handleSwitchChange} color="primary" />}
+        label="Подсказки к полю"
+        labelPlacement="end"
+      />
+      {isHaveHelperText && (
+        <TextField
+          id="outlined-multiline-flexible"
+          placeholder="Текст подсказки"
+          size="small"
+          multiline
+          minRows={4}
+          maxRows={6}
+          fullWidth
+        />
+      )}*/}
+      {config && <ParameterTypesElements propertiesConfig={getAllProperties()} value={value} update={update} />}
     </div>
   );
 };

@@ -7,12 +7,13 @@ import { datasourceMatch } from '../../../utils/datasource-match';
 interface ElementProps {
   value: IFormControl;
   properties: IParameter[];
+  update: () => void;
 }
 
 export const DatasourceSetting: React.FC<ElementProps> = (props) => {
-  const { value, properties } = props;
+  const { value, properties, update } = props;
 
-  const getParameters = (): IParameter[] => {
+  const getParameters = useCallback((): IParameter[] => {
     const list: IParameter[] = [];
     properties?.forEach((p) => {
       if (datasourceMatch(p.type, value.type)) {
@@ -20,7 +21,7 @@ export const DatasourceSetting: React.FC<ElementProps> = (props) => {
       }
     });
     return list;
-  };
+  }, [properties, value.type]);
 
   const currentProperty = useCallback(() => {
     let indexProperty = -1;
@@ -30,7 +31,7 @@ export const DatasourceSetting: React.FC<ElementProps> = (props) => {
       }
     });
     return indexProperty;
-  }, [properties, value]);
+  }, [getParameters, value.dataSource]);
 
   const [selectPropertyIndex, setSelectPropertyIndex] = React.useState<number>(currentProperty);
   useEffect(() => {
@@ -41,8 +42,7 @@ export const DatasourceSetting: React.FC<ElementProps> = (props) => {
     const index = Number(event.target.value);
     value.dataSource = properties[index].code;
     setSelectPropertyIndex(index);
-    // const property = properties[index];
-    // onChangeProperty(property);
+    update();
   };
 
   return (

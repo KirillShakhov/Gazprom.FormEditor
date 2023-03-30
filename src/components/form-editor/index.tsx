@@ -73,8 +73,12 @@ export const FormEditor: React.FC = () => {
 
   const onSelectItem = (value: IFormControl) => {
     console.log(`IFormControl ${JSON.stringify(value)}`);
-    setSelectedItem(undefined);
     setSelectedItem(value);
+  };
+
+  const updateAll = () => {
+    console.log('updateAll');
+    setData({ ...data });
   };
 
   return (
@@ -114,7 +118,7 @@ export const FormEditor: React.FC = () => {
           </div>
         </main>
         <div className="right-side">
-          <ComponentSettings value={selectedItem} properties={properties} config={config} />
+          <ComponentSettings value={selectedItem} properties={properties} config={config} update={updateAll} />
         </div>
       </div>
     </ThemeProvider>

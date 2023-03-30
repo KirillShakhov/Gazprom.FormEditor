@@ -16,24 +16,33 @@ import { NumericFormat } from 'react-number-format';
 interface ElementProps {
   value: IFormElement;
   propertiesConfig: IPropertyConfig;
+  update: () => void;
 }
 
 export const ParameterType: React.FC<ElementProps> = (props) => {
-  const { value, propertiesConfig } = props;
+  const { value, propertiesConfig, update } = props;
 
   const haveProperty = useCallback(() => {
     if (value.properties === undefined) return false;
     return value.properties.hasOwnProperty(propertiesConfig.code);
-  }, [propertiesConfig.code, value.properties]);
+  }, [propertiesConfig, value]);
 
-  const [config, setConfig] = React.useState(haveProperty());
+  const getPropertyValue = useCallback(() => {
+    if (value.properties === undefined) return '';
+    if (value.properties.hasOwnProperty(propertiesConfig.code)) {
+      return value.properties[propertiesConfig.code];
+    }
+    return '';
+  }, [propertiesConfig, value]);
+
+  // const [config, setConfig] = React.useState(haveProperty());
   const [index, setIndex] = React.useState(0);
 
   const changeValue = (val: any) => {
     if (value.properties === undefined) value.properties = {};
     value.properties[propertiesConfig.code] = val;
-    setConfig(true);
     console.log('properties: ' + value.properties[propertiesConfig.code]);
+    update();
   };
 
   const cleanValue = () => {
@@ -41,18 +50,19 @@ export const ParameterType: React.FC<ElementProps> = (props) => {
     if (value.properties.hasOwnProperty(propertiesConfig.code)) {
       delete value.properties[propertiesConfig.code];
     }
-    setConfig(false);
+    update();
   };
 
-  const generateProperties = (value: IPropertyConfig) => {
-    console.log('value.type: ' + value.type);
-    switch (value.type) {
+  const generateProperties = (propertyConfig: IPropertyConfig) => {
+    console.log('value.type: ' + propertyConfig.type);
+    switch (propertyConfig.type) {
       case PROPERTY_VALUE_TYPE.STRING:
         return (
           <TextField
             id="outlined"
-            label={value.name}
+            label={propertyConfig.name}
             size={'small'}
+            value={getPropertyValue()}
             onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
               if (event.target.value !== '') {
                 changeValue(event.target.value);
@@ -66,17 +76,18 @@ export const ParameterType: React.FC<ElementProps> = (props) => {
         return (
           <TextField
             id="outlined"
-            label={value.name}
+            label={propertyConfig.name}
             size={'small'}
+            value={getPropertyValue() !== '' ? Number(getPropertyValue()) : ''}
             onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
               if (event.target.value !== '') {
-                changeValue(event.target.value);
+                changeValue(Number(event.target.value));
               } else {
                 cleanValue();
               }
             }}
             InputProps={{
-              inputComponent: NumericFormat as never,
+              inputComponent: NumericFormat as any,
             }}
           />
         );
@@ -87,7 +98,11 @@ export const ParameterType: React.FC<ElementProps> = (props) => {
             style={{ width: '100%', marginLeft: 2 }}
             control={
               <Checkbox
-                checked={config}
+                checked={
+                  value.properties !== undefined &&
+                  value.properties.hasOwnProperty(propertiesConfig.code) &&
+                  value.properties[propertiesConfig.code] === true
+                }
                 onChange={(e) => {
                   if (e.target.checked) {
                     changeValue(true);
@@ -99,7 +114,7 @@ export const ParameterType: React.FC<ElementProps> = (props) => {
                 inputProps={{ 'aria-label': 'controlled' }}
               />
             }
-            label={value.name}
+            label={propertyConfig.name}
             labelPlacement="end"
           />
         );
@@ -113,17 +128,17 @@ export const ParameterType: React.FC<ElementProps> = (props) => {
               labelId="data-source-label"
               id="data-source"
               value={index}
-              label={value.name}
+              label={propertyConfig.name}
               onChange={(event: SelectChangeEvent<number>) => {
-                if (value.options !== undefined) {
+                if (propertyConfig.options !== undefined) {
                   const index = Number(event.target.value);
-                  changeValue(value.options[index]);
+                  changeValue(propertyConfig.options[index]);
                   setIndex(index);
                 }
               }}
               fullWidth
             >
-              {value.options?.map((param, index) => {
+              {propertyConfig.options?.map((param, index) => {
                 return (
                   <MenuItem value={index} key={index}>
                     {param}

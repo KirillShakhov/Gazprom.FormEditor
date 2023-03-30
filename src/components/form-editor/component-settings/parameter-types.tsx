@@ -5,11 +5,12 @@ import { IFormElement } from '../../../interfaces/form-element';
 
 interface ElementProps {
   value: IFormElement;
-  propertiesConfig: IPropertyConfig[] | undefined;
+  propertiesConfig: IPropertyConfig[];
+  update: () => void;
 }
 
 export const ParameterTypesElements: React.FC<ElementProps> = (props) => {
-  const { value, propertiesConfig } = props;
+  const { value, propertiesConfig, update } = props;
 
   return (
     <div
@@ -19,10 +20,9 @@ export const ParameterTypesElements: React.FC<ElementProps> = (props) => {
         gap: 10,
       }}
     >
-      {propertiesConfig &&
-        propertiesConfig.map((property, index) => {
-          return <ParameterType propertiesConfig={property} key={index} value={value}></ParameterType>;
-        })}
+      {propertiesConfig.map((property, index) => {
+        return <ParameterType propertiesConfig={property} key={index} value={value} update={update}></ParameterType>;
+      })}
     </div>
   );
 };
