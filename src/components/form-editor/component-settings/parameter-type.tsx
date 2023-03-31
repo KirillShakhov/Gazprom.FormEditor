@@ -1,9 +1,11 @@
 import React, { useCallback } from 'react';
 import { IPropertyConfig, PROPERTY_VALUE_TYPE } from '../../../interfaces/property-metadata';
 import {
+  Button,
   Checkbox,
   FormControl,
   FormControlLabel,
+  IconButton,
   InputLabel,
   MenuItem,
   Select,
@@ -12,6 +14,11 @@ import {
 } from '@mui/material';
 import { IFormElement } from '../../../interfaces/form-element';
 import { NumericFormat } from 'react-number-format';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import dayjs from 'dayjs';
+import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 
 interface ElementProps {
   value: IFormElement;
@@ -119,7 +126,37 @@ export const ParameterType: React.FC<ElementProps> = (props) => {
           />
         );
       case PROPERTY_VALUE_TYPE.DATE:
-        return <TextField />;
+        return (
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+            }}
+          >
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <DatePicker
+                label={propertyConfig.name}
+                value={getPropertyValue()}
+                onChange={(e: any) => {
+                  if (e) {
+                    changeValue(e);
+                  } else {
+                    cleanValue();
+                  }
+                }}
+              />
+            </LocalizationProvider>
+            <IconButton
+              aria-label="clean"
+              component="label"
+              onClick={() => {
+                cleanValue();
+              }}
+            >
+              <CloseRoundedIcon />
+            </IconButton>
+          </div>
+        );
       case PROPERTY_VALUE_TYPE.LIST:
         return (
           <FormControl size="small" fullWidth>
