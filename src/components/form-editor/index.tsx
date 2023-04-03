@@ -103,7 +103,7 @@ export const FormEditor: React.FC = () => {
         </div>
         <main>
           <div hidden={mode != Modes.Visual} style={{ height: '100%' }}>
-            <VisualMode form={data} onSelectItem={onSelectItem} />
+            <VisualMode form={data} onSelectItem={onSelectItem} update={updateAll} />
           </div>
           <div hidden={mode != Modes.Text} style={{ height: '100%' }}>
             <TextMode

@@ -1,14 +1,14 @@
 import React from 'react';
-import {Box, Tab, Tabs, useTheme} from '@mui/material';
-import { TabPanel } from '@mui/lab';
+import { Box, Tab, useTheme } from '@mui/material';
 import { Page } from '../page';
 import { ITabPageController } from '../../../../interfaces/form-config';
-import { Container, Draggable } from 'react-smooth-dnd';
+import { Container, Draggable, DropResult } from 'react-smooth-dnd';
 import { IFormControl } from '../../../../interfaces/form-control';
 
 interface PageGroupProps {
   value: ITabPageController;
   onSelectItem: (value: IFormControl) => void;
+  update: () => void;
 }
 
 interface TabPanelProps {
@@ -18,7 +18,7 @@ interface TabPanelProps {
 }
 
 export const PageGroup: React.FC<PageGroupProps> = (props) => {
-  const { value, onSelectItem } = props;
+  const { value, onSelectItem, update } = props;
   const [tabIndex, setTabIndex] = React.useState(0);
   const theme = useTheme();
 
@@ -32,8 +32,6 @@ export const PageGroup: React.FC<PageGroupProps> = (props) => {
       <div
         role="tabpanel"
         hidden={value !== index}
-        id={`simple-tabpanel-${index}`}
-        aria-labelledby={`simple-tab-${index}`}
         style={{
           height: '98%',
         }}
@@ -52,6 +50,32 @@ export const PageGroup: React.FC<PageGroupProps> = (props) => {
     fontSize: 14,
   };
 
+  const onDrop = (dropResult: DropResult) => {
+    const { removedIndex, addedIndex, element, payload } = dropResult;
+    if (removedIndex == null && addedIndex == null) return;
+    console.log('removedIndex ' + removedIndex);
+    console.log('addedIndex ' + addedIndex);
+    console.log('element ' + element);
+    console.log('payload ' + JSON.stringify(payload));
+    if (dropResult.payload == null) {
+      if (value.pages === undefined) return;
+      if (removedIndex != null) {
+        const page = { ...value.pages[removedIndex] };
+        value.pages?.splice(removedIndex, 1);
+        if (addedIndex != null) {
+          console.log('add: ' + JSON.stringify(page));
+          value.pages?.splice(addedIndex, 0, page);
+          if (removedIndex == tabIndex) {
+            setTabIndex(addedIndex);
+          } else if (addedIndex == tabIndex) {
+            setTabIndex(removedIndex);
+          }
+          update();
+        }
+      }
+    }
+  };
+
   return (
     <div>
       <span style={{ fontSize: 18, margin: 0 }}>{value.name}</span>
@@ -63,6 +87,7 @@ export const PageGroup: React.FC<PageGroupProps> = (props) => {
             style={{
               display: 'flex',
             }}
+            onDrop={onDrop}
           >
             {value.pages.map((item, index) => {
               return (

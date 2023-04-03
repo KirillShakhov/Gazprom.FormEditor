@@ -9,10 +9,11 @@ import { IFormControl } from '../../../interfaces/form-control';
 interface VisualModeProps {
   form: IForm;
   onSelectItem: (value: IFormControl) => void;
+  update: () => void;
 }
 
 export const VisualMode: React.FC<VisualModeProps> = (props) => {
-  const { form, onSelectItem } = props;
+  const { form, onSelectItem, update } = props;
 
   const print = () => {
     console.log(JSON.stringify(form.items));
@@ -24,7 +25,14 @@ export const VisualMode: React.FC<VisualModeProps> = (props) => {
         <div style={{ overflowY: 'auto', height: 640 }}>
           <Container groupName={'pages-groups'}>
             {form.items?.map((item, index) => {
-              return <PageGroup value={item as ITabPageController} key={index} onSelectItem={onSelectItem}></PageGroup>;
+              return (
+                <PageGroup
+                  value={item as ITabPageController}
+                  key={index}
+                  onSelectItem={onSelectItem}
+                  update={update}
+                ></PageGroup>
+              );
             })}
           </Container>
         </div>
