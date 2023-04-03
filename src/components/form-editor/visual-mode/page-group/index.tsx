@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { EventHandler, MouseEventHandler, SyntheticEvent } from 'react';
 import { Box, Tab, useTheme } from '@mui/material';
 import { Page } from '../page';
 import { ITabPageController } from '../../../../interfaces/form-config';
@@ -50,6 +50,13 @@ export const PageGroup: React.FC<PageGroupProps> = (props) => {
     fontSize: 14,
   };
 
+  const onMouseEnter = (e: any, id: number) => {
+    if (e.nativeEvent.which) {
+      // console.log('e.target.key ' + id);
+      setTabIndex(id);
+    }
+  };
+
   const onDrop = (dropResult: DropResult) => {
     const { removedIndex, addedIndex, element, payload } = dropResult;
     if (removedIndex == null && addedIndex == null) return;
@@ -91,30 +98,30 @@ export const PageGroup: React.FC<PageGroupProps> = (props) => {
           >
             {value.pages.map((item, index) => {
               return (
-                <Draggable
-                  key={index}
-                  render={() => {
-                    return (
-                      <div>
-                        <Tab
-                          label={item.name}
-                          style={tabStyle}
-                          onClick={() => {
-                            handleChange(index);
-                          }}
-                        />
-                        {tabIndex == index && (
-                          <div
-                            style={{
-                              height: 2,
-                              background: theme.palette.primary.main,
-                            }}
-                          ></div>
-                        )}
-                      </div>
-                    );
-                  }}
-                />
+                <Draggable key={index}>
+                  <div
+                    onMouseEnter={(e) => {
+                      onMouseEnter(e, index);
+                    }}
+                  >
+                    <Tab
+                      key={index}
+                      label={item.name}
+                      style={tabStyle}
+                      onClick={() => {
+                        handleChange(index);
+                      }}
+                    />
+                    {tabIndex == index && (
+                      <div
+                        style={{
+                          height: 2,
+                          background: theme.palette.primary.main,
+                        }}
+                      />
+                    )}
+                  </div>
+                </Draggable>
               );
             })}
           </Container>
@@ -122,7 +129,7 @@ export const PageGroup: React.FC<PageGroupProps> = (props) => {
         {value.pages.map((item, index) => {
           return (
             <TabPanel value={tabIndex} index={index} key={index}>
-              <Page value={item} onSelectItem={onSelectItem}></Page>
+              <Page value={item} onSelectItem={onSelectItem} update={update}></Page>
             </TabPanel>
           );
         })}

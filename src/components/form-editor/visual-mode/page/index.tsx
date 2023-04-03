@@ -3,14 +3,16 @@ import { Container, Draggable, DropResult } from 'react-smooth-dnd';
 import { IFormGroup, ITabPage } from '../../../../interfaces/form-config';
 import { Group } from '../group';
 import { IFormControl } from '../../../../interfaces/form-control';
+import {isFormGroup} from "../../../../utils/form-config";
 
 interface PageProps {
   value: ITabPage;
   onSelectItem: (value: IFormControl) => void;
+  update: () => void;
 }
 
 export const Page: React.FC<PageProps> = (props) => {
-  const { value, onSelectItem } = props;
+  const { value, onSelectItem, update } = props;
   // const [list, setList] = React.useState(value.items ?? []);
 
   const onDrop = (dropResult: DropResult) => {
@@ -19,16 +21,19 @@ export const Page: React.FC<PageProps> = (props) => {
     console.log('removedIndex ' + dropResult.removedIndex);
     console.log('addedIndex ' + dropResult.addedIndex);
     console.log('element ' + dropResult.element);
-    console.log('payload ' + JSON.stringify(dropResult.payload));
+    console.log('payload2 ' + JSON.stringify(dropResult.payload));
     if (dropResult.payload != null) {
-      const param = dropResult.payload;
-      console.log('param: ' + JSON.stringify(param));
-      if (removedIndex != null) {
-        value.items?.splice(removedIndex, 1);
+      const group = dropResult.payload;
+      if (isFormGroup(group)) {
+        console.log('param: ' + JSON.stringify(group));
+        if (removedIndex != null) {
+          value.items?.splice(removedIndex, 1);
+        }
+        if (addedIndex != null) {
+          value.items?.splice(addedIndex, 0, group);
+        }
       }
-      if (addedIndex != null) {
-        value.items?.splice(addedIndex, 0, param);
-      }
+      update();
     }
   };
 

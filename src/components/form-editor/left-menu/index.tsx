@@ -16,10 +16,11 @@ interface TabPanelProps {
 interface LeftMenuProps {
   form: IForm;
   properties: IParameter[];
+  update: () => void;
 }
 
 export const LeftMenu: React.FC<LeftMenuProps> = (props) => {
-  const { form, properties } = props;
+  const { form, properties, update } = props;
   const [value, setValue] = React.useState(2);
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
@@ -82,7 +83,7 @@ export const LeftMenu: React.FC<LeftMenuProps> = (props) => {
         <TreeViewForm form={form} />
       </TabPanel>
       <TabPanel value={value} index={2}>
-        <ComponentsTab />
+        <ComponentsTab form={form} update={update} />
       </TabPanel>
     </div>
   );

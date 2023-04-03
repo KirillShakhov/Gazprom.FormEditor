@@ -26,12 +26,7 @@ export const VisualMode: React.FC<VisualModeProps> = (props) => {
           <Container groupName={'pages-groups'}>
             {form.items?.map((item, index) => {
               return (
-                <PageGroup
-                  value={item as ITabPageController}
-                  key={index}
-                  onSelectItem={onSelectItem}
-                  update={update}
-                ></PageGroup>
+                <PageGroup value={item as ITabPageController} key={index} onSelectItem={onSelectItem} update={update} />
               );
             })}
           </Container>

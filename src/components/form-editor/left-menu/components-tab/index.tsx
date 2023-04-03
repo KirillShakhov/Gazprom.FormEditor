@@ -10,7 +10,7 @@ interface ComponentsTabProps {
 }
 
 export const ComponentsTab: React.FC<ComponentsTabProps> = (props) => {
-  const { form } = props;
+  const { form, update } = props;
 
   const list: any[] = [{ name: '123' }, { name: '123' }, { name: '123' }, { name: '123' }];
 

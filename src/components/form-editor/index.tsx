@@ -41,6 +41,8 @@ export const FormEditor: React.FC = () => {
   const [config] = React.useState<IPropertyMetadata>(metadata);
   const [selectedItem, setSelectedItem] = React.useState<IFormControl>();
 
+  const [temp, setTemp] = React.useState<string>(JSON.stringify(form));
+
   const changeMode = () => {
     if (mode === Modes.Text) {
       setMode(Modes.Visual);
@@ -99,7 +101,7 @@ export const FormEditor: React.FC = () => {
           </CommandLine>
         </header>
         <div className="left-side">
-          <LeftMenu form={data} properties={properties} />
+          <LeftMenu form={data} properties={properties} update={updateAll} />
         </div>
         <main>
           <div hidden={mode != Modes.Visual} style={{ height: '100%' }}>
@@ -109,20 +111,17 @@ export const FormEditor: React.FC = () => {
             <TextMode
               value={JSON.stringify(data)}
               onChange={(data) => {
-                setData({ ...data });
-                updateAll();
+                setTemp(JSON.stringify(data));
+                // setData({ ...data });
+                setSelectedItem(undefined);
+                // updateAll();
               }}
               update={updateAll}
             />
           </div>
         </main>
         <div className="right-side">
-          <ComponentSettings
-            value={mode == Modes.Visual ? selectedItem : undefined}
-            properties={properties}
-            config={config}
-            update={updateAll}
-          />
+          <ComponentSettings value={selectedItem} properties={properties} config={config} update={updateAll} />
         </div>
       </div>
     </ThemeProvider>
