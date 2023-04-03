@@ -8,13 +8,10 @@ import TreeView from '@mui/lab/TreeView';
 import TreeItem, { TreeItemProps, treeItemClasses } from '@mui/lab/TreeItem';
 import Typography from '@mui/material/Typography';
 import Label from '@mui/icons-material/Label';
-import SupervisorAccountIcon from '@mui/icons-material/SupervisorAccount';
-import InfoIcon from '@mui/icons-material/Info';
-import ForumIcon from '@mui/icons-material/Forum';
-import LocalOfferIcon from '@mui/icons-material/LocalOffer';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 import { SvgIconProps } from '@mui/material/SvgIcon';
+import { IForm } from '../../../../interfaces/form-config';
 
 declare module 'react' {
   interface CSSProperties {
@@ -44,7 +41,7 @@ const StyledTreeItemRoot = styled(TreeItem)(({ theme }) => ({
     },
     '&.Mui-focused, &.Mui-selected, &.Mui-selected.Mui-focused': {
       backgroundColor: `var(--tree-view-bg-color, ${theme.palette.action.selected})`,
-      color: 'var(--tree-view-color)',
+      color: 'var(--tree-view-form-color)',
     },
     [`& .${treeItemClasses.label}`]: {
       fontWeight: 'inherit',
@@ -77,7 +74,13 @@ function StyledTreeItem(props: StyledTreeItemProps) {
   );
 }
 
-export const FormTab: React.FC = () => {
+interface TreeViewFormProps {
+  form: IForm;
+}
+
+export const TreeViewForm: React.FC<TreeViewFormProps> = (props) => {
+  const { form } = props;
+
   return (
     <div className="tab-item">
       <TreeView
@@ -87,7 +90,10 @@ export const FormTab: React.FC = () => {
         defaultEndIcon={<div style={{ width: 24 }} />}
         sx={{ flexGrow: 1, overflowY: 'auto', height: '100%' }}
       >
-        <StyledTreeItem nodeId="1" labelText="Группа страниц" labelIcon={Label}>
+        {form.items?.forEach((i) => {
+          return <StyledTreeItem nodeId="1" labelText={i.name} labelIcon={Label}></StyledTreeItem>;
+        })}
+        {/*<StyledTreeItem nodeId="1" labelText="Группа страниц" labelIcon={Label}>
           <StyledTreeItem nodeId="2" labelText="Страница 1" labelIcon={Label}>
             <StyledTreeItem nodeId="3" labelText="Группа 1" labelIcon={Label}>
               <StyledTreeItem nodeId="4" labelText="RadioGroup" labelIcon={SupervisorAccountIcon} />
@@ -110,7 +116,7 @@ export const FormTab: React.FC = () => {
               <StyledTreeItem nodeId="2-7" labelText="Promotions" labelIcon={LocalOfferIcon} />
             </StyledTreeItem>
           </StyledTreeItem>
-        </StyledTreeItem>
+        </StyledTreeItem>*/}
       </TreeView>
     </div>
   );

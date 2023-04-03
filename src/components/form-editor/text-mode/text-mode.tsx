@@ -8,17 +8,19 @@ import { IForm } from '../../../interfaces/form-config';
 
 interface TextModeProps {
   value: string;
-  onChange: (value: string) => void;
+  onChange: (value: IForm) => void;
+  update: () => void;
 }
 
 export const TextMode: React.FC<TextModeProps> = (props) => {
-  const { value, onChange } = props;
+  const { value, onChange, update } = props;
 
   const handleChange = function (event: any) {
     try {
       JSON.parse(event.json);
-      onChange(event.json);
+      onChange({ ...event.json });
       console.log('event: ' + event.json);
+      update();
     } catch (e) {}
   };
   return (

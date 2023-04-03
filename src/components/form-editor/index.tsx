@@ -1,5 +1,5 @@
 import { createTheme, Shadows, ThemeProvider } from '@mui/material';
-import React, { useEffect } from 'react';
+import React from 'react';
 import { CommandLine } from './command-line';
 import './style.css';
 import { VisualMode } from './visual-mode';
@@ -38,7 +38,7 @@ export const FormEditor: React.FC = () => {
   const [mode, setMode] = React.useState(Modes.Visual);
   const [properties, setProperties] = React.useState<IParameter[]>(parameters);
   const [data, setData] = React.useState<IForm>(form);
-  const [config, setConfig] = React.useState<IPropertyMetadata>(metadata);
+  const [config] = React.useState<IPropertyMetadata>(metadata);
   const [selectedItem, setSelectedItem] = React.useState<IFormControl>();
 
   const changeMode = () => {
@@ -69,6 +69,7 @@ export const FormEditor: React.FC = () => {
 
   const newBlankJson = () => {
     setData(generateStandardForm(properties));
+    setSelectedItem(undefined);
   };
 
   const onSelectItem = (value: IFormControl) => {
@@ -79,6 +80,7 @@ export const FormEditor: React.FC = () => {
   const updateAll = () => {
     console.log('updateAll');
     setData({ ...data });
+    // if (selectedItem !== undefined) setSelectedItem({ ...selectedItem });
   };
 
   return (
@@ -97,12 +99,7 @@ export const FormEditor: React.FC = () => {
           </CommandLine>
         </header>
         <div className="left-side">
-          <LeftMenu
-            properties={properties}
-            setProperties={() => {
-              return;
-            }}
-          />
+          <LeftMenu form={data} properties={properties} />
         </div>
         <main>
           <div hidden={mode != Modes.Visual} style={{ height: '100%' }}>
@@ -112,13 +109,20 @@ export const FormEditor: React.FC = () => {
             <TextMode
               value={JSON.stringify(data)}
               onChange={(data) => {
-                setData(JSON.parse(data));
+                setData({ ...data });
+                updateAll();
               }}
+              update={updateAll}
             />
           </div>
         </main>
         <div className="right-side">
-          <ComponentSettings value={selectedItem} properties={properties} config={config} update={updateAll} />
+          <ComponentSettings
+            value={mode == Modes.Visual ? selectedItem : undefined}
+            properties={properties}
+            config={config}
+            update={updateAll}
+          />
         </div>
       </div>
     </ThemeProvider>

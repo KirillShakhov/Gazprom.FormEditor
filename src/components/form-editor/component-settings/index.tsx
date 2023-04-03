@@ -22,7 +22,6 @@ export const ComponentSettings: React.FC<VisualModeProps> = (props) => {
       {!value && <span style={{ fontSize: 12 }}>Компонент не выбран</span>}
       {value && <DatasourceSetting value={value} properties={properties} update={update} />}
       {value && <ComponentSettingProperties value={value} config={config} update={update}></ComponentSettingProperties>}
-      {/*{value && <ParameterTypesElements value={value} propertiesConfig={config.byElementType.CONTROL} />}*/}
     </div>
   );
 };

@@ -1,4 +1,4 @@
-import { IParameter, PARAMETER_TYPE } from '../interfaces/parameter';
+import { PARAMETER_TYPE } from '../interfaces/parameter';
 import { CONTROL_TYPE } from '../interfaces/form-control';
 
 const parametersMatch = {
