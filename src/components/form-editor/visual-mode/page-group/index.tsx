@@ -4,6 +4,7 @@ import { Page } from '../page';
 import { ITabPageController } from '../../../../interfaces/form-config';
 import { Container, Draggable, DropResult } from 'react-smooth-dnd';
 import { IFormControl } from '../../../../interfaces/form-control';
+import {Experimental} from "../../../../utils/experimental";
 
 interface PageGroupProps {
   value: ITabPageController;
@@ -51,6 +52,7 @@ export const PageGroup: React.FC<PageGroupProps> = (props) => {
   };
 
   const onMouseEnter = (e: any, id: number) => {
+    if (!Experimental.GROUP_DRAG_AND_DROP) return;
     if (e.nativeEvent.which) {
       // console.log('e.target.key ' + id);
       setTabIndex(id);

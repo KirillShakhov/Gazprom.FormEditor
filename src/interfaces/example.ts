@@ -175,7 +175,7 @@ export const form: IForm = {
           name: 'Страница 2',
           items: [
             {
-              code: 'Group1',
+              code: 'Group3',
               name: 'Группа 3',
               direction: FORM_GROUP_DIRECTION.FORCE_HORIZONTAL,
               items: [

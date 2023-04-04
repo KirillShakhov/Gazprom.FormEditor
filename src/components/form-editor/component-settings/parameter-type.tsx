@@ -28,11 +28,7 @@ interface ElementProps {
 
 export const ParameterType: React.FC<ElementProps> = (props) => {
   const { value, propertiesConfig, update } = props;
-
-  const haveProperty = useCallback(() => {
-    if (value.properties === undefined) return false;
-    return value.properties.hasOwnProperty(propertiesConfig.code);
-  }, [propertiesConfig, value]);
+  const [index, setIndex] = React.useState(0);
 
   const getPropertyValue = useCallback(() => {
     if (value.properties === undefined) return '';
@@ -42,13 +38,9 @@ export const ParameterType: React.FC<ElementProps> = (props) => {
     return '';
   }, [propertiesConfig, value]);
 
-  // const [config, setConfig] = React.useState(haveProperty());
-  const [index, setIndex] = React.useState(0);
-
   const changeValue = (val: any) => {
     if (value.properties === undefined) value.properties = {};
     value.properties[propertiesConfig.code] = val;
-    console.log('properties: ' + value.properties[propertiesConfig.code]);
     update();
   };
 
@@ -61,7 +53,6 @@ export const ParameterType: React.FC<ElementProps> = (props) => {
   };
 
   const generateProperties = (propertyConfig: IPropertyConfig) => {
-    console.log('value.type: ' + propertyConfig.type);
     switch (propertyConfig.type) {
       case PROPERTY_VALUE_TYPE.STRING:
         return (
@@ -136,7 +127,7 @@ export const ParameterType: React.FC<ElementProps> = (props) => {
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DatePicker
                 label={propertyConfig.name}
-                value={getPropertyValue()}
+                value={getPropertyValue() === '' ? null : getPropertyValue()}
                 onChange={(e: any) => {
                   if (e) {
                     changeValue(e);

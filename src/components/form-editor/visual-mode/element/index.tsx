@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, { useEffect } from 'react';
 import { CONTROL_TYPE, IFormControl } from '../../../../interfaces/form-control';
 import { DefaultType } from './types/default-type';
 import { NumberType } from './types/number-type';
@@ -8,6 +8,7 @@ import { DatePickerType } from './types/datepicker-type';
 import { SwitchType } from './types/switch-type';
 import { CheckBoxType } from './types/checkbox-type';
 import { RadioGroupType } from './types/radiogroup-type';
+import { DateTimePickerType } from './types/datetimepicker-type';
 
 interface ElementProps {
   value: IFormControl;
@@ -18,19 +19,30 @@ interface ElementProps {
 function renderSwitch(value: IFormControl) {
   switch (value.type) {
     case CONTROL_TYPE.NUMBER:
-      return <NumberType value={value}></NumberType>;
+      return <NumberType value={value} />;
     case CONTROL_TYPE.TEXT:
-      return <TextType value={value}></TextType>;
+      return <TextType value={value} />;
     case CONTROL_TYPE.TEXTAREA:
-      return <TextAreaType value={value}></TextAreaType>;
-    case CONTROL_TYPE.DATEPICKER:
-      return <DatePickerType value={value}></DatePickerType>;
+      return <TextAreaType value={value} />;
     case CONTROL_TYPE.SWITCH:
-      return <SwitchType value={value}></SwitchType>;
+      return <SwitchType value={value} />;
     case CONTROL_TYPE.CHECKBOX:
-      return <CheckBoxType value={value}></CheckBoxType>;
+      return <CheckBoxType value={value} />;
     case CONTROL_TYPE.RADIOGROUP:
-      return <RadioGroupType value={value}></RadioGroupType>;
+      return <RadioGroupType value={value} />;
+    case CONTROL_TYPE.DATEPICKER:
+      return <DatePickerType value={value} />;
+    case CONTROL_TYPE.DATETIMEPICKER:
+      return <DateTimePickerType value={value} />;
+      break;
+    case CONTROL_TYPE.LINK:
+      break;
+    case CONTROL_TYPE.FILE:
+      break;
+    case CONTROL_TYPE.COMBOBOX:
+      break;
+    case CONTROL_TYPE.SELECT:
+      break;
     default:
       return <DefaultType value={value}></DefaultType>;
   }

@@ -6,6 +6,7 @@ import { TreeViewForm } from './tree-view-form';
 import { ComponentsTab } from './components-tab';
 import { IParameter } from '../../../interfaces/parameter';
 import { IForm } from '../../../interfaces/form-config';
+import { IFormControl } from '../../../interfaces/form-control';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -16,12 +17,13 @@ interface TabPanelProps {
 interface LeftMenuProps {
   form: IForm;
   properties: IParameter[];
+  onSelectItem: (value: IFormControl) => void;
   update: () => void;
 }
 
 export const LeftMenu: React.FC<LeftMenuProps> = (props) => {
-  const { form, properties, update } = props;
-  const [value, setValue] = React.useState(2);
+  const { form, properties, onSelectItem, update } = props;
+  const [value, setValue] = React.useState(1);
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
@@ -80,7 +82,7 @@ export const LeftMenu: React.FC<LeftMenuProps> = (props) => {
         <ParametersTab properties={properties} />
       </TabPanel>
       <TabPanel value={value} index={1}>
-        <TreeViewForm form={form} />
+        <TreeViewForm form={form} onSelectItem={onSelectItem} />
       </TabPanel>
       <TabPanel value={value} index={2}>
         <ComponentsTab form={form} update={update} />

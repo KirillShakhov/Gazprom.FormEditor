@@ -2,7 +2,7 @@ import React, { useCallback, useEffect } from 'react';
 import { TextField } from '@mui/material';
 import { CONTROL_TYPE, IFormControl } from '../../../../interfaces/form-control';
 import { IPropertyConfig, IPropertyMetadata } from '../../../../interfaces/property-metadata';
-import { ParameterTypesElements } from '../parameter-types';
+import { ParameterType } from '../parameter-type';
 
 interface ElementProps {
   value: IFormControl;
@@ -12,15 +12,10 @@ interface ElementProps {
 
 export const ComponentSettingProperties: React.FC<ElementProps> = (props) => {
   const { value, config, update } = props;
-  // const [isHaveHelperText, setIsHaveHelperText] = React.useState(false);
   const [name, setName] = React.useState<string>(value.name);
   useEffect(() => {
     setName(value.name);
   }, [value]);
-
-  // const handleSwitchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-  //   setIsHaveHelperText(event.target.checked);
-  // };
 
   const handleChangeName = (event: React.ChangeEvent<HTMLInputElement>) => {
     setName(event.target.value);
@@ -71,32 +66,23 @@ export const ComponentSettingProperties: React.FC<ElementProps> = (props) => {
     <div
       style={{
         display: 'flex',
-        gap: '20px',
+        gap: 20,
         flexDirection: 'column',
         height: '100%',
-        paddingBottom: 10,
       }}
     >
       <h5 style={{ margin: 0 }}>Text Input</h5>
       <TextField id="outlined" label="Название поля" size={'small'} value={name} onChange={handleChangeName} />
-      {/*<FormControlLabel
-        style={{ width: '100%' }}
-        control={<Switch checked={isHaveHelperText} onChange={handleSwitchChange} color="primary" />}
-        label="Подсказки к полю"
-        labelPlacement="end"
-      />
-      {isHaveHelperText && (
-        <TextField
-          id="outlined-multiline-flexible"
-          placeholder="Текст подсказки"
-          size="small"
-          multiline
-          minRows={4}
-          maxRows={6}
-          fullWidth
-        />
-      )}*/}
-      {config && <ParameterTypesElements propertiesConfig={getAllProperties()} value={value} update={update} />}
+      <div
+        style={{
+          overflowY: 'scroll',
+        }}
+      >
+        {config &&
+          getAllProperties().map((property, index) => {
+            return <ParameterType propertiesConfig={property} key={index} value={value} update={update} />;
+          })}
+      </div>
     </div>
   );
 };

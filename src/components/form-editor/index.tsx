@@ -101,7 +101,7 @@ export const FormEditor: React.FC = () => {
           </CommandLine>
         </header>
         <div className="left-side">
-          <LeftMenu form={data} properties={properties} update={updateAll} />
+          <LeftMenu form={data} properties={properties} onSelectItem={onSelectItem} update={updateAll} />
         </div>
         <main>
           <div hidden={mode != Modes.Visual} style={{ height: '100%' }}>

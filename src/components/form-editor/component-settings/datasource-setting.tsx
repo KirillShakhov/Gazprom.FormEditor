@@ -46,7 +46,12 @@ export const DatasourceSetting: React.FC<ElementProps> = (props) => {
   };
 
   return (
-    <div>
+    <div
+      style={{
+        width: '100%',
+        height: '100%',
+      }}
+    >
       <FormControl sx={{ minWidth: 120 }} size="small" fullWidth>
         <InputLabel id="data-source-label">Источник данных</InputLabel>
         <Select
