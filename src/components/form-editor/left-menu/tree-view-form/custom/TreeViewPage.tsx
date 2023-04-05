@@ -7,6 +7,7 @@ import { ITabPage } from '../../../../../interfaces/form-config';
 import FeedRoundedIcon from '@mui/icons-material/FeedRounded';
 import { TreeViewGroup } from './TreeViewGroup';
 import { IFormControl } from '../../../../../interfaces/form-control';
+import { Container, Draggable } from 'react-smooth-dnd';
 
 declare module 'react' {
   interface CSSProperties {
@@ -66,16 +67,20 @@ export function TreeViewPage(props: TreeViewPageProps) {
       }
       {...other}
     >
-      {page.items?.map((group, index) => {
-        return (
-          <TreeViewGroup
-            key={index}
-            nodeId={`group_${index}_${group.code}`}
-            group={group}
-            onSelectItem={onSelectItem}
-          />
-        );
-      })}
+      <Container groupName={'tree-groups'}>
+        {page.items?.map((group, index) => {
+          return (
+            <Draggable key={index}>
+              <TreeViewGroup
+                key={index}
+                nodeId={`group_${index}_${group.code}`}
+                group={group}
+                onSelectItem={onSelectItem}
+              />
+            </Draggable>
+          );
+        })}
+      </Container>
     </StyledTreeItemRoot>
   );
 }

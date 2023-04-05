@@ -6,6 +6,7 @@ import { IForm, ITabPageController } from '../../../../interfaces/form-config';
 import { TreeViewPageGroup } from './custom/TreeViewPageGroup';
 import { IFormControl } from '../../../../interfaces/form-control';
 import './style.css';
+import { Container, Draggable } from 'react-smooth-dnd';
 
 interface TreeViewFormProps {
   form: IForm;
@@ -31,16 +32,20 @@ export const TreeViewForm: React.FC<TreeViewFormProps> = (props) => {
           defaultEndIcon={<div style={{ width: 24 }} />}
           sx={{ flexGrow: 1, overflowY: 'auto', height: '100%' }}
         >
-          {form.items?.map((group, index) => {
-            return (
-              <TreeViewPageGroup
-                key={index}
-                nodeId={`page_group_${index}__${group.code}`}
-                group={group as ITabPageController}
-                onSelectItem={onSelectItem}
-              />
-            );
-          })}
+          <Container groupName={'tree-pages-groups'}>
+            {form.items?.map((group, index) => {
+              return (
+                <Draggable key={index}>
+                  <TreeViewPageGroup
+                    key={index}
+                    nodeId={`page_group_${index}__${group.code}`}
+                    group={group as ITabPageController}
+                    onSelectItem={onSelectItem}
+                  />
+                </Draggable>
+              );
+            })}
+          </Container>
         </TreeView>
       </div>
     </div>

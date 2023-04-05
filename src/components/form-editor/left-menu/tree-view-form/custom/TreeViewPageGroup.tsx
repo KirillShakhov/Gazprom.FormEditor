@@ -8,6 +8,7 @@ import { ITabPageController } from '../../../../../interfaces/form-config';
 import { TreeViewPage } from './TreeViewPage';
 import { IFormControl } from '../../../../../interfaces/form-control';
 import PagesRoundedIcon from '@mui/icons-material/PagesRounded';
+import { Container, Draggable } from 'react-smooth-dnd';
 
 declare module 'react' {
   interface CSSProperties {
@@ -67,11 +68,15 @@ export function TreeViewPageGroup(props: TreeViewPageGroupProps) {
       }
       {...other}
     >
-      {group.pages?.map((page, index) => {
-        return (
-          <TreeViewPage key={index} nodeId={`page_${index}_${page.code}`} page={page} onSelectItem={onSelectItem} />
-        );
-      })}
+      <Container groupName={'tree-pages'}>
+        {group.pages?.map((page, index) => {
+          return (
+            <Draggable key={index}>
+              <TreeViewPage key={index} nodeId={`page_${index}_${page.code}`} page={page} onSelectItem={onSelectItem} />
+            </Draggable>
+          );
+        })}
+      </Container>
     </StyledTreeItemRoot>
   );
 }
