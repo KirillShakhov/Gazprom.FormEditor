@@ -1,4 +1,4 @@
-import React, { EventHandler, MouseEventHandler, SyntheticEvent } from 'react';
+import React from 'react';
 import { Box, Tab, useTheme } from '@mui/material';
 import { Page } from '../page';
 import { ITabPageController } from '../../../../interfaces/form-config';
@@ -138,11 +138,8 @@ export const PageGroup: React.FC<PageGroupProps> = (props) => {
           </Container>
         </Box>
         {value.pages.map((item, index) => {
-          return (
-            <TabPanel value={tabIndex} index={index} key={index}>
-              <Page value={item} onSelectItem={onSelectItem} update={update}></Page>
-            </TabPanel>
-          );
+          return <Page key={index} value={item} onSelectItem={onSelectItem} update={update} />;
+          return <div key={index}>{item.name}</div>;
         })}
       </div>
     </div>

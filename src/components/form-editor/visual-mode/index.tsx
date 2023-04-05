@@ -3,7 +3,7 @@ import './style.css';
 import { Button } from '@mui/material';
 import { PageGroup } from './page-group';
 import { IForm, ITabPageController } from '../../../interfaces/form-config';
-import { Container } from 'react-smooth-dnd';
+import {Container, Draggable} from 'react-smooth-dnd';
 import { IFormControl } from '../../../interfaces/form-control';
 
 interface VisualModeProps {
@@ -26,7 +26,14 @@ export const VisualMode: React.FC<VisualModeProps> = (props) => {
           <Container groupName={'pages-groups'}>
             {form.items?.map((item, index) => {
               return (
-                <PageGroup value={item as ITabPageController} key={index} onSelectItem={onSelectItem} update={update} />
+                <Draggable key={index}>
+                  <PageGroup
+                    value={item as ITabPageController}
+                    key={index}
+                    onSelectItem={onSelectItem}
+                    update={update}
+                  />
+                </Draggable>
               );
             })}
           </Container>

@@ -23,7 +23,7 @@ interface LeftMenuProps {
 
 export const LeftMenu: React.FC<LeftMenuProps> = (props) => {
   const { form, properties, onSelectItem, update } = props;
-  const [value, setValue] = React.useState(1);
+  const [value, setValue] = React.useState(0);
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
@@ -35,8 +35,6 @@ export const LeftMenu: React.FC<LeftMenuProps> = (props) => {
       <div
         role="tabpanel"
         hidden={value !== index}
-        id={`simple-tabpanel-${index}`}
-        aria-labelledby={`simple-tab-${index}`}
         style={{
           height: '100%',
         }}
@@ -45,13 +43,6 @@ export const LeftMenu: React.FC<LeftMenuProps> = (props) => {
         {children}
       </div>
     );
-  }
-
-  function a11yProps(index: number) {
-    return {
-      id: `simple-tab-${index}`,
-      'aria-controls': `simple-tabpanel-${index}`,
-    };
   }
 
   const tabStyle = {
@@ -73,9 +64,9 @@ export const LeftMenu: React.FC<LeftMenuProps> = (props) => {
             minHeight: 0,
           }}
         >
-          <Tab label="Параметры" {...a11yProps(0)} style={tabStyle} />
-          <Tab label="Форма" {...a11yProps(1)} style={tabStyle} />
-          <Tab label="Компоненты" {...a11yProps(2)} style={tabStyle} />
+          <Tab label="Параметры" style={tabStyle} />
+          <Tab label="Форма" style={tabStyle} />
+          <Tab label="Компоненты" style={tabStyle} />
         </Tabs>
       </Box>
       <TabPanel value={value} index={0}>

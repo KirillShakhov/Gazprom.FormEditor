@@ -1,13 +1,11 @@
 import TreeItem, { treeItemClasses, TreeItemProps } from '@mui/lab/TreeItem';
 import React from 'react';
-import { SvgIconProps } from '@mui/material/SvgIcon';
 import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import { IForm, IFormItem, ITabPage } from '../../../../../interfaces/form-config';
-import FeedRoundedIcon from '@mui/icons-material/FeedRounded';
-import {IFormControl} from "../../../../../interfaces/form-control";
-import {TreeViewElement} from "./TreeViewElement";
+import { ITabPage } from '../../../../../interfaces/form-config';
+import { IFormControl } from '../../../../../interfaces/form-control';
+import { TreeViewElement } from './TreeViewElement';
 import AppsRoundedIcon from '@mui/icons-material/AppsRounded';
 declare module 'react' {
   interface CSSProperties {

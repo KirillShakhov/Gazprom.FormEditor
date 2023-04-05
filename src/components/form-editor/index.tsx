@@ -49,7 +49,6 @@ export const FormEditor: React.FC = () => {
     } else {
       setMode(Modes.Text);
     }
-    updateAll();
   };
 
   const loadProperties = (data: string) => {
