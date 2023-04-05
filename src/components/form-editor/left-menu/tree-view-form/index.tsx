@@ -21,11 +21,12 @@ export const TreeViewForm: React.FC<TreeViewFormProps> = (props) => {
     <div>
       <div className="tab-item">
         <TreeView
-          // defaultExpanded={['3']}
+          defaultExpanded={['3']}
           defaultCollapseIcon={<ArrowDropDownIcon />}
           defaultExpandIcon={<ArrowRightIcon />}
           defaultEndIcon={<div style={{ width: 24 }} />}
           sx={{ flexGrow: 1, overflowY: 'auto', height: '100%' }}
+
         >
           {form.items?.map((group, index) => {
             return (

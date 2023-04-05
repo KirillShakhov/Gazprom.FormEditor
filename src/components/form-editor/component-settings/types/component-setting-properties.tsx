@@ -66,8 +66,8 @@ export const ComponentSettingProperties: React.FC<ElementProps> = (props) => {
     <div
       style={{
         display: 'flex',
-        gap: 20,
         flexDirection: 'column',
+        gap: 20,
         height: '100%',
       }}
     >
@@ -75,6 +75,9 @@ export const ComponentSettingProperties: React.FC<ElementProps> = (props) => {
       <TextField id="outlined" label="Название поля" size={'small'} value={name} onChange={handleChangeName} />
       <div
         style={{
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 20,
           overflowY: 'scroll',
         }}
       >

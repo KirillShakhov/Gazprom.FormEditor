@@ -4,7 +4,8 @@ import { Page } from '../page';
 import { ITabPageController } from '../../../../interfaces/form-config';
 import { Container, Draggable, DropResult } from 'react-smooth-dnd';
 import { IFormControl } from '../../../../interfaces/form-control';
-import {Experimental} from "../../../../utils/experimental";
+import { Experimental } from '../../../../utils/experimental';
+import '../style.css';
 
 interface PageGroupProps {
   value: ITabPageController;
@@ -49,6 +50,7 @@ export const PageGroup: React.FC<PageGroupProps> = (props) => {
     height: 30,
     padding: 10,
     fontSize: 14,
+    borderRadius: 6,
   };
 
   const onMouseEnter = (e: any, id: number) => {
@@ -97,11 +99,20 @@ export const PageGroup: React.FC<PageGroupProps> = (props) => {
               display: 'flex',
             }}
             onDrop={onDrop}
+            dropPlaceholder={{
+              className: 'dropPlaceholderPage',
+              animationDuration: 250,
+              showOnTop: true,
+            }}
           >
             {value.pages.map((item, index) => {
               return (
                 <Draggable key={index}>
                   <div
+                    style={{
+                      background: '#ffffff',
+                      borderRadius: 6,
+                    }}
                     onMouseEnter={(e) => {
                       onMouseEnter(e, index);
                     }}
@@ -118,6 +129,9 @@ export const PageGroup: React.FC<PageGroupProps> = (props) => {
                       <div
                         style={{
                           height: 2,
+                          marginTop: -2,
+                          marginLeft: 5,
+                          marginRight: 5,
                           background: theme.palette.primary.main,
                         }}
                       />

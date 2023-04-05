@@ -7,6 +7,7 @@ import Typography from '@mui/material/Typography';
 import { ITabPageController } from '../../../../../interfaces/form-config';
 import { TreeViewPage } from './TreeViewPage';
 import { IFormControl } from '../../../../../interfaces/form-control';
+import PagesRoundedIcon from '@mui/icons-material/PagesRounded';
 
 declare module 'react' {
   interface CSSProperties {
@@ -58,7 +59,7 @@ export function TreeViewPageGroup(props: TreeViewPageGroupProps) {
     <StyledTreeItemRoot
       label={
         <Box sx={{ display: 'flex', alignItems: 'center', p: 0.5, pr: 0 }}>
-          <Box component={FeedRoundedIcon} color="inherit" sx={{ mr: 1 }} />
+          <Box component={PagesRoundedIcon} color="inherit" sx={{ mr: 1 }} />
           <Typography variant="body2" sx={{ fontWeight: 'inherit', flexGrow: 1 }}>
             {group.name}
           </Typography>

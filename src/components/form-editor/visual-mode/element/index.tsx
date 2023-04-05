@@ -63,9 +63,11 @@ export const Element: React.FC<ElementProps> = (props) => {
       style={{
         marginTop: 20,
         border: 1,
+        borderRadius: 10,
         borderColor: isSelected ? '#3373d9' : '#e0e0e0',
         borderStyle: 'dotted',
         padding: 5,
+        background: '#ffffff',
       }}
       role="presentation"
       onClick={onClick}

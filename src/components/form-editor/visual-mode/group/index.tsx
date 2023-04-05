@@ -1,10 +1,11 @@
-import React, {useEffect} from 'react';
+import React, { useEffect } from 'react';
 import { IFormGroup } from '../../../../interfaces/form-config';
 import { Element } from '../element';
 import { IFormControl } from '../../../../interfaces/form-control';
 import { Container, Draggable, DropResult } from 'react-smooth-dnd';
 import { generateStandardElement } from '../../../../utils/generate-form';
 import { checkImplementFormControl, checkImplementParameter } from '../../../../utils/check-objects';
+import '../style.css';
 
 interface GroupProps {
   value: IFormGroup;
@@ -49,12 +50,29 @@ export const Group: React.FC<GroupProps> = (props) => {
       style={{
         display: 'flex',
         flexDirection: 'column',
+        background: '#ffffff',
+        borderRadius: 10,
+        paddingLeft: 10,
+        paddingRight: 10,
+        paddingBottom: 10,
+        border: '#ddd solid',
+        transition: '1s',
       }}
     >
       <span style={{ fontSize: 16, margin: 0, marginTop: 10 }}>
         {value.name} {value.direction}
       </span>
-      <Container getChildPayload={(i) => list[i]} groupName={'parameters'} onDrop={onDrop}>
+      <Container
+        getChildPayload={(i) => list[i]}
+        groupName={'parameters'}
+        onDrop={onDrop}
+        removeOnDropOut={true}
+        dropPlaceholder={{
+          className: 'dropPlaceholderElement',
+          animationDuration: 250,
+          showOnTop: true,
+        }}
+      >
         {list.map((item, index) => {
           return (
             <Draggable key={index}>

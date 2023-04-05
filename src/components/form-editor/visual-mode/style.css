@@ -17,3 +17,14 @@
     border-radius: 10px;
     background: #ffffff;
 }
+
+.dropPlaceholderElement{
+    background: rgba(220, 220, 220, 0.6);
+    border-radius: 10px;
+    margin-top: 20px;
+}
+
+.dropPlaceholderPage{
+    background: rgba(220, 220, 220, 0.6);
+    border-radius: 6px;
+}

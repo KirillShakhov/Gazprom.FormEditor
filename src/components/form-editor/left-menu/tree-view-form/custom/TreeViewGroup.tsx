@@ -8,7 +8,7 @@ import { IForm, IFormItem, ITabPage } from '../../../../../interfaces/form-confi
 import FeedRoundedIcon from '@mui/icons-material/FeedRounded';
 import {IFormControl} from "../../../../../interfaces/form-control";
 import {TreeViewElement} from "./TreeViewElement";
-
+import AppsRoundedIcon from '@mui/icons-material/AppsRounded';
 declare module 'react' {
   interface CSSProperties {
     '--tree-view-color'?: string;
@@ -59,7 +59,7 @@ export function TreeViewGroup(props: TreeViewGroupProps) {
     <StyledTreeItemRoot
       label={
         <Box sx={{ display: 'flex', alignItems: 'center', p: 0.5, pr: 0 }}>
-          <Box component={FeedRoundedIcon} color="inherit" sx={{ mr: 1 }} />
+          <Box component={AppsRoundedIcon} color="inherit" sx={{ mr: 1 }} />
           <Typography variant="body2" sx={{ fontWeight: 'inherit', flexGrow: 1 }}>
             {group.name}
           </Typography>
