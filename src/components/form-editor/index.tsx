@@ -21,23 +21,10 @@ enum Modes {
   Text,
 }
 
-// const theme = createTheme({
-//   palette: {
-//     primary: {
-//       main: '#5775F4',
-//       contrastText: '#ffffff',
-//     },
-//     secondary: {
-//       main: '#E2E5EC',
-//       contrastText: '#525562',
-//     },
-//   },
-//   shadows: Array(25).fill('none') as Shadows,
-// });
 const theme = createTheme({
   palette: {
     primary: {
-      main: '#f45757',
+      main: '#5775F4',
       contrastText: '#ffffff',
     },
     secondary: {
@@ -47,6 +34,19 @@ const theme = createTheme({
   },
   shadows: Array(25).fill('none') as Shadows,
 });
+// const theme = createTheme({
+//   palette: {
+//     primary: {
+//       main: '#f45757',
+//       contrastText: '#ffffff',
+//     },
+//     secondary: {
+//       main: '#E2E5EC',
+//       contrastText: '#525562',
+//     },
+//   },
+//   shadows: Array(25).fill('none') as Shadows,
+// });
 
 /** Редактор форм. */
 export const FormEditor: React.FC = () => {
@@ -55,7 +55,7 @@ export const FormEditor: React.FC = () => {
   const [data, setData] = React.useState<IForm>(form);
   const [config] = React.useState<IPropertyMetadata>(metadata);
   const [selectedItem, setSelectedItem] = React.useState<IFormControl>();
-  const [tabIndex, setTabIndex] = React.useState(0);
+  const [tabIndex, setTabIndex] = React.useState(1);
 
   const changeMode = () => {
     if (mode === Modes.Text) {
@@ -96,7 +96,6 @@ export const FormEditor: React.FC = () => {
   const updateAll = () => {
     console.log('updateAll');
     setData({ ...data });
-    if (selectedItem !== undefined) setSelectedItem({ ...selectedItem });
   };
 
   const tabStyle = {
@@ -144,7 +143,7 @@ export const FormEditor: React.FC = () => {
             <ParametersTab properties={properties} />
           </div>
           <div hidden={tabIndex !== 1}>
-            <TreeViewForm form={form} onSelectItem={onSelectItem} />
+            <TreeViewForm form={form} onSelectItem={onSelectItem}  update={updateAll}/>
           </div>
           <div hidden={tabIndex !== 2}>
             <ComponentsTab form={form} update={updateAll} />

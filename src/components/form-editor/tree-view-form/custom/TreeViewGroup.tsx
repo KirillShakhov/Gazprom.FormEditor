@@ -7,22 +7,22 @@ import { ITabPage } from '../../../../interfaces/form-config';
 import { IFormControl } from '../../../../interfaces/form-control';
 import { TreeViewElement } from './TreeViewElement';
 import AppsRoundedIcon from '@mui/icons-material/AppsRounded';
-import {StyledTreeItemRoot} from "./StyledTreeItem";
-
+import { StyledTreeItemRoot } from './StyledTreeItem';
 
 type TreeViewGroupProps = TreeItemProps & {
   group: ITabPage;
   onSelectItem: (value: IFormControl) => void;
+  update: () => void;
 };
 
 export function TreeViewGroup(props: TreeViewGroupProps) {
-  const { group, onSelectItem, ...other } = props;
+  const { group, onSelectItem, update, ...other } = props;
 
   return (
     <StyledTreeItemRoot
       label={
         <Box sx={{ display: 'flex', alignItems: 'center', p: 0.5, pr: 0 }}>
-          <Box component={AppsRoundedIcon} color="inherit" sx={{ mr: 1 }} />
+          <Box component={AppsRoundedIcon} color="inherit" sx={{ mr: 0 }} />
           <Typography variant="body2" sx={{ fontWeight: 'inherit', flexGrow: 1 }}>
             {group.name}
           </Typography>
@@ -37,6 +37,7 @@ export function TreeViewGroup(props: TreeViewGroupProps) {
             nodeId={`element_${index}_${element.code}`}
             element={element as ITabPage & IFormControl}
             onSelectItem={onSelectItem}
+            update={update}
           />
         );
       })}

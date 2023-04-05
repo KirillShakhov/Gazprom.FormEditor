@@ -21,10 +21,11 @@ import { StyledTreeItemRoot } from './StyledTreeItem';
 type TreeViewElementProps = TreeItemProps & {
   element: ITabPage & IFormControl;
   onSelectItem: (value: IFormControl) => void;
+  update: () => void;
 };
 
 export function TreeViewElement(props: TreeViewElementProps) {
-  const { element, onSelectItem, ...other } = props;
+  const { element, onSelectItem, update, ...other } = props;
 
   const onClick = () => {
     onSelectItem(element);

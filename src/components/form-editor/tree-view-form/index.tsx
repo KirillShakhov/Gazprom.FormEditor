@@ -11,10 +11,11 @@ import { Container, Draggable } from 'react-smooth-dnd';
 interface TreeViewFormProps {
   form: IForm;
   onSelectItem: (value: IFormControl) => void;
+  update: () => void;
 }
 
 export const TreeViewForm: React.FC<TreeViewFormProps> = (props) => {
-  const { form, onSelectItem } = props;
+  const { form, onSelectItem, update } = props;
   const [expanded, setExpanded] = React.useState<string[]>([]);
 
   const handleToggle = (event: React.SyntheticEvent, nodeIds: string[]) => {
@@ -27,8 +28,8 @@ export const TreeViewForm: React.FC<TreeViewFormProps> = (props) => {
         <TreeView
           expanded={expanded}
           onNodeToggle={handleToggle}
-          defaultCollapseIcon={<ArrowDropDownIcon />}
-          defaultExpandIcon={<ArrowRightIcon />}
+          defaultCollapseIcon={<ArrowDropDownIcon style={{ marginLeft: 15 }} />}
+          defaultExpandIcon={<ArrowRightIcon style={{ marginLeft: 15 }} />}
           defaultEndIcon={<div style={{ width: 24 }} />}
           sx={{ flexGrow: 1, overflowY: 'auto', height: '100%' }}
         >
@@ -41,6 +42,7 @@ export const TreeViewForm: React.FC<TreeViewFormProps> = (props) => {
                     nodeId={`page_group_${index}__${group.code}`}
                     group={group as ITabPageController}
                     onSelectItem={onSelectItem}
+                    update={update}
                   />
                 </Draggable>
               );

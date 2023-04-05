@@ -5,21 +5,26 @@ import TreeItem, {treeItemClasses} from "@mui/lab/TreeItem";
 
 export const StyledTreeItemRoot = styled(TreeItem)(({ theme }) => ({
   color: theme.palette.text.secondary,
+  backgroundColor: theme.palette.background.default,
+  borderRadius: 5,
   [`& .${treeItemClasses.content}`]: {
     color: theme.palette.text.secondary,
-    borderTopRightRadius: theme.spacing(2),
-    borderBottomRightRadius: theme.spacing(2),
-    paddingRight: theme.spacing(1),
     fontWeight: theme.typography.fontWeightMedium,
     '&.Mui-expanded': {
       fontWeight: theme.typography.fontWeightRegular,
     },
+    '&.MuiTreeItem-content': {
+      padding: 0,
+    },
+    // MuiTreeItem-content
     '&:hover': {
+      borderRadius: 5,
       backgroundColor: theme.palette.action.hover,
     },
     '&.Mui-focused, &.Mui-selected, &.Mui-selected.Mui-focused': {
-      backgroundColor: `var(--tree-view-bg-color, ${theme.palette.action.selected})`,
-      color: 'var(--tree-view-form-color)',
+      borderRadius: 5,
+      // backgroundColor: `var(--tree-view-bg-color, ${theme.palette.action.selected})`,
+      // color: 'var(--tree-view-form-color)',
     },
     [`& .${treeItemClasses.label}`]: {
       fontWeight: 'inherit',
@@ -27,9 +32,6 @@ export const StyledTreeItemRoot = styled(TreeItem)(({ theme }) => ({
     },
   },
   [`& .${treeItemClasses.group}`]: {
-    marginLeft: 0,
-    [`& .${treeItemClasses.content}`]: {
-      paddingLeft: theme.spacing(6),
-    },
+    marginLeft: theme.spacing(2),
   },
 }));
