@@ -2,9 +2,9 @@ import React from 'react';
 import TreeView from '@mui/lab/TreeView';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import ArrowRightIcon from '@mui/icons-material/ArrowRight';
-import { IForm, ITabPageController } from '../../../../interfaces/form-config';
+import { IForm, ITabPageController } from '../../../interfaces/form-config';
 import { TreeViewPageGroup } from './custom/TreeViewPageGroup';
-import { IFormControl } from '../../../../interfaces/form-control';
+import { IFormControl } from '../../../interfaces/form-control';
 import './style.css';
 import { Container, Draggable } from 'react-smooth-dnd';
 

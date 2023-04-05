@@ -1,9 +1,9 @@
 import React from 'react';
 import './style.css';
 import { Container, Draggable } from 'react-smooth-dnd';
-import { FORM_GROUP_DIRECTION, IForm } from '../../../../interfaces/form-config';
+import { FORM_GROUP_DIRECTION, IForm } from '../../../interfaces/form-config';
 import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRounded';
-import {CONTROL_TYPE} from "../../../../interfaces/form-control";
+import {CONTROL_TYPE} from "../../../interfaces/form-control";
 
 interface ComponentsTabProps {
   form: IForm;

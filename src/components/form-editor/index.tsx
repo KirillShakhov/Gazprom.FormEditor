@@ -1,32 +1,44 @@
-import { Box, createTheme, Shadows, Tab, Tabs, ThemeProvider } from '@mui/material';
+import { Shadows, Box, Tab, Tabs, createTheme, ThemeProvider } from '@mui/material';
 import React from 'react';
 import { CommandLine } from './command-line';
-import './style.css';
 import { VisualMode } from './visual-mode';
 import { TextMode } from './text-mode/text-mode';
 import { ComponentSettings } from './component-settings';
-import { LeftMenu } from './left-menu';
-import { IParameter } from '../../interfaces/parameter';
-import { IForm } from '../../interfaces/form-config';
 import { generateStandardForm } from '../../utils/generate-form';
 import { checkImplementForm, checkImplementParameters } from '../../utils/check-objects';
 import { form, parameters } from '../../interfaces/example';
 import { IFormControl } from '../../interfaces/form-control';
 import { IPropertyMetadata, metadata } from '../../interfaces/property-metadata';
-import { ParametersTab } from './left-menu/parameters-tab';
-import { TreeViewForm } from './left-menu/tree-view-form';
-import { ComponentsTab } from './left-menu/components-tab';
+import { IParameter } from '../../interfaces/parameter';
+import { IForm } from '../../interfaces/form-config';
+import { ParametersTab } from './parameters-tab';
+import { TreeViewForm } from './tree-view-form';
+import { ComponentsTab } from './components-tab';
+import './style.css';
 
 enum Modes {
   Visual,
   Text,
 }
 
+// const theme = createTheme({
+//   palette: {
+//     primary: {
+//       main: '#5775F4',
+//       contrastText: '#ffffff',
+//     },
+//     secondary: {
+//       main: '#E2E5EC',
+//       contrastText: '#525562',
+//     },
+//   },
+//   shadows: Array(25).fill('none') as Shadows,
+// });
 const theme = createTheme({
   palette: {
     primary: {
-      main: '#5775F4',
-      contrastText: '#fff',
+      main: '#f45757',
+      contrastText: '#ffffff',
     },
     secondary: {
       main: '#E2E5EC',

@@ -1,13 +1,12 @@
 import TreeItem, { treeItemClasses, TreeItemProps } from '@mui/lab/TreeItem';
 import React from 'react';
-import FeedRoundedIcon from '@mui/icons-material/FeedRounded';
 import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import { ITabPageController } from '../../../../../interfaces/form-config';
-import { TreeViewPage } from './TreeViewPage';
-import { IFormControl } from '../../../../../interfaces/form-control';
-import PagesRoundedIcon from '@mui/icons-material/PagesRounded';
+import { ITabPage } from '../../../../interfaces/form-config';
+import FeedRoundedIcon from '@mui/icons-material/FeedRounded';
+import { TreeViewGroup } from './TreeViewGroup';
+import { IFormControl } from '../../../../interfaces/form-control';
 import { Container, Draggable } from 'react-smooth-dnd';
 
 declare module 'react' {
@@ -17,8 +16,8 @@ declare module 'react' {
   }
 }
 
-type TreeViewPageGroupProps = TreeItemProps & {
-  group: ITabPageController;
+type TreeViewPageProps = TreeItemProps & {
+  page: ITabPage;
   onSelectItem: (value: IFormControl) => void;
 };
 
@@ -48,31 +47,36 @@ const StyledTreeItemRoot = styled(TreeItem)(({ theme }) => ({
   [`& .${treeItemClasses.group}`]: {
     marginLeft: 0,
     [`& .${treeItemClasses.content}`]: {
-      paddingLeft: theme.spacing(2),
+      paddingLeft: theme.spacing(3),
     },
   },
 }));
 
-export function TreeViewPageGroup(props: TreeViewPageGroupProps) {
-  const { group, onSelectItem, ...other } = props;
+export function TreeViewPage(props: TreeViewPageProps) {
+  const { page, onSelectItem, ...other } = props;
 
   return (
     <StyledTreeItemRoot
       label={
         <Box sx={{ display: 'flex', alignItems: 'center', p: 0.5, pr: 0 }}>
-          <Box component={PagesRoundedIcon} color="inherit" sx={{ mr: 1 }} />
+          <Box component={FeedRoundedIcon} color="inherit" sx={{ mr: 1 }} />
           <Typography variant="body2" sx={{ fontWeight: 'inherit', flexGrow: 1 }}>
-            {group.name}
+            {page.name}
           </Typography>
         </Box>
       }
       {...other}
     >
-      <Container groupName={'tree-pages'}>
-        {group.pages?.map((page, index) => {
+      <Container groupName={'tree-groups'}>
+        {page.items?.map((group, index) => {
           return (
             <Draggable key={index}>
-              <TreeViewPage key={index} nodeId={`page_${index}_${page.code}`} page={page} onSelectItem={onSelectItem} />
+              <TreeViewGroup
+                key={index}
+                nodeId={`group_${index}_${group.code}`}
+                group={group}
+                onSelectItem={onSelectItem}
+              />
             </Draggable>
           );
         })}

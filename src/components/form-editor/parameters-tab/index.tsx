@@ -1,7 +1,7 @@
 import React from 'react';
 import './style.css';
 import { Container, Draggable, DropResult } from 'react-smooth-dnd';
-import { IParameter } from '../../../../interfaces/parameter';
+import { IParameter } from '../../../interfaces/parameter';
 
 interface ParametersTabProps {
   properties: IParameter[];
