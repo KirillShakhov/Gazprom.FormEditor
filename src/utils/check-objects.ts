@@ -25,3 +25,7 @@ export const checkImplementParameters = (p: unknown): p is IParameter[] => {
 export const checkImplementForm = (p: any): p is IForm => {
   return p.hasOwnProperty('code') && p.hasOwnProperty('name') && p.hasOwnProperty('items');
 };
+
+export const checkImplementFormElement = (p: any): p is IForm => {
+  return p.hasOwnProperty('code') && p.hasOwnProperty('name');
+};

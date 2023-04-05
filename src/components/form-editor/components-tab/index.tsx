@@ -21,18 +21,18 @@ export const ComponentsTab: React.FC<ComponentsTabProps> = (props) => {
     },
     {
       code: 'Page1',
-      name: 'Страница 1',
+      name: 'Страница',
       items: [],
     },
     {
       code: 'Group1',
-      name: 'Группа 1',
+      name: 'Группа',
       direction: FORM_GROUP_DIRECTION.FORCE_HORIZONTAL,
       items: [],
     },
     {
       code: 'Element1',
-      name: 'Элемент1',
+      name: 'Элемент',
       dataSource: 'Parameter1',
       type: CONTROL_TYPE.NUMBER,
       properties: {

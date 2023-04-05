@@ -6,6 +6,7 @@ import { Container, Draggable, DropResult } from 'react-smooth-dnd';
 import { IFormControl } from '../../../../interfaces/form-control';
 import { Experimental } from '../../../../utils/experimental';
 import '../style.css';
+import { checkImplementFormElement } from '../../../../utils/check-objects';
 
 interface PageGroupProps {
   value: ITabPageController;
@@ -64,20 +65,27 @@ export const PageGroup: React.FC<PageGroupProps> = (props) => {
   const onDrop = (dropResult: DropResult) => {
     const { removedIndex, addedIndex, element, payload } = dropResult;
     if (removedIndex == null && addedIndex == null) return;
-    if (dropResult.payload == null) {
+    if (dropResult.payload != null) {
+      console.log('check0');
       if (value.pages === undefined) return;
-      if (removedIndex != null) {
-        const page = { ...value.pages[removedIndex] };
-        value.pages?.splice(removedIndex, 1);
+      const page = { ...dropResult.payload };
+      console.log('check1');
+      if (checkImplementFormElement(page)) {
+        console.log('check2');
+        if (removedIndex != null) {
+          value.pages?.splice(removedIndex, 1);
+        }
         if (addedIndex != null) {
           value.pages?.splice(addedIndex, 0, page);
+        }
+        if (removedIndex != null && addedIndex != null) {
           if (removedIndex == tabIndex) {
             setTabIndex(addedIndex);
           } else if (addedIndex == tabIndex) {
             setTabIndex(removedIndex);
           }
-          update();
         }
+        update();
       }
     }
   };
@@ -88,6 +96,7 @@ export const PageGroup: React.FC<PageGroupProps> = (props) => {
       <div style={{ marginTop: 20, height: '90%' }}>
         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
           <Container
+            getChildPayload={(i) => value.pages[i]}
             groupName={'pages'}
             orientation={'horizontal'}
             style={{
