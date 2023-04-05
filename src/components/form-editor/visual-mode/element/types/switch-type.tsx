@@ -1,7 +1,5 @@
 import React from 'react';
 import { IFormControl } from '../../../../../interfaces/form-control';
-import { DatePicker, LocalizationProvider } from '@mui/lab';
-import AdapterDayjs from '@mui/lab/AdapterDayjs';
 import { FormControlLabel, Switch } from '@mui/material';
 
 interface ElementProps {

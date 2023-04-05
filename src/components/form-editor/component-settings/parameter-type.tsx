@@ -1,7 +1,6 @@
 import React, { useCallback } from 'react';
 import { IPropertyConfig, PROPERTY_VALUE_TYPE } from '../../../interfaces/property-metadata';
 import {
-  Button,
   Checkbox,
   FormControl,
   FormControlLabel,
@@ -17,7 +16,6 @@ import { NumericFormat } from 'react-number-format';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import dayjs from 'dayjs';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 
 interface ElementProps {

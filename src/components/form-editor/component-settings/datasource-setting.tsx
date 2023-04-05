@@ -77,7 +77,7 @@ export const DatasourceSetting: React.FC<ElementProps> = (props) => {
           {properties?.map((param, index) => {
             return (
               <MenuItem value={index} key={index}>
-                {param.name}
+                {param.name} | {param.type}
               </MenuItem>
             );
           })}

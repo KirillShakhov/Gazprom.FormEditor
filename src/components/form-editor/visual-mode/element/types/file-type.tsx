@@ -1,7 +1,6 @@
 import React from 'react';
 import { IFormControl } from '../../../../../interfaces/form-control';
-import { DatePicker, LocalizationProvider } from '@mui/lab';
-import AdapterDayjs from '@mui/lab/AdapterDayjs';
+import { Button } from '@mui/material';
 
 interface ElementProps {
   value: IFormControl;
@@ -10,9 +9,5 @@ interface ElementProps {
 export const FileType: React.FC<ElementProps> = (props) => {
   const { value } = props;
 
-  return (
-    <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <DatePicker />
-    </LocalizationProvider>
-  );
+  return <Button name={value.name} fullWidth></Button>;
 };
