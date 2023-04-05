@@ -127,6 +127,7 @@ export const PageGroup: React.FC<PageGroupProps> = (props) => {
                           marginTop: -2,
                           marginLeft: 5,
                           marginRight: 5,
+                          borderRadius: 10,
                           background: theme.palette.primary.main,
                         }}
                       />
@@ -138,7 +139,11 @@ export const PageGroup: React.FC<PageGroupProps> = (props) => {
           </Container>
         </Box>
         {value.pages.map((item, index) => {
-          return <Page key={index} value={item} onSelectItem={onSelectItem} update={update} />;
+          return (
+            <div hidden={index != tabIndex} key={index}>
+              <Page key={index} value={item} onSelectItem={onSelectItem} update={update} />
+            </div>
+          );
         })}
       </div>
     </div>

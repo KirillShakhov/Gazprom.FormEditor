@@ -70,7 +70,7 @@ export function TreeViewGroup(props: TreeViewGroupProps) {
           <TreeViewElement
             key={index}
             nodeId={`element_${index}_${element.code}`}
-            element={element}
+            element={element as ITabPage & IFormControl}
             onSelectItem={onSelectItem}
           />
         );

@@ -21,7 +21,6 @@ export const Page: React.FC<PageProps> = (props) => {
     if (dropResult.payload != null) {
       const group = dropResult.payload;
       if (isFormGroup(group)) {
-        console.log('param: ' + JSON.stringify(group));
         if (removedIndex != null) {
           value.items?.splice(removedIndex, 1);
         }
@@ -34,21 +33,23 @@ export const Page: React.FC<PageProps> = (props) => {
   };
 
   return (
-    <div
-      style={{
-        display: 'flex',
-        flexDirection: 'column',
+    <Container
+      groupName={'groups'}
+      getChildPayload={(i) => (value.items ? value.items[i] : [])}
+      onDrop={onDrop}
+      dropPlaceholder={{
+        className: 'dropPlaceholderGroup',
+        animationDuration: 250,
+        showOnTop: true,
       }}
     >
-      <Container groupName={'groups'} getChildPayload={(i) => (value.items ? value.items[i] : [])} onDrop={onDrop}>
-        {value.items?.map((item, index) => {
-          return (
-            <Draggable key={index}>
-              <Group value={item as IFormGroup} key={index} onSelectItem={onSelectItem}></Group>
-            </Draggable>
-          );
-        })}
-      </Container>
-    </div>
+      {value.items?.map((item, index) => {
+        return (
+          <Draggable key={index}>
+            <Group value={item as IFormGroup} key={index} onSelectItem={onSelectItem} update={update}></Group>
+          </Draggable>
+        );
+      })}
+    </Container>
   );
 };

@@ -55,10 +55,7 @@ export const FormEditor: React.FC = () => {
   const [data, setData] = React.useState<IForm>(form);
   const [config] = React.useState<IPropertyMetadata>(metadata);
   const [selectedItem, setSelectedItem] = React.useState<IFormControl>();
-
   const [tabIndex, setTabIndex] = React.useState(0);
-
-  // const [temp, setTemp] = React.useState<string>(JSON.stringify(form));
 
   const changeMode = () => {
     if (mode === Modes.Text) {
@@ -99,7 +96,7 @@ export const FormEditor: React.FC = () => {
   const updateAll = () => {
     console.log('updateAll');
     setData({ ...data });
-    // if (selectedItem !== undefined) setSelectedItem({ ...selectedItem });
+    if (selectedItem !== undefined) setSelectedItem({ ...selectedItem });
   };
 
   const tabStyle = {
@@ -161,7 +158,6 @@ export const FormEditor: React.FC = () => {
             <TextMode
               value={JSON.stringify(data)}
               onChange={(data) => {
-                // setTemp(JSON.stringify(data));
                 console.log('text ' + data);
                 setData({ ...JSON.parse(data) });
                 setSelectedItem(undefined);

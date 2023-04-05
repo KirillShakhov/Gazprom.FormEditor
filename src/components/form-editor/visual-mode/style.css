@@ -28,3 +28,10 @@
     background: rgba(220, 220, 220, 0.6);
     border-radius: 6px;
 }
+
+.dropPlaceholderGroup{
+    background: rgba(220, 220, 220, 0.6);
+    border-color: #bbbbbb;
+    border-radius: 6px;
+    border-style: dashed;
+}
