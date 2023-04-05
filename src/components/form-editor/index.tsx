@@ -1,4 +1,4 @@
-import { createTheme, Shadows, ThemeProvider } from '@mui/material';
+import { Box, createTheme, Shadows, Tab, Tabs, ThemeProvider } from '@mui/material';
 import React from 'react';
 import { CommandLine } from './command-line';
 import './style.css';
@@ -13,6 +13,9 @@ import { checkImplementForm, checkImplementParameters } from '../../utils/check-
 import { form, parameters } from '../../interfaces/example';
 import { IFormControl } from '../../interfaces/form-control';
 import { IPropertyMetadata, metadata } from '../../interfaces/property-metadata';
+import { ParametersTab } from './left-menu/parameters-tab';
+import { TreeViewForm } from './left-menu/tree-view-form';
+import { ComponentsTab } from './left-menu/components-tab';
 
 enum Modes {
   Visual,
@@ -40,6 +43,8 @@ export const FormEditor: React.FC = () => {
   const [data, setData] = React.useState<IForm>(form);
   const [config] = React.useState<IPropertyMetadata>(metadata);
   const [selectedItem, setSelectedItem] = React.useState<IFormControl>();
+
+  const [tabIndex, setTabIndex] = React.useState(0);
 
   // const [temp, setTemp] = React.useState<string>(JSON.stringify(form));
 
@@ -85,6 +90,14 @@ export const FormEditor: React.FC = () => {
     // if (selectedItem !== undefined) setSelectedItem({ ...selectedItem });
   };
 
+  const tabStyle = {
+    fontSize: 12,
+    minHeight: 30,
+    minWidth: 20,
+    padding: 10,
+    height: 30,
+  };
+
   return (
     <ThemeProvider theme={theme}>
       <div className="layout">
@@ -101,7 +114,32 @@ export const FormEditor: React.FC = () => {
           </CommandLine>
         </header>
         <div className="left-side">
-          <LeftMenu form={data} properties={properties} onSelectItem={onSelectItem} update={updateAll} />
+          <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+            <Tabs
+              value={tabIndex}
+              onChange={(event: React.SyntheticEvent, newValue: number) => {
+                setTabIndex(newValue);
+              }}
+              textColor="inherit"
+              style={{
+                minHeight: 0,
+              }}
+            >
+              <Tab label="Параметры" style={tabStyle} />
+              <Tab label="Форма" style={tabStyle} />
+              <Tab label="Компоненты" style={tabStyle} />
+            </Tabs>
+          </Box>
+
+          <div hidden={tabIndex !== 0}>
+            <ParametersTab properties={properties} />
+          </div>
+          <div hidden={tabIndex !== 1}>
+            <TreeViewForm form={form} onSelectItem={onSelectItem} />
+          </div>
+          <div hidden={tabIndex !== 2}>
+            <ComponentsTab form={form} update={updateAll} />
+          </div>
         </div>
         <main>
           <div hidden={mode != Modes.Visual} style={{ height: '100%' }}>

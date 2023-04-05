@@ -40,11 +40,7 @@ export const Page: React.FC<PageProps> = (props) => {
         flexDirection: 'column',
       }}
     >
-      <Container
-        groupName={'groups'}
-        getChildPayload={(i) => (value.items ? value.items[i] : [])}
-        onDrop={onDrop}
-      >
+      <Container groupName={'groups'} getChildPayload={(i) => (value.items ? value.items[i] : [])} onDrop={onDrop}>
         {value.items?.map((item, index) => {
           return (
             <Draggable key={index}>

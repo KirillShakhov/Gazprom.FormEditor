@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { CONTROL_TYPE, IFormControl } from '../../../../interfaces/form-control';
 import { DefaultType } from './types/default-type';
 import { NumberType } from './types/number-type';

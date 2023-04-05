@@ -8,12 +8,6 @@ import { IParameter } from '../../../interfaces/parameter';
 import { IForm } from '../../../interfaces/form-config';
 import { IFormControl } from '../../../interfaces/form-control';
 
-interface TabPanelProps {
-  children?: React.ReactNode;
-  index: number;
-  value: number;
-}
-
 interface LeftMenuProps {
   form: IForm;
   properties: IParameter[];
@@ -28,22 +22,6 @@ export const LeftMenu: React.FC<LeftMenuProps> = (props) => {
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
-
-  function TabPanel(props: TabPanelProps) {
-    const { children, value, index, ...other } = props;
-    return (
-      <div
-        role="tabpanel"
-        hidden={value !== index}
-        style={{
-          height: '100%',
-        }}
-        {...other}
-      >
-        {children}
-      </div>
-    );
-  }
 
   const tabStyle = {
     fontSize: 12,
@@ -69,15 +47,16 @@ export const LeftMenu: React.FC<LeftMenuProps> = (props) => {
           <Tab label="Компоненты" style={tabStyle} />
         </Tabs>
       </Box>
-      <TabPanel value={value} index={0}>
+
+      <div hidden={value !== 0}>
         <ParametersTab properties={properties} />
-      </TabPanel>
-      <TabPanel value={value} index={1}>
+      </div>
+      <div hidden={value !== 1}>
         <TreeViewForm form={form} onSelectItem={onSelectItem} />
-      </TabPanel>
-      <TabPanel value={value} index={2}>
+      </div>
+      <div hidden={value !== 2}>
         <ComponentsTab form={form} update={update} />
-      </TabPanel>
+      </div>
     </div>
   );
 };

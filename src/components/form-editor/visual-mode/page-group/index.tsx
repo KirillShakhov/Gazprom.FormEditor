@@ -139,7 +139,6 @@ export const PageGroup: React.FC<PageGroupProps> = (props) => {
         </Box>
         {value.pages.map((item, index) => {
           return <Page key={index} value={item} onSelectItem={onSelectItem} update={update} />;
-          return <div key={index}>{item.name}</div>;
         })}
       </div>
     </div>
