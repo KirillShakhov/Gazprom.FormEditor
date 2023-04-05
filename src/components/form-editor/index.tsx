@@ -41,7 +41,7 @@ export const FormEditor: React.FC = () => {
   const [config] = React.useState<IPropertyMetadata>(metadata);
   const [selectedItem, setSelectedItem] = React.useState<IFormControl>();
 
-  const [temp, setTemp] = React.useState<string>(JSON.stringify(form));
+  // const [temp, setTemp] = React.useState<string>(JSON.stringify(form));
 
   const changeMode = () => {
     if (mode === Modes.Text) {
@@ -49,6 +49,7 @@ export const FormEditor: React.FC = () => {
     } else {
       setMode(Modes.Text);
     }
+    updateAll();
   };
 
   const loadProperties = (data: string) => {
@@ -111,10 +112,10 @@ export const FormEditor: React.FC = () => {
             <TextMode
               value={JSON.stringify(data)}
               onChange={(data) => {
-                setTemp(JSON.stringify(data));
-                // setData({ ...data });
+                // setTemp(JSON.stringify(data));
+                console.log('text ' + data);
+                setData({ ...JSON.parse(data) });
                 setSelectedItem(undefined);
-                // updateAll();
               }}
               update={updateAll}
             />

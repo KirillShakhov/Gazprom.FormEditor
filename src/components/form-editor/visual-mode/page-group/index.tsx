@@ -64,17 +64,12 @@ export const PageGroup: React.FC<PageGroupProps> = (props) => {
   const onDrop = (dropResult: DropResult) => {
     const { removedIndex, addedIndex, element, payload } = dropResult;
     if (removedIndex == null && addedIndex == null) return;
-    console.log('removedIndex ' + removedIndex);
-    console.log('addedIndex ' + addedIndex);
-    console.log('element ' + element);
-    console.log('payload ' + JSON.stringify(payload));
     if (dropResult.payload == null) {
       if (value.pages === undefined) return;
       if (removedIndex != null) {
         const page = { ...value.pages[removedIndex] };
         value.pages?.splice(removedIndex, 1);
         if (addedIndex != null) {
-          console.log('add: ' + JSON.stringify(page));
           value.pages?.splice(addedIndex, 0, page);
           if (removedIndex == tabIndex) {
             setTabIndex(addedIndex);
