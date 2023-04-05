@@ -1,11 +1,16 @@
-import React from 'react';
-import { Box, Tab, Tabs } from '@mui/material';
-import { TabPanel } from '@mui/lab';
+import React, { EventHandler, MouseEventHandler, SyntheticEvent } from 'react';
+import { Box, Tab, useTheme } from '@mui/material';
 import { Page } from '../page';
-import {ITabPageController} from '../../../../interfaces/form-config';
+import { ITabPageController } from '../../../../interfaces/form-config';
+import { Container, Draggable, DropResult } from 'react-smooth-dnd';
+import { IFormControl } from '../../../../interfaces/form-control';
+import { Experimental } from '../../../../utils/experimental';
+import '../style.css';
 
 interface PageGroupProps {
   value: ITabPageController;
+  onSelectItem: (value: IFormControl) => void;
+  update: () => void;
 }
 
 interface TabPanelProps {
@@ -15,10 +20,11 @@ interface TabPanelProps {
 }
 
 export const PageGroup: React.FC<PageGroupProps> = (props) => {
-  const { value } = props;
+  const { value, onSelectItem, update } = props;
   const [tabIndex, setTabIndex] = React.useState(0);
+  const theme = useTheme();
 
-  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
+  const handleChange = (newValue: number) => {
     setTabIndex(newValue);
   };
 
@@ -28,8 +34,6 @@ export const PageGroup: React.FC<PageGroupProps> = (props) => {
       <div
         role="tabpanel"
         hidden={value !== index}
-        id={`simple-tabpanel-${index}`}
-        aria-labelledby={`simple-tab-${index}`}
         style={{
           height: '98%',
         }}
@@ -40,56 +44,103 @@ export const PageGroup: React.FC<PageGroupProps> = (props) => {
     );
   }
 
-  function a11yProps(index: number) {
-    return {
-      id: `simple-tab-${index}`,
-      'aria-controls': `simple-tabpanel-${index}`,
-    };
-  }
-
   const tabStyle = {
     minWidth: 20,
     minHeight: 30,
     height: 30,
     padding: 10,
     fontSize: 14,
+    borderRadius: 6,
+  };
+
+  const onMouseEnter = (e: any, id: number) => {
+    if (!Experimental.GROUP_DRAG_AND_DROP) return;
+    if (e.nativeEvent.which) {
+      // console.log('e.target.key ' + id);
+      setTabIndex(id);
+    }
+  };
+
+  const onDrop = (dropResult: DropResult) => {
+    const { removedIndex, addedIndex, element, payload } = dropResult;
+    if (removedIndex == null && addedIndex == null) return;
+    if (dropResult.payload == null) {
+      if (value.pages === undefined) return;
+      if (removedIndex != null) {
+        const page = { ...value.pages[removedIndex] };
+        value.pages?.splice(removedIndex, 1);
+        if (addedIndex != null) {
+          value.pages?.splice(addedIndex, 0, page);
+          if (removedIndex == tabIndex) {
+            setTabIndex(addedIndex);
+          } else if (addedIndex == tabIndex) {
+            setTabIndex(removedIndex);
+          }
+          update();
+        }
+      }
+    }
   };
 
   return (
-    // <div
-    //   role="tabpanel"
-    //   hidden={value !== index}
-    //   id={`simple-tabpanel-${index}`}
-    //   aria-labelledby={`simple-tab-${index}`}
-    //   style={{
-    //     height: '100%',
-    //   }}
-    //   {...other}
-    // >
-    //   {children}
-    // </div>
-
     <div>
       <span style={{ fontSize: 18, margin: 0 }}>{value.name}</span>
       <div style={{ marginTop: 20, height: '90%' }}>
         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-          <Tabs
-            value={tabIndex}
-            onChange={handleChange}
-            textColor="inherit"
+          <Container
+            groupName={'pages'}
+            orientation={'horizontal'}
             style={{
-              minHeight: 0,
+              display: 'flex',
+            }}
+            onDrop={onDrop}
+            dropPlaceholder={{
+              className: 'dropPlaceholderPage',
+              animationDuration: 250,
+              showOnTop: true,
             }}
           >
             {value.pages.map((item, index) => {
-              return <Tab label={item.name} {...a11yProps(index)} key={index} style={tabStyle} />;
+              return (
+                <Draggable key={index}>
+                  <div
+                    style={{
+                      background: '#ffffff',
+                      borderRadius: 6,
+                    }}
+                    onMouseEnter={(e) => {
+                      onMouseEnter(e, index);
+                    }}
+                  >
+                    <Tab
+                      key={index}
+                      label={item.name}
+                      style={tabStyle}
+                      onClick={() => {
+                        handleChange(index);
+                      }}
+                    />
+                    {tabIndex == index && (
+                      <div
+                        style={{
+                          height: 2,
+                          marginTop: -2,
+                          marginLeft: 5,
+                          marginRight: 5,
+                          background: theme.palette.primary.main,
+                        }}
+                      />
+                    )}
+                  </div>
+                </Draggable>
+              );
             })}
-          </Tabs>
+          </Container>
         </Box>
         {value.pages.map((item, index) => {
           return (
-            <TabPanel value={tabIndex} index={index}>
-              <Page value={item}></Page>
+            <TabPanel value={tabIndex} index={index} key={index}>
+              <Page value={item} onSelectItem={onSelectItem} update={update}></Page>
             </TabPanel>
           );
         })}

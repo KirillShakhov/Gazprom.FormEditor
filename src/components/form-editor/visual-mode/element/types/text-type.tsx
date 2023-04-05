@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { IFormControl } from '../../../../../interfaces/form-control';
 import { TextField } from '@mui/material';
 
@@ -8,6 +8,10 @@ interface ElementProps {
 
 export const TextType: React.FC<ElementProps> = (props) => {
   const { value } = props;
+  const [name, setName] = React.useState<string>(value.name);
+  useEffect(() => {
+    setName(value.name);
+  }, [value]);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     // setValues({
@@ -18,9 +22,9 @@ export const TextType: React.FC<ElementProps> = (props) => {
 
   return (
     <TextField
-      label={value.name}
+      label={name}
       onChange={handleChange}
-      name={value.name}
+      name={name}
       id={value.code}
       size={'small'}
       variant="outlined"

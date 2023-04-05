@@ -2,9 +2,11 @@ import React from 'react';
 import './style.css';
 import { Box, Tab, Tabs } from '@mui/material';
 import { ParametersTab } from './parameters-tab';
-import { FormTab } from './form-tab';
-import {ComponentsTab} from "./components-tab";
-import {IParameter} from "../../../interfaces/parameter";
+import { TreeViewForm } from './tree-view-form';
+import { ComponentsTab } from './components-tab';
+import { IParameter } from '../../../interfaces/parameter';
+import { IForm } from '../../../interfaces/form-config';
+import { IFormControl } from '../../../interfaces/form-control';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -13,13 +15,15 @@ interface TabPanelProps {
 }
 
 interface LeftMenuProps {
+  form: IForm;
   properties: IParameter[];
-  setProperties: (value: IParameter[]) => void;
+  onSelectItem: (value: IFormControl) => void;
+  update: () => void;
 }
 
 export const LeftMenu: React.FC<LeftMenuProps> = (props) => {
-  const { properties } = props;
-  const [value, setValue] = React.useState(0);
+  const { form, properties, onSelectItem, update } = props;
+  const [value, setValue] = React.useState(1);
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
@@ -75,13 +79,13 @@ export const LeftMenu: React.FC<LeftMenuProps> = (props) => {
         </Tabs>
       </Box>
       <TabPanel value={value} index={0}>
-        <ParametersTab properties={properties}></ParametersTab>
+        <ParametersTab properties={properties} />
       </TabPanel>
       <TabPanel value={value} index={1}>
-        <FormTab></FormTab>
+        <TreeViewForm form={form} onSelectItem={onSelectItem} />
       </TabPanel>
       <TabPanel value={value} index={2}>
-        <ComponentsTab></ComponentsTab>
+        <ComponentsTab form={form} update={update} />
       </TabPanel>
     </div>
   );

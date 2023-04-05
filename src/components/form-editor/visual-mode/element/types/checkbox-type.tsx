@@ -21,6 +21,7 @@ export const CheckBoxType: React.FC<ElementProps> = (props) => {
       control={<Checkbox checked={checked} onChange={handleChange} inputProps={{ 'aria-label': 'controlled' }} />}
       label={value.name}
       labelPlacement="end"
+      disabled
     />
   );
 };

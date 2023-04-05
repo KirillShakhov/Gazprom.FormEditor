@@ -4,7 +4,7 @@ import { IParameter, PARAMETER_TYPE } from '../interfaces/parameter';
 
 /** Генерация стандартной формы. */
 export const generateStandardForm = (parameters: IParameter[]): IForm => {
-  const properties: IFormItem[] = [];
+  const items: IFormItem[] = [];
   parameters.forEach((param, index) => {
     const item: IFormItem = {
       code: `Element${index + 1}`,
@@ -16,42 +16,38 @@ export const generateStandardForm = (parameters: IParameter[]): IForm => {
     switch (param.type) {
       case PARAMETER_TYPE.STRING:
         item.type = CONTROL_TYPE.TEXT;
-        item.properties = {
-          multiline: true,
-          lineCount: 2,
-        };
+        item.properties = {};
         break;
       case PARAMETER_TYPE.NUMBER:
         item.type = CONTROL_TYPE.NUMBER;
-        item.properties = {
-          minValue: 0,
-          maxValue: 100,
-        };
+        item.properties = {};
         break;
       case PARAMETER_TYPE.INTEGER:
         item.type = CONTROL_TYPE.NUMBER;
-        item.properties = {
-          minValue: 0,
-          maxValue: 100,
-        };
+        item.properties = {};
         break;
       case PARAMETER_TYPE.BOOLEAN:
         item.type = CONTROL_TYPE.CHECKBOX;
+        item.properties = {};
         break;
       case PARAMETER_TYPE.DATE:
         item.type = CONTROL_TYPE.DATEPICKER;
+        item.properties = {};
         break;
       case PARAMETER_TYPE.DATETIME:
         item.type = CONTROL_TYPE.DATETIMEPICKER;
+        item.properties = {};
         break;
       case PARAMETER_TYPE.REF:
         item.type = CONTROL_TYPE.SELECT;
+        item.properties = {};
         break;
       case PARAMETER_TYPE.FILE:
         item.type = CONTROL_TYPE.FILE;
+        item.properties = {};
         break;
     }
-    properties.push(item);
+    items.push(item);
   });
   return {
     code: 'FormCode',
@@ -70,7 +66,7 @@ export const generateStandardForm = (parameters: IParameter[]): IForm => {
                 code: 'Group1',
                 name: 'Группа 1',
                 direction: FORM_GROUP_DIRECTION.FORCE_HORIZONTAL,
-                items: properties,
+                items: items,
               },
             ],
           },
@@ -92,39 +88,35 @@ export const generateStandardElement = (parameter: IParameter): IFormItem => {
   switch (parameter.type) {
     case PARAMETER_TYPE.STRING:
       item.type = CONTROL_TYPE.TEXT;
-      item.properties = {
-        multiline: true,
-        lineCount: 2,
-      };
+      item.properties = {};
       break;
     case PARAMETER_TYPE.NUMBER:
       item.type = CONTROL_TYPE.NUMBER;
-      item.properties = {
-        minValue: 0,
-        maxValue: 100,
-      };
+      item.properties = {};
       break;
     case PARAMETER_TYPE.INTEGER:
       item.type = CONTROL_TYPE.NUMBER;
-      item.properties = {
-        minValue: 0,
-        maxValue: 100,
-      };
+      item.properties = {};
       break;
     case PARAMETER_TYPE.BOOLEAN:
       item.type = CONTROL_TYPE.CHECKBOX;
+      item.properties = {};
       break;
     case PARAMETER_TYPE.DATE:
       item.type = CONTROL_TYPE.DATEPICKER;
+      item.properties = {};
       break;
     case PARAMETER_TYPE.DATETIME:
       item.type = CONTROL_TYPE.DATETIMEPICKER;
+      item.properties = {};
       break;
     case PARAMETER_TYPE.REF:
       item.type = CONTROL_TYPE.SELECT;
+      item.properties = {};
       break;
     case PARAMETER_TYPE.FILE:
       item.type = CONTROL_TYPE.FILE;
+      item.properties = {};
       break;
   }
   return item;

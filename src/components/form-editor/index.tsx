@@ -7,9 +7,12 @@ import { TextMode } from './text-mode/text-mode';
 import { ComponentSettings } from './component-settings';
 import { LeftMenu } from './left-menu';
 import { IParameter } from '../../interfaces/parameter';
-import { form, parameters } from '../../interfaces/example';
 import { IForm } from '../../interfaces/form-config';
 import { generateStandardForm } from '../../utils/generate-form';
+import { checkImplementForm, checkImplementParameters } from '../../utils/check-objects';
+import { form, parameters } from '../../interfaces/example';
+import { IFormControl } from '../../interfaces/form-control';
+import { IPropertyMetadata, metadata } from '../../interfaces/property-metadata';
 
 enum Modes {
   Visual,
@@ -35,6 +38,10 @@ export const FormEditor: React.FC = () => {
   const [mode, setMode] = React.useState(Modes.Visual);
   const [properties, setProperties] = React.useState<IParameter[]>(parameters);
   const [data, setData] = React.useState<IForm>(form);
+  const [config] = React.useState<IPropertyMetadata>(metadata);
+  const [selectedItem, setSelectedItem] = React.useState<IFormControl>();
+
+  // const [temp, setTemp] = React.useState<string>(JSON.stringify(form));
 
   const changeMode = () => {
     if (mode === Modes.Text) {
@@ -42,13 +49,22 @@ export const FormEditor: React.FC = () => {
     } else {
       setMode(Modes.Text);
     }
+    updateAll();
   };
 
   const loadProperties = (data: string) => {
     try {
-      const p: IParameter[] = JSON.parse(data);
-      setProperties(p);
-      setData(generateStandardForm(p));
+      const params: IParameter[] = JSON.parse(data);
+      if (checkImplementParameters(params)) {
+        setProperties(params);
+        setData(generateStandardForm(params));
+        return;
+      }
+      const form: IForm = JSON.parse(data);
+      if (checkImplementForm(form)) {
+        setData(form);
+        return;
+      }
     } catch (e) {
       alert('Неверный формат');
     }
@@ -56,6 +72,18 @@ export const FormEditor: React.FC = () => {
 
   const newBlankJson = () => {
     setData(generateStandardForm(properties));
+    setSelectedItem(undefined);
+  };
+
+  const onSelectItem = (value: IFormControl) => {
+    console.log(`IFormControl ${JSON.stringify(value)}`);
+    setSelectedItem(value);
+  };
+
+  const updateAll = () => {
+    console.log('updateAll');
+    setData({ ...data });
+    // if (selectedItem !== undefined) setSelectedItem({ ...selectedItem });
   };
 
   return (
@@ -74,33 +102,27 @@ export const FormEditor: React.FC = () => {
           </CommandLine>
         </header>
         <div className="left-side">
-          <LeftMenu
-            properties={properties}
-            setProperties={() => {
-              return;
-            }}
-          ></LeftMenu>
+          <LeftMenu form={data} properties={properties} onSelectItem={onSelectItem} update={updateAll} />
         </div>
         <main>
           <div hidden={mode != Modes.Visual} style={{ height: '100%' }}>
-            <VisualMode form={data}></VisualMode>
+            <VisualMode form={data} onSelectItem={onSelectItem} update={updateAll} />
           </div>
           <div hidden={mode != Modes.Text} style={{ height: '100%' }}>
             <TextMode
               value={JSON.stringify(data)}
               onChange={(data) => {
-                setData(JSON.parse(data));
+                // setTemp(JSON.stringify(data));
+                console.log('text ' + data);
+                setData({ ...JSON.parse(data) });
+                setSelectedItem(undefined);
               }}
-            ></TextMode>
+              update={updateAll}
+            />
           </div>
         </main>
         <div className="right-side">
-          <ComponentSettings
-            properties={properties}
-            onChangeProperty={(property) => {
-              console.log('event: ' + JSON.stringify(property));
-            }}
-          />
+          <ComponentSettings value={selectedItem} properties={properties} config={config} update={updateAll} />
         </div>
       </div>
     </ThemeProvider>
