@@ -1,8 +1,9 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback } from 'react';
 import { IFormControl } from '../../../interfaces/form-control';
 import { FormControl, InputLabel, MenuItem, Select, SelectChangeEvent } from '@mui/material';
 import { IParameter } from '../../../interfaces/parameter';
-import { datasourceMatch } from '../../../utils/datasource-match';
+import { datasourceMatch, getTypesByParameter } from '../../../utils/datasource-match';
+import { generateStandardElement } from '../../../utils/generate-form';
 
 interface ElementProps {
   value: IFormControl;
@@ -13,37 +14,48 @@ interface ElementProps {
 export const DatasourceSetting: React.FC<ElementProps> = (props) => {
   const { value, properties, update } = props;
 
-  const getParameters = useCallback((): IParameter[] => {
-    const list: IParameter[] = [];
-    properties?.forEach((p) => {
-      if (datasourceMatch(p.type, value.type)) {
-        list.push(p);
-      }
-    });
-    return list;
-  }, [properties, value.type]);
-
-  const currentProperty = useCallback(() => {
+  const currentPropertyIndex = useCallback(() => {
     let indexProperty = -1;
-    getParameters().forEach((p, index) => {
+    properties?.forEach((p, index) => {
       if (p.code === value.dataSource) {
         indexProperty = index;
       }
     });
     return indexProperty;
-  }, [getParameters, value.dataSource]);
+  }, [properties, value.dataSource]);
 
-  const [selectPropertyIndex, setSelectPropertyIndex] = React.useState<number>(currentProperty);
-  useEffect(() => {
-    setSelectPropertyIndex(currentProperty);
-  }, [currentProperty, value]);
+  const getTypes = useCallback(() => {
+    const parameter = properties[currentPropertyIndex()];
+    return getTypesByParameter(parameter.type);
+  }, [currentPropertyIndex, properties]);
 
   const handleChange = (event: SelectChangeEvent<number>) => {
     const index = Number(event.target.value);
-    value.dataSource = properties[index].code;
-    setSelectPropertyIndex(index);
+    const parameter = properties[index];
+    if (!datasourceMatch(parameter.type, value.type)) {
+      const standardElement = generateStandardElement(parameter);
+      value.properties = standardElement.properties;
+      value.type = standardElement.type;
+    }
+    value.dataSource = parameter.code;
     update();
   };
+
+  const handleChangeType = (event: SelectChangeEvent<number>) => {
+    const index = Number(event.target.value);
+    value.type = getTypes()[index];
+    update();
+  };
+
+  const getCurrentTypeIndex = useCallback(() => {
+    let indexProperty = -1;
+    getTypes()?.forEach((type, index) => {
+      if (type === value.type) {
+        indexProperty = index;
+      }
+    });
+    return indexProperty;
+  }, [getTypes, value.type]);
 
   return (
     <div
@@ -53,19 +65,38 @@ export const DatasourceSetting: React.FC<ElementProps> = (props) => {
       }}
     >
       <FormControl sx={{ minWidth: 120 }} size="small" fullWidth>
-        <InputLabel id="data-source-label">Источник данных</InputLabel>
+        <InputLabel id="data-source-parameters-label">Источник данных</InputLabel>
         <Select
-          labelId="data-source-label"
-          id="data-source"
-          value={selectPropertyIndex}
+          labelId="data-source-parameters-label"
+          id="data-source-parameters"
+          value={currentPropertyIndex()}
           label="Источник данных"
           onChange={handleChange}
           fullWidth
         >
-          {getParameters().map((param, index) => {
+          {properties?.map((param, index) => {
             return (
               <MenuItem value={index} key={index}>
                 {param.name}
+              </MenuItem>
+            );
+          })}
+        </Select>
+      </FormControl>
+      <FormControl sx={{ minWidth: 120, marginTop: 2 }} size="small" fullWidth>
+        <InputLabel id="data-source-types-label">Поле ввода</InputLabel>
+        <Select
+          labelId="data-source-types-label"
+          id="data-source-types"
+          value={getCurrentTypeIndex()}
+          label="Поле ввода"
+          onChange={handleChangeType}
+          fullWidth
+        >
+          {getTypes().map((param, index) => {
+            return (
+              <MenuItem value={index} key={index}>
+                {param}
               </MenuItem>
             );
           })}

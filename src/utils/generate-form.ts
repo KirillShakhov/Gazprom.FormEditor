@@ -1,5 +1,5 @@
 import { FORM_GROUP_DIRECTION, IForm, IFormItem } from '../interfaces/form-config';
-import { CONTROL_TYPE } from '../interfaces/form-control';
+import { CONTROL_TYPE, IFormControl } from '../interfaces/form-control';
 import { IParameter, PARAMETER_TYPE } from '../interfaces/parameter';
 
 /** Генерация стандартной формы. */
@@ -77,8 +77,8 @@ export const generateStandardForm = (parameters: IParameter[]): IForm => {
 };
 
 /** Генерация стандартного поля. */
-export const generateStandardElement = (parameter: IParameter): IFormItem => {
-  const item: IFormItem = {
+export const generateStandardElement = (parameter: IParameter): IFormItem & IFormControl => {
+  const item: IFormItem & IFormControl = {
     code: `Element(${parameter.code})`,
     name: `Элемент(${parameter.name})`,
     dataSource: parameter.code,
