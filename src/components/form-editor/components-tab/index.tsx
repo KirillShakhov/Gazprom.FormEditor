@@ -1,9 +1,9 @@
 import React from 'react';
 import './style.css';
 import { Container, Draggable } from 'react-smooth-dnd';
-import { FORM_GROUP_DIRECTION, IForm } from '../../../../interfaces/form-config';
+import { FORM_GROUP_DIRECTION, IForm } from '../../../interfaces/form-config';
 import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRounded';
-import {CONTROL_TYPE} from "../../../../interfaces/form-control";
+import {CONTROL_TYPE} from "../../../interfaces/form-control";
 
 interface ComponentsTabProps {
   form: IForm;
@@ -21,18 +21,18 @@ export const ComponentsTab: React.FC<ComponentsTabProps> = (props) => {
     },
     {
       code: 'Page1',
-      name: 'Страница 1',
+      name: 'Страница',
       items: [],
     },
     {
       code: 'Group1',
-      name: 'Группа 1',
+      name: 'Группа',
       direction: FORM_GROUP_DIRECTION.FORCE_HORIZONTAL,
       items: [],
     },
     {
       code: 'Element1',
-      name: 'Элемент1',
+      name: 'Элемент',
       dataSource: 'Parameter1',
       type: CONTROL_TYPE.NUMBER,
       properties: {

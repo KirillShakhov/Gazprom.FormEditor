@@ -4,6 +4,9 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import dayjs, { Dayjs } from 'dayjs';
+import { typographyClasses } from '@mui/material';
+import { pickersCalendarHeaderClasses, pickersSlideTransitionClasses } from '@mui/x-date-pickers';
+import { calendarPickerClasses, pickersDayClasses } from '@mui/lab';
 
 interface ElementProps {
   value: IFormControl;

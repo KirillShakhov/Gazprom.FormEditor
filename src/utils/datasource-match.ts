@@ -13,7 +13,9 @@ const parametersMatch = {
 };
 
 export const datasourceMatch = (parameterType: PARAMETER_TYPE, controlType: CONTROL_TYPE): boolean => {
-  console.log('PARAMETER_TYPE: ' + parameterType);
-  console.log('CONTROL_TYPE: ' + controlType);
   return parametersMatch[parameterType].includes(controlType);
+};
+
+export const getTypesByParameter = (parameterType: PARAMETER_TYPE): CONTROL_TYPE[] => {
+  return parametersMatch[parameterType];
 };

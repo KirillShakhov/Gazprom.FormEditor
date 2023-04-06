@@ -1,4 +1,4 @@
-import React, { EventHandler, MouseEventHandler, SyntheticEvent } from 'react';
+import React from 'react';
 import { Box, Tab, useTheme } from '@mui/material';
 import { Page } from '../page';
 import { ITabPageController } from '../../../../interfaces/form-config';
@@ -6,6 +6,7 @@ import { Container, Draggable, DropResult } from 'react-smooth-dnd';
 import { IFormControl } from '../../../../interfaces/form-control';
 import { Experimental } from '../../../../utils/experimental';
 import '../style.css';
+import { checkImplementFormElement } from '../../../../utils/check-objects';
 
 interface PageGroupProps {
   value: ITabPageController;
@@ -64,20 +65,27 @@ export const PageGroup: React.FC<PageGroupProps> = (props) => {
   const onDrop = (dropResult: DropResult) => {
     const { removedIndex, addedIndex, element, payload } = dropResult;
     if (removedIndex == null && addedIndex == null) return;
-    if (dropResult.payload == null) {
+    if (dropResult.payload != null) {
+      console.log('check0');
       if (value.pages === undefined) return;
-      if (removedIndex != null) {
-        const page = { ...value.pages[removedIndex] };
-        value.pages?.splice(removedIndex, 1);
+      const page = { ...dropResult.payload };
+      console.log('check1');
+      if (checkImplementFormElement(page)) {
+        console.log('check2');
+        if (removedIndex != null) {
+          value.pages?.splice(removedIndex, 1);
+        }
         if (addedIndex != null) {
           value.pages?.splice(addedIndex, 0, page);
+        }
+        if (removedIndex != null && addedIndex != null) {
           if (removedIndex == tabIndex) {
             setTabIndex(addedIndex);
           } else if (addedIndex == tabIndex) {
             setTabIndex(removedIndex);
           }
-          update();
         }
+        update();
       }
     }
   };
@@ -88,6 +96,7 @@ export const PageGroup: React.FC<PageGroupProps> = (props) => {
       <div style={{ marginTop: 20, height: '90%' }}>
         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
           <Container
+            getChildPayload={(i) => value.pages[i]}
             groupName={'pages'}
             orientation={'horizontal'}
             style={{
@@ -127,6 +136,7 @@ export const PageGroup: React.FC<PageGroupProps> = (props) => {
                           marginTop: -2,
                           marginLeft: 5,
                           marginRight: 5,
+                          borderRadius: 10,
                           background: theme.palette.primary.main,
                         }}
                       />
@@ -139,9 +149,9 @@ export const PageGroup: React.FC<PageGroupProps> = (props) => {
         </Box>
         {value.pages.map((item, index) => {
           return (
-            <TabPanel value={tabIndex} index={index} key={index}>
-              <Page value={item} onSelectItem={onSelectItem} update={update}></Page>
-            </TabPanel>
+            <div hidden={index != tabIndex} key={index}>
+              <Page key={index} value={item} onSelectItem={onSelectItem} update={update} />
+            </div>
           );
         })}
       </div>

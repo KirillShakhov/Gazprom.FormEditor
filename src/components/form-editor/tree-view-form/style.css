@@ -1,0 +1,9 @@
+.from-tab{
+    height: 100%;
+    background: #ffffff;
+}
+
+.treeShadowPlaceholder{
+    background: rgba(220, 220, 220, 0.6);
+    border-radius: 5px;
+}

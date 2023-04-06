@@ -12,13 +12,8 @@ interface ElementProps {
 
 export const ComponentSettingProperties: React.FC<ElementProps> = (props) => {
   const { value, config, update } = props;
-  const [name, setName] = React.useState<string>(value.name);
-  useEffect(() => {
-    setName(value.name);
-  }, [value]);
 
   const handleChangeName = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setName(event.target.value);
     value.name = event.target.value;
     update();
   };
@@ -72,7 +67,7 @@ export const ComponentSettingProperties: React.FC<ElementProps> = (props) => {
       }}
     >
       <h5 style={{ margin: 0 }}>Text Input</h5>
-      <TextField id="outlined" label="Название поля" size={'small'} value={name} onChange={handleChangeName} />
+      <TextField id="outlined" label="Название поля" size={'small'} value={value.name} onChange={handleChangeName} />
       <div
         style={{
           display: 'flex',

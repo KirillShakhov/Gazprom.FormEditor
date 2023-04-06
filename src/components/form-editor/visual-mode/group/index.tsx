@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { IFormGroup } from '../../../../interfaces/form-config';
 import { Element } from '../element';
 import { IFormControl } from '../../../../interfaces/form-control';
@@ -10,38 +10,31 @@ import '../style.css';
 interface GroupProps {
   value: IFormGroup;
   onSelectItem: (value: IFormControl) => void;
+  update: () => void;
 }
 
 export const Group: React.FC<GroupProps> = (props) => {
-  const { value, onSelectItem } = props;
-  const [list, setList] = React.useState(value.items ?? []);
+  const { value, onSelectItem, update } = props;
 
   const onDrop = (dropResult: DropResult) => {
     const { removedIndex, addedIndex } = dropResult;
     if (removedIndex == null && addedIndex == null) return;
-    console.log('removedIndex ' + dropResult.removedIndex);
-    console.log('addedIndex ' + dropResult.addedIndex);
-    console.log('element ' + dropResult.element);
-    console.log('payload ' + JSON.stringify(dropResult.payload));
     if (dropResult.payload != null) {
       const param = dropResult.payload;
       if (checkImplementFormControl(param)) {
         if (removedIndex != null) {
-          list.splice(removedIndex, 1);
+          value.items?.splice(removedIndex, 1);
         }
         if (addedIndex != null) {
-          list.splice(addedIndex, 0, param);
+          value.items?.splice(addedIndex, 0, param);
         }
-        setList([...list]);
-        value.items = list;
       } else if (checkImplementParameter(param)) {
         if (addedIndex != null) {
           const item = generateStandardElement(param);
-          list.splice(addedIndex, 0, item);
-          setList([...list]);
-          value.items = list;
+          value.items?.splice(addedIndex, 0, item);
         }
       }
+      update();
     }
   };
 
@@ -56,14 +49,13 @@ export const Group: React.FC<GroupProps> = (props) => {
         paddingRight: 10,
         paddingBottom: 10,
         border: '#ddd solid',
-        transition: '1s',
       }}
     >
       <span style={{ fontSize: 16, margin: 0, marginTop: 10 }}>
         {value.name} {value.direction}
       </span>
       <Container
-        getChildPayload={(i) => list[i]}
+        getChildPayload={(i) => (value.items ? value.items[i] : [])}
         groupName={'parameters'}
         onDrop={onDrop}
         removeOnDropOut={true}
@@ -73,15 +65,10 @@ export const Group: React.FC<GroupProps> = (props) => {
           showOnTop: true,
         }}
       >
-        {list.map((item, index) => {
+        {value.items?.map((item, index) => {
           return (
             <Draggable key={index}>
-              <Element
-                value={item as IFormControl}
-                key={index}
-                isSelected={false}
-                onSelectItem={onSelectItem}
-              ></Element>
+              <Element value={item as IFormControl} key={index} isSelected={false} onSelectItem={onSelectItem} />
             </Draggable>
           );
         })}
