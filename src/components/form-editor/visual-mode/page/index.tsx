@@ -18,18 +18,18 @@ export const Page: React.FC<PageProps> = (props) => {
   const onDrop = (dropResult: DropResult) => {
     const { removedIndex, addedIndex } = dropResult;
     if (removedIndex == null && addedIndex == null) return;
-    if (dropResult.payload != null) {
-      const group = dropResult.payload;
-      if (isFormGroup(group)) {
-        if (removedIndex != null) {
-          value.items?.splice(removedIndex, 1);
-        }
-        if (addedIndex != null) {
-          value.items?.splice(addedIndex, 0, group);
-        }
+    if (dropResult.payload == null) return;
+    if (value.items == undefined) value.items = [];
+    const group = dropResult.payload;
+    if (isFormGroup(group)) {
+      if (removedIndex != null) {
+        value.items?.splice(removedIndex, 1);
       }
-      update();
+      if (addedIndex != null) {
+        value.items?.splice(addedIndex, 0, group);
+      }
     }
+    update();
   };
 
   return (

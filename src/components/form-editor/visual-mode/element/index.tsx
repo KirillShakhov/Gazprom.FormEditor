@@ -9,11 +9,10 @@ import { SwitchType } from './types/switch-type';
 import { CheckBoxType } from './types/checkbox-type';
 import { RadioGroupType } from './types/radiogroup-type';
 import { DateTimePickerType } from './types/datetimepicker-type';
-import Link from '@mui/material/Link';
 import { LinkType } from './types/link-type';
 import { FileType } from './types/file-type';
-import {ComboBoxType} from "./types/combobox-type";
-import {SelectType} from "./types/select-type";
+import { ComboBoxType } from './types/combobox-type';
+import { SelectType } from './types/select-type';
 
 interface ElementProps {
   value: IFormControl;

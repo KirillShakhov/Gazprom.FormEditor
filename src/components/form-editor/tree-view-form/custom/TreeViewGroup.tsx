@@ -8,6 +8,8 @@ import { IFormControl } from '../../../../interfaces/form-control';
 import { TreeViewElement } from './TreeViewElement';
 import AppsRoundedIcon from '@mui/icons-material/AppsRounded';
 import { StyledTreeItemRoot } from './StyledTreeItem';
+import { Container, DropResult } from 'react-smooth-dnd';
+import { checkImplementFormControl } from '../../../../utils/check-objects';
 
 type TreeViewGroupProps = TreeItemProps & {
   group: ITabPage;
@@ -17,6 +19,22 @@ type TreeViewGroupProps = TreeItemProps & {
 
 export function TreeViewGroup(props: TreeViewGroupProps) {
   const { group, onSelectItem, update, ...other } = props;
+
+  const onDrop = (dropResult: DropResult) => {
+    const { removedIndex, addedIndex, payload } = dropResult;
+    if (payload == null) return;
+    if (group.items == undefined) group.items = [];
+    const element = { ...payload };
+    if (checkImplementFormControl(element)) {
+      if (removedIndex != null) {
+        group.items?.splice(removedIndex, 1);
+      }
+      if (addedIndex != null) {
+        group.items?.splice(addedIndex, 0, element);
+      }
+    }
+    update();
+  };
 
   return (
     <StyledTreeItemRoot
@@ -30,17 +48,28 @@ export function TreeViewGroup(props: TreeViewGroupProps) {
       }
       {...other}
     >
-      {group.items?.map((element, index) => {
-        return (
-          <TreeViewElement
-            key={index}
-            nodeId={`element_${element.code}`}
-            element={element as ITabPage & IFormControl}
-            onSelectItem={onSelectItem}
-            update={update}
-          />
-        );
-      })}
+      <Container
+        groupName={'tree-groups'}
+        onDrop={onDrop}
+        getChildPayload={(i) => (group.items ? group.items[i] : [])}
+        dropPlaceholder={{
+          className: 'treeShadowPlaceholder',
+          animationDuration: 250,
+          showOnTop: true,
+        }}
+      >
+        {group.items?.map((element, index) => {
+          return (
+            <TreeViewElement
+              key={index}
+              nodeId={`element_${element.code}`}
+              element={element as ITabPage & IFormControl}
+              onSelectItem={onSelectItem}
+              update={update}
+            />
+          );
+        })}
+      </Container>
     </StyledTreeItemRoot>
   );
 }

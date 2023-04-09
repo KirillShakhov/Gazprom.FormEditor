@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import { IPropertyConfig, PROPERTY_VALUE_TYPE } from '../../../interfaces/property-metadata';
+import { IPropertyConfig, PROPERTY_VALUE_TYPE } from '../../../../interfaces/property-metadata';
 import {
   Checkbox,
   FormControl,
@@ -11,7 +11,7 @@ import {
   SelectChangeEvent,
   TextField,
 } from '@mui/material';
-import { IFormElement } from '../../../interfaces/form-element';
+import { IFormElement } from '../../../../interfaces/form-element';
 import { NumericFormat } from 'react-number-format';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';

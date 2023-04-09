@@ -14,12 +14,6 @@ interface PageGroupProps {
   update: () => void;
 }
 
-interface TabPanelProps {
-  children?: React.ReactNode;
-  index: number;
-  value: number;
-}
-
 export const PageGroup: React.FC<PageGroupProps> = (props) => {
   const { value, onSelectItem, update } = props;
   const [tabIndex, setTabIndex] = React.useState(0);
@@ -28,22 +22,6 @@ export const PageGroup: React.FC<PageGroupProps> = (props) => {
   const handleChange = (newValue: number) => {
     setTabIndex(newValue);
   };
-
-  function TabPanel(props: TabPanelProps) {
-    const { children, value, index, ...other } = props;
-    return (
-      <div
-        role="tabpanel"
-        hidden={value !== index}
-        style={{
-          height: '98%',
-        }}
-        {...other}
-      >
-        {children}
-      </div>
-    );
-  }
 
   const tabStyle = {
     minWidth: 20,
@@ -63,15 +41,12 @@ export const PageGroup: React.FC<PageGroupProps> = (props) => {
   };
 
   const onDrop = (dropResult: DropResult) => {
-    const { removedIndex, addedIndex, element, payload } = dropResult;
+    const { removedIndex, addedIndex, payload } = dropResult;
     if (removedIndex == null && addedIndex == null) return;
-    if (dropResult.payload != null) {
-      console.log('check0');
-      if (value.pages === undefined) return;
-      const page = { ...dropResult.payload };
-      console.log('check1');
+    if (payload != null) {
+      if (value.pages == undefined) value.pages = [];
+      const page = { ...payload };
       if (checkImplementFormElement(page)) {
-        console.log('check2');
         if (removedIndex != null) {
           value.pages?.splice(removedIndex, 1);
         }

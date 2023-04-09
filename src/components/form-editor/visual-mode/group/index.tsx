@@ -19,23 +19,23 @@ export const Group: React.FC<GroupProps> = (props) => {
   const onDrop = (dropResult: DropResult) => {
     const { removedIndex, addedIndex } = dropResult;
     if (removedIndex == null && addedIndex == null) return;
-    if (dropResult.payload != null) {
-      const param = dropResult.payload;
-      if (checkImplementFormControl(param)) {
-        if (removedIndex != null) {
-          value.items?.splice(removedIndex, 1);
-        }
-        if (addedIndex != null) {
-          value.items?.splice(addedIndex, 0, param);
-        }
-      } else if (checkImplementParameter(param)) {
-        if (addedIndex != null) {
-          const item = generateStandardElement(param);
-          value.items?.splice(addedIndex, 0, item);
-        }
+    if (dropResult.payload == null) return;
+    if (value.items == undefined) value.items = [];
+    const param = dropResult.payload;
+    if (checkImplementFormControl(param)) {
+      if (removedIndex != null) {
+        value.items?.splice(removedIndex, 1);
       }
-      update();
+      if (addedIndex != null) {
+        value.items?.splice(addedIndex, 0, param);
+      }
+    } else if (checkImplementParameter(param)) {
+      if (addedIndex != null) {
+        const item = generateStandardElement(param);
+        value.items?.splice(addedIndex, 0, item);
+      }
     }
+    update();
   };
 
   return (

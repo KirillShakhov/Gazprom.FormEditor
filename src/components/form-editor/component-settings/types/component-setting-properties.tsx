@@ -2,7 +2,7 @@ import React, { useCallback, useEffect } from 'react';
 import { TextField } from '@mui/material';
 import { CONTROL_TYPE, IFormControl } from '../../../../interfaces/form-control';
 import { IPropertyConfig, IPropertyMetadata } from '../../../../interfaces/property-metadata';
-import { ParameterType } from '../parameter-type';
+import { ParameterType } from './parameter-type';
 
 interface ElementProps {
   value: IFormControl;
