@@ -8,7 +8,7 @@ import { IFormControl } from '../../../../interfaces/form-control';
 import { TreeViewElement } from './TreeViewElement';
 import AppsRoundedIcon from '@mui/icons-material/AppsRounded';
 import { StyledTreeItemRoot } from './StyledTreeItem';
-import { Container, DropResult } from 'react-smooth-dnd';
+import { Container, Draggable, DropResult } from 'react-smooth-dnd';
 import { checkImplementFormControl } from '../../../../utils/check-objects';
 
 type TreeViewGroupProps = TreeItemProps & {
@@ -49,7 +49,7 @@ export function TreeViewGroup(props: TreeViewGroupProps) {
       {...other}
     >
       <Container
-        groupName={'tree-groups'}
+        groupName={'tree-elements'}
         onDrop={onDrop}
         getChildPayload={(i) => (group.items ? group.items[i] : [])}
         dropPlaceholder={{
@@ -60,13 +60,15 @@ export function TreeViewGroup(props: TreeViewGroupProps) {
       >
         {group.items?.map((element, index) => {
           return (
-            <TreeViewElement
-              key={index}
-              nodeId={`element_${element.code}`}
-              element={element as ITabPage & IFormControl}
-              onSelectItem={onSelectItem}
-              update={update}
-            />
+            <Draggable key={index}>
+              <TreeViewElement
+                key={index}
+                nodeId={`element_${element.code}`}
+                element={element as ITabPage & IFormControl}
+                onSelectItem={onSelectItem}
+                update={update}
+              />
+            </Draggable>
           );
         })}
       </Container>
