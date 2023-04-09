@@ -9,6 +9,11 @@ import { SwitchType } from './types/switch-type';
 import { CheckBoxType } from './types/checkbox-type';
 import { RadioGroupType } from './types/radiogroup-type';
 import { DateTimePickerType } from './types/datetimepicker-type';
+import Link from '@mui/material/Link';
+import { LinkType } from './types/link-type';
+import { FileType } from './types/file-type';
+import {ComboBoxType} from "./types/combobox-type";
+import {SelectType} from "./types/select-type";
 
 interface ElementProps {
   value: IFormControl;
@@ -34,15 +39,14 @@ function renderSwitch(value: IFormControl) {
       return <DatePickerType value={value} />;
     case CONTROL_TYPE.DATETIMEPICKER:
       return <DateTimePickerType value={value} />;
-      break;
     case CONTROL_TYPE.LINK:
-      break;
+      return <LinkType value={value} />;
     case CONTROL_TYPE.FILE:
-      break;
+      return <FileType value={value} />;
     case CONTROL_TYPE.COMBOBOX:
-      break;
+      return <ComboBoxType value={value} />;
     case CONTROL_TYPE.SELECT:
-      break;
+      return <SelectType value={value} />;
     default:
       return <DefaultType value={value}></DefaultType>;
   }
