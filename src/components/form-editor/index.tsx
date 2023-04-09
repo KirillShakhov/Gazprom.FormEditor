@@ -50,7 +50,7 @@ const theme = createTheme({
 
 /** Редактор форм. */
 export const FormEditor: React.FC = () => {
-  const [mode, setMode] = React.useState(Modes.Visual);
+  const [mode, setMode] = React.useState(Modes.Text);
   const [properties, setProperties] = React.useState<IParameter[]>(parameters);
   const [data, setData] = React.useState<IForm>(form);
   const [config] = React.useState<IPropertyMetadata>(metadata);
@@ -157,11 +157,9 @@ export const FormEditor: React.FC = () => {
             <TextMode
               value={data}
               onChange={(data) => {
-                console.log('text ' + data);
                 setData({ ...JSON.parse(data) });
                 setSelectedItem(undefined);
               }}
-              update={updateAll}
             />
           </div>
         </main>
