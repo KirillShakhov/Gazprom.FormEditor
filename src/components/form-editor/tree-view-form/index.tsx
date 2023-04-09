@@ -26,8 +26,8 @@ export const TreeViewForm: React.FC<TreeViewFormProps> = (props) => {
     <div>
       <div className="tab-item">
         <TreeView
-          expanded={expanded}
-          onNodeToggle={handleToggle}
+          // expanded={expanded}
+          // onNodeToggle={handleToggle}
           defaultCollapseIcon={<ArrowDropDownIcon style={{ marginLeft: 15 }} />}
           defaultExpandIcon={<ArrowRightIcon style={{ marginLeft: 15 }} />}
           defaultEndIcon={<div style={{ width: 24 }} />}

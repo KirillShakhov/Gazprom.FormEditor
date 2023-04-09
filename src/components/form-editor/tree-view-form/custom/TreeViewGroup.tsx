@@ -34,7 +34,7 @@ export function TreeViewGroup(props: TreeViewGroupProps) {
         return (
           <TreeViewElement
             key={index}
-            nodeId={`element_${index}_${element.code}`}
+            nodeId={`element_${element.code}`}
             element={element as ITabPage & IFormControl}
             onSelectItem={onSelectItem}
             update={update}

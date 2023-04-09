@@ -143,7 +143,7 @@ export const FormEditor: React.FC = () => {
             <ParametersTab properties={properties} />
           </div>
           <div hidden={tabIndex !== 1}>
-            <TreeViewForm form={form} onSelectItem={onSelectItem}  update={updateAll}/>
+            <TreeViewForm form={data} onSelectItem={onSelectItem} update={updateAll} />
           </div>
           <div hidden={tabIndex !== 2}>
             <ComponentsTab form={form} update={updateAll} />
