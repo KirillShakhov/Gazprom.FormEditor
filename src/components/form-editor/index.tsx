@@ -155,7 +155,7 @@ export const FormEditor: React.FC = () => {
           </div>
           <div hidden={mode != Modes.Text} style={{ height: '100%' }}>
             <TextMode
-              value={JSON.stringify(data)}
+              value={data}
               onChange={(data) => {
                 console.log('text ' + data);
                 setData({ ...JSON.parse(data) });
