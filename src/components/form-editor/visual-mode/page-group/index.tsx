@@ -21,6 +21,7 @@ export const PageGroup: React.FC<PageGroupProps> = (props) => {
 
   const handleChange = (newValue: number) => {
     setTabIndex(newValue);
+    onSelectItem(value.pages[newValue]);
   };
 
   const tabStyle = {
@@ -65,9 +66,15 @@ export const PageGroup: React.FC<PageGroupProps> = (props) => {
     }
   };
 
+  const handleClick = () => {
+    onSelectItem(value);
+  };
+
   return (
     <div>
-      <span style={{ fontSize: 18, margin: 0 }}>{value.name}</span>
+      <span style={{ fontSize: 18, margin: 0 }} key={value.code} role={'presentation'} onClick={handleClick}>
+        {value.name}
+      </span>
       <div style={{ marginTop: 20, height: '90%' }}>
         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
           <Container

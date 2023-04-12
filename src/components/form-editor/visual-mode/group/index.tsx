@@ -39,24 +39,12 @@ export const Group: React.FC<GroupProps> = (props) => {
     update();
   };
 
-  const [isOnElement, setIsOnElement] = useState(false);
-
   const handleClick = () => {
-    if (isOnElement) {
-      onSelectItem(value);
-    }
+    onSelectItem(value);
   };
 
   return (
     <div
-      onMouseEnter={() => {
-        setIsOnElement(true);
-        console.log('setIsOnElement(true)');
-      }}
-      onMouseLeave={() => {
-        setIsOnElement(false);
-        console.log('setIsOnElement(false)');
-      }}
       style={{
         display: 'flex',
         flexDirection: 'column',
@@ -69,9 +57,13 @@ export const Group: React.FC<GroupProps> = (props) => {
         zIndex: 0,
       }}
       role="presentation"
-      onClick={handleClick}
     >
-      <span style={{ fontSize: 16, margin: 0, marginTop: 10 }}>
+      <span
+        style={{ fontSize: 16, margin: 0, marginTop: 10 }}
+        key={value.code}
+        role="presentation"
+        onClick={handleClick}
+      >
         {value.name} {value.direction}
       </span>
       <Container
