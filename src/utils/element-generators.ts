@@ -1,9 +1,9 @@
 import { generateCode } from './id-generator';
-import { FORM_GROUP_DIRECTION, IFormItem } from '../interfaces/form-config';
+import {FORM_GROUP_DIRECTION, IFormGroup, IFormItem, ITabPage, ITabPageController} from '../interfaces/form-config';
 import { CONTROL_TYPE, IFormControl } from '../interfaces/form-control';
 import { IParameter, PARAMETER_TYPE } from '../interfaces/parameter';
 
-export const generatePageGroup = () => {
+export const generatePageGroup = (): ITabPageController => {
   return {
     code: 'TabGroup ' + generateCode(),
     name: 'Группа табы',
@@ -11,7 +11,7 @@ export const generatePageGroup = () => {
   };
 };
 
-export const generatePage = () => {
+export const generatePage = (): ITabPage => {
   return {
     code: 'Page1' + generateCode(),
     name: 'Страница',
@@ -19,7 +19,7 @@ export const generatePage = () => {
   };
 };
 
-export const generateGroup = () => {
+export const generateGroup = (): IFormGroup => {
   return {
     code: 'Group1',
     name: 'Группа',

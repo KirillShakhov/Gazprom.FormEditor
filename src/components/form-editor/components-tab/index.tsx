@@ -12,7 +12,7 @@ interface ComponentsTabProps {
 }
 
 export const ComponentsTab: React.FC<ComponentsTabProps> = (props) => {
-  const { form, parameters } = props;
+  const { parameters } = props;
 
   const onClick = () => {
     console.log('onClick');

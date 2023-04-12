@@ -13,11 +13,11 @@ import { LinkType } from './types/link-type';
 import { FileType } from './types/file-type';
 import { ComboBoxType } from './types/combobox-type';
 import { SelectType } from './types/select-type';
+import { IFormElement } from '../../../../interfaces/form-element';
 
 interface ElementProps {
   value: IFormControl;
-  isSelected: boolean;
-  onSelectItem: (value: IFormControl) => void;
+  onSelectItem: (value: IFormElement) => void;
 }
 
 function renderSwitch(value: IFormControl) {
@@ -52,17 +52,41 @@ function renderSwitch(value: IFormControl) {
 }
 
 export const Element: React.FC<ElementProps> = (props) => {
-  const { value, isSelected, onSelectItem } = props;
+  let { value, onSelectItem } = props;
 
-  const onClick = () => {
-    if (!isSelected) {
-      // console.log(JSON.stringify(value));
-      onSelectItem(value);
-    }
+  const [isSelected, setIsSelected] = React.useState(false);
+
+  const useOutsideClick = (callback) => {
+    const ref = React.useRef<HTMLDivElement>(null);
+
+    React.useEffect(() => {
+      const handleClick = (event) => {
+        callback();
+      };
+      document.addEventListener('click', handleClick);
+      return () => {
+        document.removeEventListener('click', handleClick);
+      };
+    }, [callback]);
+
+    return ref;
   };
+
+  const onClick = (e: any) => {
+    e.preventDefault();
+    onSelectItem(value);
+    setIsSelected(true);
+  };
+
+  const handleClickOutside = () => {
+    setIsSelected(false);
+  };
+
+  const ref = useOutsideClick(handleClickOutside);
 
   return (
     <div
+      ref={ref}
       style={{
         marginTop: 20,
         border: 1,
@@ -71,6 +95,7 @@ export const Element: React.FC<ElementProps> = (props) => {
         borderStyle: 'dotted',
         padding: 5,
         background: '#ffffff',
+        zIndex: 100,
       }}
       role="presentation"
       onClick={onClick}

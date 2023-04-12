@@ -1,15 +1,16 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { IFormGroup } from '../../../../interfaces/form-config';
 import { Element } from '../element';
 import { IFormControl } from '../../../../interfaces/form-control';
 import { Container, Draggable, DropResult } from 'react-smooth-dnd';
 import { checkImplementFormControl, checkImplementParameter } from '../../../../utils/check-objects';
+import { generateElement } from '../../../../utils/element-generators';
 import '../style.css';
-import {generateElement} from "../../../../utils/element-generators";
+import { IFormElement } from '../../../../interfaces/form-element';
 
 interface GroupProps {
   value: IFormGroup;
-  onSelectItem: (value: IFormControl) => void;
+  onSelectItem: (value: IFormElement) => void;
   update: () => void;
 }
 
@@ -38,8 +39,24 @@ export const Group: React.FC<GroupProps> = (props) => {
     update();
   };
 
+  const [isOnElement, setIsOnElement] = useState(false);
+
+  const handleClick = () => {
+    if (isOnElement) {
+      onSelectItem(value);
+    }
+  };
+
   return (
     <div
+      onMouseEnter={() => {
+        setIsOnElement(true);
+        console.log('setIsOnElement(true)');
+      }}
+      onMouseLeave={() => {
+        setIsOnElement(false);
+        console.log('setIsOnElement(false)');
+      }}
       style={{
         display: 'flex',
         flexDirection: 'column',
@@ -49,7 +66,10 @@ export const Group: React.FC<GroupProps> = (props) => {
         paddingRight: 10,
         paddingBottom: 10,
         border: '#ddd solid',
+        zIndex: 0,
       }}
+      role="presentation"
+      onClick={handleClick}
     >
       <span style={{ fontSize: 16, margin: 0, marginTop: 10 }}>
         {value.name} {value.direction}
@@ -68,7 +88,7 @@ export const Group: React.FC<GroupProps> = (props) => {
         {value.items?.map((item, index) => {
           return (
             <Draggable key={index}>
-              <Element value={item as IFormControl} key={index} isSelected={false} onSelectItem={onSelectItem} />
+              <Element value={item as IFormControl} key={index} onSelectItem={onSelectItem} />
             </Draggable>
           );
         })}

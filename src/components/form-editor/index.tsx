@@ -7,7 +7,6 @@ import { ComponentSettings } from './component-settings';
 import { generateStandardForm } from '../../utils/form-generator';
 import { checkImplementForm, checkImplementParameters } from '../../utils/check-objects';
 import { form as standardForm, parameters as standardParameters } from '../../interfaces/example';
-import { IFormControl } from '../../interfaces/form-control';
 import { IPropertyMetadata, metadata } from '../../interfaces/property-metadata';
 import { IParameter } from '../../interfaces/parameter';
 import { IForm } from '../../interfaces/form-config';
@@ -15,6 +14,7 @@ import { ParametersTab } from './parameters-tab';
 import { TreeViewForm } from './tree-view-form';
 import { ComponentsTab } from './components-tab';
 import './style.css';
+import { IFormElement } from '../../interfaces/form-element';
 
 enum Modes {
   Visual,
@@ -54,7 +54,7 @@ export const FormEditor: React.FC = () => {
   const [parameters, setParameters] = React.useState<IParameter[]>(standardParameters);
   const [data, setData] = React.useState<IForm>(standardForm);
   const [config] = React.useState<IPropertyMetadata>(metadata);
-  const [selectedItem, setSelectedItem] = React.useState<IFormControl>();
+  const [selectedItem, setSelectedItem] = React.useState<IFormElement>();
   const [tabIndex, setTabIndex] = React.useState(1);
 
   const changeMode = () => {
@@ -88,7 +88,7 @@ export const FormEditor: React.FC = () => {
     setSelectedItem(undefined);
   };
 
-  const onSelectItem = (value: IFormControl) => {
+  const onSelectItem = (value: IFormElement) => {
     console.log(`IFormControl ${JSON.stringify(value)}`);
     setSelectedItem(value);
   };

@@ -4,12 +4,12 @@ import { Button } from '@mui/material';
 import { PageGroup } from './page-group';
 import { IForm, ITabPageController } from '../../../interfaces/form-config';
 import { Container, Draggable, DropResult } from 'react-smooth-dnd';
-import { IFormControl } from '../../../interfaces/form-control';
 import { isTabPageController } from '../../../utils/form-config';
+import { IFormElement } from '../../../interfaces/form-element';
 
 interface VisualModeProps {
   form: IForm;
-  onSelectItem: (value: IFormControl) => void;
+  onSelectItem: (value: IFormElement) => void;
   update: () => void;
 }
 

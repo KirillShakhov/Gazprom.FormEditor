@@ -24,28 +24,47 @@ interface ElementProps {
   update: () => void;
 }
 
-export const ParameterType: React.FC<ElementProps> = (props) => {
+export const PropertyConfig: React.FC<ElementProps> = (props) => {
   const { value, propertiesConfig, update } = props;
   const [index, setIndex] = React.useState(0);
 
   const getPropertyValue = useCallback(() => {
-    if (value.properties === undefined) return '';
-    if (value.properties.hasOwnProperty(propertiesConfig.code)) {
-      return value.properties[propertiesConfig.code];
+    if (propertiesConfig.isOwnProperty == true) {
+      const obj = value as any;
+      if (obj.hasOwnProperty(propertiesConfig.code)) {
+        return obj[propertiesConfig.code];
+      }
+    } else {
+      if (value.properties === undefined) return '';
+      if (value.properties.hasOwnProperty(propertiesConfig.code)) {
+        return value.properties[propertiesConfig.code];
+      }
     }
     return '';
   }, [propertiesConfig, value]);
 
   const changeValue = (val: any) => {
-    if (value.properties === undefined) value.properties = {};
-    value.properties[propertiesConfig.code] = val;
+    if (propertiesConfig.isOwnProperty == true) {
+      const obj = value as any;
+      obj[propertiesConfig.code] = val;
+    } else {
+      if (value.properties === undefined) value.properties = {};
+      value.properties[propertiesConfig.code] = val;
+    }
     update();
   };
 
   const cleanValue = () => {
-    if (value.properties === undefined) return;
-    if (value.properties.hasOwnProperty(propertiesConfig.code)) {
-      delete value.properties[propertiesConfig.code];
+    if (propertiesConfig.isOwnProperty == true) {
+      const obj = value as any;
+      if (obj.hasOwnProperty(propertiesConfig.code)) {
+        delete obj[propertiesConfig.code];
+      }
+    } else {
+      if (value.properties === undefined) return;
+      if (value.properties.hasOwnProperty(propertiesConfig.code)) {
+        delete value.properties[propertiesConfig.code];
+      }
     }
     update();
   };
@@ -94,11 +113,7 @@ export const ParameterType: React.FC<ElementProps> = (props) => {
             style={{ width: '100%', marginLeft: 2 }}
             control={
               <Checkbox
-                checked={
-                  value.properties !== undefined &&
-                  value.properties.hasOwnProperty(propertiesConfig.code) &&
-                  value.properties[propertiesConfig.code] === true
-                }
+                checked={getPropertyValue() == '' ? false : getPropertyValue()}
                 onChange={(e) => {
                   if (e.target.checked) {
                     changeValue(true);

@@ -3,14 +3,14 @@ import { Box, Tab, useTheme } from '@mui/material';
 import { Page } from '../page';
 import { ITabPageController } from '../../../../interfaces/form-config';
 import { Container, Draggable, DropResult } from 'react-smooth-dnd';
-import { IFormControl } from '../../../../interfaces/form-control';
 import { Experimental } from '../../../../utils/experimental';
 import '../style.css';
 import { checkImplementFormElement } from '../../../../utils/check-objects';
+import { IFormElement } from '../../../../interfaces/form-element';
 
 interface PageGroupProps {
   value: ITabPageController;
-  onSelectItem: (value: IFormControl) => void;
+  onSelectItem: (value: IFormElement) => void;
   update: () => void;
 }
 

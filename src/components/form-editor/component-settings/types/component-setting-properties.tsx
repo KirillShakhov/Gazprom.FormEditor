@@ -1,24 +1,26 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback } from 'react';
 import { TextField } from '@mui/material';
 import { CONTROL_TYPE, IFormControl } from '../../../../interfaces/form-control';
 import { IPropertyConfig, IPropertyMetadata } from '../../../../interfaces/property-metadata';
-import { ParameterType } from './parameter-type';
+import { PropertyConfig } from './property-config';
+import { isFormControl } from '../../../../utils/form-config';
+import { IFormElement } from '../../../../interfaces/form-element';
 
 interface ElementProps {
-  value: IFormControl;
+  formItem: IFormElement;
   config: IPropertyMetadata;
   update: () => void;
 }
 
 export const ComponentSettingProperties: React.FC<ElementProps> = (props) => {
-  const { value, config, update } = props;
+  const { formItem, config, update } = props;
 
   const handleChangeName = (event: React.ChangeEvent<HTMLInputElement>) => {
-    value.name = event.target.value;
+    formItem.name = event.target.value;
     update();
   };
 
-  const getSettingComponent = (): IPropertyConfig[] | undefined => {
+  const getSettingComponent = (value: IFormControl): IPropertyConfig[] | undefined => {
     switch (value.type) {
       case CONTROL_TYPE.TEXT:
         return config.byParameterType.STRING;
@@ -45,17 +47,19 @@ export const ComponentSettingProperties: React.FC<ElementProps> = (props) => {
       case CONTROL_TYPE.SELECT:
         return config.byParameterType.REF;
       default:
-        return [];
+        return undefined;
     }
   };
 
   const getAllProperties = useCallback(() => {
     const list: IPropertyConfig[] = [];
     list.push(...(config.byElementType.CONTROL ?? []));
-    list.push(...(getSettingComponent() ?? []));
-    list.push(...(config.byControlType[value.type] ?? []));
+    if (isFormControl(formItem)) {
+      list.push(...(getSettingComponent(formItem) ?? []));
+      list.push(...(config.byControlType[formItem.type] ?? []));
+    }
     return list;
-  }, [config.byControlType, config.byElementType.CONTROL, getSettingComponent, value.type]);
+  }, [config.byControlType, config.byElementType.CONTROL, getSettingComponent, formItem]);
 
   return (
     <div
@@ -67,7 +71,7 @@ export const ComponentSettingProperties: React.FC<ElementProps> = (props) => {
       }}
     >
       <h5 style={{ margin: 0 }}>Text Input</h5>
-      <TextField id="outlined" label="Название поля" size={'small'} value={value.name} onChange={handleChangeName} />
+      <TextField id="outlined" label="Название поля" size={'small'} value={formItem.name} onChange={handleChangeName} />
       <div
         style={{
           display: 'flex',
@@ -78,7 +82,7 @@ export const ComponentSettingProperties: React.FC<ElementProps> = (props) => {
       >
         {config &&
           getAllProperties().map((property, index) => {
-            return <ParameterType propertiesConfig={property} key={index} value={value} update={update} />;
+            return <PropertyConfig propertiesConfig={property} key={index} value={formItem} update={update} />;
           })}
       </div>
     </div>

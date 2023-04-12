@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import './text-mode.css';
 import AceEditor from 'react-ace';
-import { IForm, IFormItem } from '../../../interfaces/form-config';
+import { IForm } from '../../../interfaces/form-config';
 import 'ace-builds/src-noconflict/mode-json';
 import 'ace-builds/src-noconflict/theme-github';
 import Ajv from 'ajv';

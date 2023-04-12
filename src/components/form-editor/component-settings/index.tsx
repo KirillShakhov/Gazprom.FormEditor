@@ -2,12 +2,14 @@ import React from 'react';
 import { IParameter } from '../../../interfaces/parameter';
 import { IFormControl } from '../../../interfaces/form-control';
 import { ComponentSettingProperties } from './types/component-setting-properties';
-import { DatasourceSetting } from './datasource-setting';
+import { FormControlSetting } from './form-control-setting';
 import { IPropertyMetadata } from '../../../interfaces/property-metadata';
 import './style.css';
+import { isFormControl } from '../../../utils/form-config';
+import { IFormElement } from '../../../interfaces/form-element';
 
 interface VisualModeProps {
-  value: IFormControl | undefined;
+  value: IFormElement | undefined;
   properties: IParameter[];
   config: IPropertyMetadata;
   update: () => void;
@@ -21,9 +23,11 @@ export const ComponentSettings: React.FC<VisualModeProps> = (props) => {
       <div className="component-box">
         <span style={{ fontSize: 16 }}>Настройки компоненты</span>
         {!value && <span style={{ fontSize: 12 }}>Компонент не выбран</span>}
-        {value && <DatasourceSetting value={value} properties={properties} update={update} />}
+        {value && isFormControl(value) && (
+          <FormControlSetting value={value as IFormControl} properties={properties} update={update} />
+        )}
         {value && (
-          <ComponentSettingProperties value={value} config={config} update={update}></ComponentSettingProperties>
+          <ComponentSettingProperties formItem={value} config={config} update={update}></ComponentSettingProperties>
         )}
       </div>
     </div>

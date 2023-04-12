@@ -2,13 +2,13 @@ import React from 'react';
 import { Container, Draggable, DropResult } from 'react-smooth-dnd';
 import { IFormGroup, ITabPage } from '../../../../interfaces/form-config';
 import { Group } from '../group';
-import { IFormControl } from '../../../../interfaces/form-control';
 import { isFormGroup } from '../../../../utils/form-config';
 import '../style.css';
+import { IFormElement } from '../../../../interfaces/form-element';
 
 interface PageProps {
   value: ITabPage;
-  onSelectItem: (value: IFormControl) => void;
+  onSelectItem: (value: IFormElement) => void;
   update: () => void;
 }
 

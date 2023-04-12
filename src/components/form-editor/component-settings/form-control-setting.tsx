@@ -3,7 +3,7 @@ import { IFormControl } from '../../../interfaces/form-control';
 import { FormControl, InputLabel, MenuItem, Select, SelectChangeEvent } from '@mui/material';
 import { IParameter } from '../../../interfaces/parameter';
 import { datasourceMatch, getTypesByParameter } from '../../../utils/datasource-match';
-import {generateElement} from "../../../utils/element-generators";
+import { generateElement } from '../../../utils/element-generators';
 
 interface ElementProps {
   value: IFormControl;
@@ -11,7 +11,7 @@ interface ElementProps {
   update: () => void;
 }
 
-export const DatasourceSetting: React.FC<ElementProps> = (props) => {
+export const FormControlSetting: React.FC<ElementProps> = (props) => {
   const { value, properties, update } = props;
 
   const currentPropertyIndex = useCallback(() => {
