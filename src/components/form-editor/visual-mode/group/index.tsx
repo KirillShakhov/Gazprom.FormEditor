@@ -3,9 +3,9 @@ import { IFormGroup } from '../../../../interfaces/form-config';
 import { Element } from '../element';
 import { IFormControl } from '../../../../interfaces/form-control';
 import { Container, Draggable, DropResult } from 'react-smooth-dnd';
-import { generateStandardElement } from '../../../../utils/generate-form';
 import { checkImplementFormControl, checkImplementParameter } from '../../../../utils/check-objects';
 import '../style.css';
+import {generateElement} from "../../../../utils/element-generators";
 
 interface GroupProps {
   value: IFormGroup;
@@ -31,7 +31,7 @@ export const Group: React.FC<GroupProps> = (props) => {
       }
     } else if (checkImplementParameter(param)) {
       if (addedIndex != null) {
-        const item = generateStandardElement(param);
+        const item = generateElement(param);
         value.items?.splice(addedIndex, 0, item);
       }
     }

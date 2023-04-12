@@ -5,9 +5,7 @@ import { PageGroup } from './page-group';
 import { IForm, ITabPageController } from '../../../interfaces/form-config';
 import { Container, Draggable, DropResult } from 'react-smooth-dnd';
 import { IFormControl } from '../../../interfaces/form-control';
-import {checkImplementForm, checkImplementFormControl, checkImplementParameter} from '../../../utils/check-objects';
-import { generateStandardElement } from '../../../utils/generate-form';
-import {isTabPageController} from "../../../utils/form-config";
+import { isTabPageController } from '../../../utils/form-config';
 
 interface VisualModeProps {
   form: IForm;

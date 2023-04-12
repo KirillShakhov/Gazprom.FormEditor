@@ -4,9 +4,9 @@ import { CommandLine } from './command-line';
 import { VisualMode } from './visual-mode';
 import { TextMode } from './text-mode/text-mode';
 import { ComponentSettings } from './component-settings';
-import { generateStandardForm } from '../../utils/generate-form';
+import { generateStandardForm } from '../../utils/form-generator';
 import { checkImplementForm, checkImplementParameters } from '../../utils/check-objects';
-import { form, parameters } from '../../interfaces/example';
+import { form as standardForm, parameters as standardParameters } from '../../interfaces/example';
 import { IFormControl } from '../../interfaces/form-control';
 import { IPropertyMetadata, metadata } from '../../interfaces/property-metadata';
 import { IParameter } from '../../interfaces/parameter';
@@ -51,8 +51,8 @@ const theme = createTheme({
 /** Редактор форм. */
 export const FormEditor: React.FC = () => {
   const [mode, setMode] = React.useState(Modes.Text);
-  const [properties, setProperties] = React.useState<IParameter[]>(parameters);
-  const [data, setData] = React.useState<IForm>(form);
+  const [parameters, setParameters] = React.useState<IParameter[]>(standardParameters);
+  const [data, setData] = React.useState<IForm>(standardForm);
   const [config] = React.useState<IPropertyMetadata>(metadata);
   const [selectedItem, setSelectedItem] = React.useState<IFormControl>();
   const [tabIndex, setTabIndex] = React.useState(1);
@@ -69,7 +69,7 @@ export const FormEditor: React.FC = () => {
     try {
       const params: IParameter[] = JSON.parse(data);
       if (checkImplementParameters(params)) {
-        setProperties(params);
+        setParameters(params);
         setData(generateStandardForm(params));
         return;
       }
@@ -84,7 +84,7 @@ export const FormEditor: React.FC = () => {
   };
 
   const newBlankJson = () => {
-    setData(generateStandardForm(properties));
+    setData(generateStandardForm(parameters));
     setSelectedItem(undefined);
   };
 
@@ -140,31 +140,35 @@ export const FormEditor: React.FC = () => {
           </Box>
 
           <div hidden={tabIndex !== 0}>
-            <ParametersTab properties={properties} />
+            <ParametersTab properties={parameters} />
           </div>
           <div hidden={tabIndex !== 1}>
             <TreeViewForm form={data} onSelectItem={onSelectItem} update={updateAll} />
           </div>
           <div hidden={tabIndex !== 2}>
-            <ComponentsTab form={form} update={updateAll} />
+            <ComponentsTab form={data} parameters={parameters} />
           </div>
         </div>
         <main>
-          <div hidden={mode != Modes.Visual} style={{ height: '100%' }}>
-            <VisualMode form={data} onSelectItem={onSelectItem} update={updateAll} />
-          </div>
-          <div hidden={mode != Modes.Text} style={{ height: '100%' }}>
-            <TextMode
-              value={data}
-              onChange={(data) => {
-                setData({ ...JSON.parse(data) });
-                setSelectedItem(undefined);
-              }}
-            />
-          </div>
+          {mode == Modes.Visual && (
+            <div style={{ height: '100%' }}>
+              <VisualMode form={data} onSelectItem={onSelectItem} update={updateAll} />
+            </div>
+          )}
+          {mode == Modes.Text && (
+            <div style={{ height: '100%' }}>
+              <TextMode
+                value={data}
+                onChange={(data) => {
+                  setData({ ...JSON.parse(data) });
+                  setSelectedItem(undefined);
+                }}
+              />
+            </div>
+          )}
         </main>
         <div className="right-side">
-          <ComponentSettings value={selectedItem} properties={properties} config={config} update={updateAll} />
+          <ComponentSettings value={selectedItem} properties={parameters} config={config} update={updateAll} />
         </div>
       </div>
     </ThemeProvider>
