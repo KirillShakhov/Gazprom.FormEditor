@@ -88,6 +88,7 @@ export const PageGroup: React.FC<PageGroupProps> = (props) => {
         borderRadius: 10,
         borderColor: selectedItem == value ? '#3373d9' : '#e0e0e0',
         borderStyle: 'dotted',
+        marginTop: 10,
       }}
     >
       <div
@@ -125,6 +126,7 @@ export const PageGroup: React.FC<PageGroupProps> = (props) => {
                         borderRadius: 6,
                         borderColor: selectedItem == item ? '#3373d9' : '#e0e0e0',
                         borderStyle: 'dotted',
+                        marginRight: 5,
                       }}
                       onMouseEnter={(e) => {
                         onMouseEnter(e, index);

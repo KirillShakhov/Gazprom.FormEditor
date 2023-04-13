@@ -15,6 +15,7 @@ import { TreeViewForm } from './tree-view-form';
 import { ComponentsTab } from './components-tab';
 import './style.css';
 import { IFormElement } from '../../interfaces/form-element';
+import { findAndDeleteFromForm } from '../../utils/find-and-delete-from-form';
 
 enum Modes {
   Visual,
@@ -93,6 +94,14 @@ export const FormEditor: React.FC = () => {
     setData({ ...data });
   };
 
+  const deleteObject = () => {
+    if (selectedItem) {
+      setSelectedItem(undefined);
+      findAndDeleteFromForm(data, selectedItem);
+      updateAll();
+    }
+  };
+
   const tabStyle = {
     fontSize: 12,
     minHeight: 30,
@@ -158,6 +167,7 @@ export const FormEditor: React.FC = () => {
             properties={parameters}
             config={config}
             update={updateAll}
+            deleteObject={deleteObject}
           />
         </div>
       </div>

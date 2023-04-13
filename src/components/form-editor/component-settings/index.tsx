@@ -8,6 +8,7 @@ import { IFormElement } from '../../../interfaces/form-element';
 import { IForm } from '../../../interfaces/form-config';
 import { PropertyConfig } from './types/property-config';
 import BlockRoundedIcon from '@mui/icons-material/BlockRounded';
+import { Button } from '@mui/material';
 
 interface VisualModeProps {
   form: IForm;
@@ -15,14 +16,18 @@ interface VisualModeProps {
   properties: IParameter[];
   config: IPropertyMetadata;
   update: () => void;
+  deleteObject: () => void;
 }
 
 export const ComponentSettings: React.FC<VisualModeProps> = (props) => {
-  const { form, value, properties, config, update } = props;
+  const { form, value, properties, config, update, deleteObject } = props;
 
   return (
     <div
       style={{
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'space-between',
         background: '#ffffff',
         width: '100%',
         height: '100%',
@@ -55,6 +60,27 @@ export const ComponentSettings: React.FC<VisualModeProps> = (props) => {
         )}
         {value && <ComponentSettingProperties formItem={value} config={config} update={update} />}
       </div>
+      {value && (
+        <div
+          style={{
+            padding: 10,
+          }}
+        >
+          <Button
+            sx={{
+              color: '#cecece',
+              '&:hover': {
+                backgroundColor: '#dc7777',
+                color: '#ffffff',
+              },
+            }}
+            fullWidth
+            onClick={deleteObject}
+          >
+            Удалить компонент
+          </Button>
+        </div>
+      )}
     </div>
   );
 };
