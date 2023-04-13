@@ -68,6 +68,7 @@ export interface IPropertyMetadata {
 /** Пример объекта. */
 export const metadata: IPropertyMetadata = {
   byElementType: {
+    FORM: [{ code: 'title', name: 'Наименование', type: PROPERTY_VALUE_TYPE.STRING, isOwnProperty: true }],
     // Общие свойства для всех элементов.
     ELEMENT: [{ code: 'title', name: 'Наименование', type: PROPERTY_VALUE_TYPE.STRING, isOwnProperty: true }],
     PAGES: [],

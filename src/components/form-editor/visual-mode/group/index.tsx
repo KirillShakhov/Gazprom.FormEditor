@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { IFormGroup } from '../../../../interfaces/form-config';
 import { Element } from '../element';
 import { IFormControl } from '../../../../interfaces/form-control';

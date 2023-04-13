@@ -157,7 +157,13 @@ export const FormEditor: React.FC = () => {
           )}
         </main>
         <div className="right-side">
-          <ComponentSettings value={selectedItem} properties={parameters} config={config} update={updateAll} />
+          <ComponentSettings
+            form={data}
+            value={selectedItem}
+            properties={parameters}
+            config={config}
+            update={updateAll}
+          />
         </div>
       </div>
     </ThemeProvider>

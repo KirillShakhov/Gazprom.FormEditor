@@ -17,9 +17,10 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
+import { IForm } from '../../../../interfaces/form-config';
 
 interface ElementProps {
-  value: IFormElement;
+  value: IFormElement | IForm;
   propertiesConfig: IPropertyConfig;
   update: () => void;
 }

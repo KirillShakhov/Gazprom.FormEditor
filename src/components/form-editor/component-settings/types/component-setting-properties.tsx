@@ -4,10 +4,9 @@ import { CONTROL_TYPE, IFormControl } from '../../../../interfaces/form-control'
 import { IPropertyConfig, IPropertyMetadata } from '../../../../interfaces/property-metadata';
 import { PropertyConfig } from './property-config';
 import { isFormControl } from '../../../../utils/form-config';
-import { IFormElement } from '../../../../interfaces/form-element';
 
 interface ElementProps {
-  formItem: IFormElement;
+  formItem: IFormControl;
   config: IPropertyMetadata;
   update: () => void;
 }
@@ -56,15 +55,47 @@ export const ComponentSettingProperties: React.FC<ElementProps> = (props) => {
     }
   };
 
+  const getTextLabel = (value: IFormControl): string => {
+    switch (value.type) {
+      case CONTROL_TYPE.TEXT:
+        return 'Text Input';
+      case CONTROL_TYPE.NUMBER:
+        return 'Number  Input';
+      case CONTROL_TYPE.CHECKBOX:
+        return 'Checkbox';
+      case CONTROL_TYPE.SWITCH:
+        return 'Switch';
+      case CONTROL_TYPE.DATEPICKER:
+        return 'DatePicker';
+      case CONTROL_TYPE.DATETIMEPICKER:
+        return 'DateTimePicker';
+      case CONTROL_TYPE.LINK:
+        return 'Link';
+      case CONTROL_TYPE.FILE:
+        return 'File';
+      case CONTROL_TYPE.TEXTAREA:
+        return 'TextArea';
+      case CONTROL_TYPE.RADIOGROUP:
+        return 'RadioGroup';
+      case CONTROL_TYPE.COMBOBOX:
+        return 'ComboBox';
+      case CONTROL_TYPE.SELECT:
+        return 'Select';
+      default:
+        return 'undefined';
+    }
+  };
+
   const getAllProperties = useCallback(() => {
     const list: IPropertyConfig[] = [];
-    list.push(...(config.byElementType.CONTROL ?? []));
+    list.push(...(config.byElementType.ELEMENT ?? []));
     if (isFormControl(formItem)) {
+      list.push(...(config.byElementType.CONTROL ?? []));
       list.push(...(getSettingComponent(formItem) ?? []));
       list.push(...(config.byControlType[formItem.type] ?? []));
     }
     return list;
-  }, [config.byControlType, config.byElementType.CONTROL, getSettingComponent, formItem]);
+  }, [config, getSettingComponent, formItem]);
 
   return (
     <div
@@ -75,7 +106,7 @@ export const ComponentSettingProperties: React.FC<ElementProps> = (props) => {
         height: '100%',
       }}
     >
-      <h5 style={{ margin: 0 }}>Text Input</h5>
+      <h5 style={{ margin: 0 }}>{getTextLabel(formItem)}</h5>
       <TextField id="outlined" label="Code" size={'small'} value={formItem.code} onChange={handleChangeCode} />
       <TextField id="outlined" label="Название поля" size={'small'} value={formItem.name} onChange={handleChangeName} />
       <div

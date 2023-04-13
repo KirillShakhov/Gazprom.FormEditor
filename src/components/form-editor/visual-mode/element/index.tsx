@@ -1,4 +1,5 @@
 import React from 'react';
+import { IFormElement } from '../../../../interfaces/form-element';
 import { CONTROL_TYPE, IFormControl } from '../../../../interfaces/form-control';
 import { DefaultType } from './types/default-type';
 import { NumberType } from './types/number-type';
@@ -13,7 +14,6 @@ import { LinkType } from './types/link-type';
 import { FileType } from './types/file-type';
 import { ComboBoxType } from './types/combobox-type';
 import { SelectType } from './types/select-type';
-import { IFormElement } from '../../../../interfaces/form-element';
 
 interface ElementProps {
   value: IFormControl;
