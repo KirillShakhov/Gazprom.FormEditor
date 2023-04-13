@@ -11,10 +11,11 @@ interface VisualModeProps {
   form: IForm;
   onSelectItem: (value: IFormElement) => void;
   update: () => void;
+  selectedItem: IFormElement;
 }
 
 export const VisualMode: React.FC<VisualModeProps> = (props) => {
-  const { form, onSelectItem, update } = props;
+  const { form, onSelectItem, update, selectedItem } = props;
 
   const print = () => {
     console.log(JSON.stringify(form.items));
@@ -52,6 +53,7 @@ export const VisualMode: React.FC<VisualModeProps> = (props) => {
                   <PageGroup
                     value={item as ITabPageController}
                     key={index}
+                    selectedItem={selectedItem}
                     onSelectItem={onSelectItem}
                     update={update}
                   />

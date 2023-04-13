@@ -8,12 +8,13 @@ import { IFormElement } from '../../../../interfaces/form-element';
 
 interface PageProps {
   value: ITabPage;
+  selectedItem: IFormElement;
   onSelectItem: (value: IFormElement) => void;
   update: () => void;
 }
 
 export const Page: React.FC<PageProps> = (props) => {
-  const { value, onSelectItem, update } = props;
+  const { value, selectedItem, onSelectItem, update } = props;
 
   const onDrop = (dropResult: DropResult) => {
     const { removedIndex, addedIndex } = dropResult;
@@ -46,7 +47,13 @@ export const Page: React.FC<PageProps> = (props) => {
       {value.items?.map((item, index) => {
         return (
           <Draggable key={index}>
-            <Group value={item as IFormGroup} key={index} onSelectItem={onSelectItem} update={update}></Group>
+            <Group
+              value={item as IFormGroup}
+              key={index}
+              selectedItem={selectedItem}
+              onSelectItem={onSelectItem}
+              update={update}
+            ></Group>
           </Draggable>
         );
       })}

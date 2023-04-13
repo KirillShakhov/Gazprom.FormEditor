@@ -10,12 +10,13 @@ import { IFormElement } from '../../../../interfaces/form-element';
 
 interface GroupProps {
   value: IFormGroup;
+  selectedItem: IFormElement;
   onSelectItem: (value: IFormElement) => void;
   update: () => void;
 }
 
 export const Group: React.FC<GroupProps> = (props) => {
-  const { value, onSelectItem, update } = props;
+  const { value, selectedItem, onSelectItem, update } = props;
 
   const onDrop = (dropResult: DropResult) => {
     const { removedIndex, addedIndex } = dropResult;
@@ -49,11 +50,13 @@ export const Group: React.FC<GroupProps> = (props) => {
         display: 'flex',
         flexDirection: 'column',
         background: '#ffffff',
-        borderRadius: 10,
         paddingLeft: 10,
         paddingRight: 10,
         paddingBottom: 10,
-        border: '#ddd solid',
+        border: 1,
+        borderRadius: 10,
+        borderColor: selectedItem == value ? '#3373d9' : '#e0e0e0',
+        borderStyle: 'dotted',
         zIndex: 0,
       }}
       role="presentation"
@@ -80,7 +83,12 @@ export const Group: React.FC<GroupProps> = (props) => {
         {value.items?.map((item, index) => {
           return (
             <Draggable key={index}>
-              <Element value={item as IFormControl} key={index} onSelectItem={onSelectItem} />
+              <Element
+                value={item as IFormControl}
+                key={index}
+                selectedItem={selectedItem}
+                onSelectItem={onSelectItem}
+              />
             </Draggable>
           );
         })}

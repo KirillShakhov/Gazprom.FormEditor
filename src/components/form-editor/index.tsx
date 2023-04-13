@@ -89,7 +89,7 @@ export const FormEditor: React.FC = () => {
   };
 
   const onSelectItem = (value: IFormElement) => {
-    console.log(`IFormControl ${JSON.stringify(value)}`);
+    console.log(`IFormElement ${JSON.stringify(value)}`);
     setSelectedItem(value);
   };
 
@@ -143,21 +143,15 @@ export const FormEditor: React.FC = () => {
           {tabIndex === 2 && <ComponentsTab form={data} parameters={parameters} />}
         </div>
         <main>
-          {mode == Modes.Visual && (
-            <div style={{ height: '100%' }}>
-              <VisualMode form={data} onSelectItem={onSelectItem} update={updateAll} />
-            </div>
-          )}
+          {mode == Modes.Visual && <VisualMode form={data} selectedItem={selectedItem} onSelectItem={onSelectItem} update={updateAll} />}
           {mode == Modes.Text && (
-            <div style={{ height: '100%' }}>
-              <TextMode
-                value={data}
-                onChange={(data) => {
-                  setData({ ...JSON.parse(data) });
-                  setSelectedItem(undefined);
-                }}
-              />
-            </div>
+            <TextMode
+              value={data}
+              onChange={(data) => {
+                setData({ ...JSON.parse(data) });
+                setSelectedItem(undefined);
+              }}
+            />
           )}
         </main>
         <div className="right-side">

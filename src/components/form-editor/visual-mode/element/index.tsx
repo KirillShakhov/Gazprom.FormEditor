@@ -17,6 +17,7 @@ import { IFormElement } from '../../../../interfaces/form-element';
 
 interface ElementProps {
   value: IFormControl;
+  selectedItem: IFormElement;
   onSelectItem: (value: IFormElement) => void;
 }
 
@@ -52,14 +53,11 @@ function renderSwitch(value: IFormControl) {
 }
 
 export const Element: React.FC<ElementProps> = (props) => {
-  const { value, onSelectItem } = props;
-
-  const [isSelected, setIsSelected] = React.useState(false);
+  const { value, selectedItem, onSelectItem } = props;
 
   const onClick = (e: any) => {
     e.preventDefault();
     onSelectItem(value);
-    setIsSelected(true);
   };
 
   return (
@@ -68,7 +66,7 @@ export const Element: React.FC<ElementProps> = (props) => {
         marginTop: 20,
         border: 1,
         borderRadius: 10,
-        borderColor: isSelected ? '#3373d9' : '#e0e0e0',
+        borderColor: selectedItem == value ? '#3373d9' : '#e0e0e0',
         borderStyle: 'dotted',
         padding: 5,
         background: '#ffffff',

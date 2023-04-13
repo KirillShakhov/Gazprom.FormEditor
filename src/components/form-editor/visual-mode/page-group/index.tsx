@@ -10,12 +10,13 @@ import { IFormElement } from '../../../../interfaces/form-element';
 
 interface PageGroupProps {
   value: ITabPageController;
+  selectedItem: IFormElement;
   onSelectItem: (value: IFormElement) => void;
   update: () => void;
 }
 
 export const PageGroup: React.FC<PageGroupProps> = (props) => {
-  const { value, onSelectItem, update } = props;
+  const { value, selectedItem, onSelectItem, update } = props;
   const [tabIndex, setTabIndex] = React.useState(0);
   const theme = useTheme();
 
@@ -71,7 +72,15 @@ export const PageGroup: React.FC<PageGroupProps> = (props) => {
   };
 
   return (
-    <div>
+    <div
+      style={{
+        padding: 5,
+        border: 1,
+        borderRadius: 10,
+        borderColor: selectedItem == value ? '#3373d9' : '#e0e0e0',
+        borderStyle: selectedItem == value ? 'dotted' : 'none',
+      }}
+    >
       <span style={{ fontSize: 18, margin: 0 }} key={value.code} role={'presentation'} onClick={handleClick}>
         {value.name}
       </span>
@@ -97,7 +106,10 @@ export const PageGroup: React.FC<PageGroupProps> = (props) => {
                   <div
                     style={{
                       background: '#ffffff',
+                      border: 1,
                       borderRadius: 6,
+                      borderColor: selectedItem == item ? '#3373d9' : '#e0e0e0',
+                      borderStyle: 'dotted',
                     }}
                     onMouseEnter={(e) => {
                       onMouseEnter(e, index);
@@ -132,7 +144,7 @@ export const PageGroup: React.FC<PageGroupProps> = (props) => {
         {value.pages.map((item, index) => {
           return (
             <div hidden={index != tabIndex} key={index}>
-              <Page key={index} value={item} onSelectItem={onSelectItem} update={update} />
+              <Page key={index} value={item} selectedItem={selectedItem} onSelectItem={onSelectItem} update={update} />
             </div>
           );
         })}
