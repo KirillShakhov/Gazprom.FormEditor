@@ -10,7 +10,7 @@ import { IFormElement } from '../../../interfaces/form-element';
 interface VisualModeProps {
   form: IForm;
   selectedItem: IFormElement | undefined;
-  onSelectItem: (value: IFormElement) => void;
+  onSelectItem: (value: IFormElement | undefined) => void;
   update: () => void;
 }
 

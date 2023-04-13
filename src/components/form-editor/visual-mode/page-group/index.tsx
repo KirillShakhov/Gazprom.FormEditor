@@ -11,7 +11,7 @@ import { IFormElement } from '../../../../interfaces/form-element';
 interface PageGroupProps {
   value: ITabPageController;
   selectedItem: IFormElement | undefined;
-  onSelectItem: (value: IFormElement) => void;
+  onSelectItem: (value: IFormElement | undefined) => void;
   update: () => void;
 }
 
@@ -22,6 +22,10 @@ export const PageGroup: React.FC<PageGroupProps> = (props) => {
 
   const handleChange = (newValue: number) => {
     setTabIndex(newValue);
+    if (selectedItem == value.pages[newValue]) {
+      onSelectItem(undefined);
+      return;
+    }
     onSelectItem(value.pages[newValue]);
   };
 
@@ -68,6 +72,10 @@ export const PageGroup: React.FC<PageGroupProps> = (props) => {
   };
 
   const handleClick = () => {
+    if (selectedItem == value) {
+      onSelectItem(undefined);
+      return;
+    }
     onSelectItem(value);
   };
 
@@ -75,81 +83,92 @@ export const PageGroup: React.FC<PageGroupProps> = (props) => {
     <div
       style={{
         background: theme.palette.background.default,
-        padding: 5,
         border: 1,
         borderRadius: 10,
         borderColor: selectedItem == value ? '#3373d9' : '#e0e0e0',
-        borderStyle: selectedItem == value ? 'dotted' : 'none',
+        borderStyle: 'dotted',
       }}
     >
-      <span style={{ fontSize: 18, margin: 0 }} key={value.code} role={'presentation'} onClick={handleClick}>
-        {value.name}
-      </span>
-      <div style={{ marginTop: 20, height: '90%' }}>
-        <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-          <Container
-            getChildPayload={(i) => value.pages[i]}
-            groupName={'pages'}
-            orientation={'horizontal'}
-            style={{
-              display: 'flex',
-              overflowY: 'hidden',
-            }}
-            onDrop={onDrop}
-            dropPlaceholder={{
-              className: 'dropPlaceholderPage',
-              animationDuration: 250,
-              showOnTop: true,
-            }}
-          >
-            {value.pages.map((item, index) => {
-              return (
-                <Draggable key={index}>
-                  <div
-                    style={{
-                      background: '#ffffff',
-                      border: 1,
-                      borderRadius: 6,
-                      borderColor: selectedItem == item ? '#3373d9' : '#e0e0e0',
-                      borderStyle: 'dotted',
-                    }}
-                    onMouseEnter={(e) => {
-                      onMouseEnter(e, index);
-                    }}
-                  >
-                    <Tab
-                      key={index}
-                      label={item.name}
-                      style={tabStyle}
-                      onClick={() => {
-                        handleChange(index);
+      <div
+        style={{
+          padding: 10,
+        }}
+      >
+        <span style={{ fontSize: 18, margin: 0 }} key={value.code} role={'presentation'} onClick={handleClick}>
+          {value.name}
+        </span>
+        <div style={{ marginTop: 20, height: '90%' }}>
+          <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+            <Container
+              getChildPayload={(i) => value.pages[i]}
+              groupName={'pages'}
+              orientation={'horizontal'}
+              style={{
+                display: 'flex',
+                overflowY: 'hidden',
+              }}
+              onDrop={onDrop}
+              dropPlaceholder={{
+                className: 'dropPlaceholderPage',
+                animationDuration: 250,
+                showOnTop: true,
+              }}
+            >
+              {value.pages.map((item, index) => {
+                return (
+                  <Draggable key={index}>
+                    <div
+                      style={{
+                        background: '#ffffff',
+                        border: 1,
+                        borderRadius: 6,
+                        borderColor: selectedItem == item ? '#3373d9' : '#e0e0e0',
+                        borderStyle: 'dotted',
                       }}
-                    />
-                    {tabIndex == index && (
-                      <div
-                        style={{
-                          height: 2,
-                          marginTop: -2,
-                          marginLeft: 5,
-                          marginRight: 5,
-                          borderRadius: 10,
-                          background: theme.palette.primary.main,
+                      onMouseEnter={(e) => {
+                        onMouseEnter(e, index);
+                      }}
+                    >
+                      <Tab
+                        key={index}
+                        label={item.name}
+                        style={tabStyle}
+                        onClick={() => {
+                          handleChange(index);
                         }}
                       />
-                    )}
-                  </div>
-                </Draggable>
-              );
-            })}
-          </Container>
-        </Box>
-        {value.pages.map((item, index) => {
-          return (
-            <div hidden={index != tabIndex} key={index}>
-              <Page key={index} value={item} selectedItem={selectedItem} onSelectItem={onSelectItem} update={update} />
-            </div>
-          );
-        })}
+                      {tabIndex == index && (
+                        <div
+                          style={{
+                            height: 2,
+                            marginTop: -2,
+                            marginLeft: 5,
+                            marginRight: 5,
+                            borderRadius: 10,
+                            background: theme.palette.primary.main,
+                          }}
+                        />
+                      )}
+                    </div>
+                  </Draggable>
+                );
+              })}
+            </Container>
+          </Box>
+          {value.pages.map((item, index) => {
+            return (
+              index == tabIndex && (
+                <Page
+                  key={index}
+                  value={item}
+                  selectedItem={selectedItem}
+                  onSelectItem={onSelectItem}
+                  update={update}
+                />
+              )
+            );
+          })}
+        </div>
       </div>
     </div>
   );

@@ -9,7 +9,7 @@ import { IFormElement } from '../../../../interfaces/form-element';
 interface PageProps {
   value: ITabPage;
   selectedItem: IFormElement | undefined;
-  onSelectItem: (value: IFormElement) => void;
+  onSelectItem: (value: IFormElement | undefined) => void;
   update: () => void;
 }
 

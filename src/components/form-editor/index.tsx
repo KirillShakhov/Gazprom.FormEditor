@@ -88,11 +88,6 @@ export const FormEditor: React.FC = () => {
     setSelectedItem(undefined);
   };
 
-  const onSelectItem = (value: IFormElement) => {
-    console.log(`IFormElement ${JSON.stringify(value)}`);
-    setSelectedItem(value);
-  };
-
   const updateAll = () => {
     console.log('updateAll');
     setData({ ...data });
@@ -139,12 +134,12 @@ export const FormEditor: React.FC = () => {
             </Tabs>
           </Box>
           {tabIndex === 0 && <ParametersTab properties={parameters} />}
-          {tabIndex === 1 && <TreeViewForm form={data} onSelectItem={onSelectItem} update={updateAll} />}
+          {tabIndex === 1 && <TreeViewForm form={data} onSelectItem={setSelectedItem} update={updateAll} />}
           {tabIndex === 2 && <ComponentsTab form={data} parameters={parameters} />}
         </div>
         <main>
           {mode == Modes.Visual && (
-            <VisualMode form={data} selectedItem={selectedItem} onSelectItem={onSelectItem} update={updateAll} />
+            <VisualMode form={data} selectedItem={selectedItem} onSelectItem={setSelectedItem} update={updateAll} />
           )}
           {mode == Modes.Text && (
             <TextMode

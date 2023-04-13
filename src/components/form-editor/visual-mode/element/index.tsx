@@ -18,7 +18,7 @@ import { SelectType } from './types/select-type';
 interface ElementProps {
   value: IFormControl;
   selectedItem: IFormElement | undefined;
-  onSelectItem: (value: IFormElement) => void;
+  onSelectItem: (value: IFormElement | undefined) => void;
 }
 
 function renderSwitch(value: IFormControl) {
@@ -55,15 +55,18 @@ function renderSwitch(value: IFormControl) {
 export const Element: React.FC<ElementProps> = (props) => {
   const { value, selectedItem, onSelectItem } = props;
 
-  const onClick = (e: any) => {
-    e.preventDefault();
+  const onClick = () => {
+    if (selectedItem == value) {
+      onSelectItem(undefined);
+      return;
+    }
     onSelectItem(value);
   };
 
   return (
     <div
       style={{
-        marginTop: 20,
+        marginTop: 10,
         border: 1,
         borderRadius: 10,
         borderColor: selectedItem == value ? '#3373d9' : '#e0e0e0',

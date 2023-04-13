@@ -11,7 +11,7 @@ import { IFormElement } from '../../../../interfaces/form-element';
 interface GroupProps {
   value: IFormGroup;
   selectedItem: IFormElement | undefined;
-  onSelectItem: (value: IFormElement) => void;
+  onSelectItem: (value: IFormElement | undefined) => void;
   update: () => void;
 }
 
@@ -41,6 +41,10 @@ export const Group: React.FC<GroupProps> = (props) => {
   };
 
   const handleClick = () => {
+    if (selectedItem == value) {
+      onSelectItem(undefined);
+      return;
+    }
     onSelectItem(value);
   };
 
@@ -58,6 +62,7 @@ export const Group: React.FC<GroupProps> = (props) => {
         borderColor: selectedItem == value ? '#3373d9' : '#e0e0e0',
         borderStyle: 'dotted',
         zIndex: 0,
+        marginTop: 10,
       }}
       role="presentation"
     >
