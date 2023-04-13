@@ -52,25 +52,9 @@ function renderSwitch(value: IFormControl) {
 }
 
 export const Element: React.FC<ElementProps> = (props) => {
-  let { value, onSelectItem } = props;
+  const { value, onSelectItem } = props;
 
   const [isSelected, setIsSelected] = React.useState(false);
-
-  const useOutsideClick = (callback) => {
-    const ref = React.useRef<HTMLDivElement>(null);
-
-    React.useEffect(() => {
-      const handleClick = (event) => {
-        callback();
-      };
-      document.addEventListener('click', handleClick);
-      return () => {
-        document.removeEventListener('click', handleClick);
-      };
-    }, [callback]);
-
-    return ref;
-  };
 
   const onClick = (e: any) => {
     e.preventDefault();
@@ -78,15 +62,8 @@ export const Element: React.FC<ElementProps> = (props) => {
     setIsSelected(true);
   };
 
-  const handleClickOutside = () => {
-    setIsSelected(false);
-  };
-
-  const ref = useOutsideClick(handleClickOutside);
-
   return (
     <div
-      ref={ref}
       style={{
         marginTop: 20,
         border: 1,

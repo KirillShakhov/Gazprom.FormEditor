@@ -20,6 +20,11 @@ export const ComponentSettingProperties: React.FC<ElementProps> = (props) => {
     update();
   };
 
+  const handleChangeCode = (event: React.ChangeEvent<HTMLInputElement>) => {
+    formItem.code = event.target.value;
+    update();
+  };
+
   const getSettingComponent = (value: IFormControl): IPropertyConfig[] | undefined => {
     switch (value.type) {
       case CONTROL_TYPE.TEXT:
@@ -71,13 +76,13 @@ export const ComponentSettingProperties: React.FC<ElementProps> = (props) => {
       }}
     >
       <h5 style={{ margin: 0 }}>Text Input</h5>
+      <TextField id="outlined" label="Code" size={'small'} value={formItem.code} onChange={handleChangeCode} />
       <TextField id="outlined" label="Название поля" size={'small'} value={formItem.name} onChange={handleChangeName} />
       <div
         style={{
           display: 'flex',
           flexDirection: 'column',
-          gap: 20,
-          overflowY: 'scroll',
+          gap: 10,
         }}
       >
         {config &&
