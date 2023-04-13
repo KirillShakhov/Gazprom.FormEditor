@@ -143,7 +143,9 @@ export const FormEditor: React.FC = () => {
           {tabIndex === 2 && <ComponentsTab form={data} parameters={parameters} />}
         </div>
         <main>
-          {mode == Modes.Visual && <VisualMode form={data} selectedItem={selectedItem} onSelectItem={onSelectItem} update={updateAll} />}
+          {mode == Modes.Visual && (
+            <VisualMode form={data} selectedItem={selectedItem} onSelectItem={onSelectItem} update={updateAll} />
+          )}
           {mode == Modes.Text && (
             <TextMode
               value={data}

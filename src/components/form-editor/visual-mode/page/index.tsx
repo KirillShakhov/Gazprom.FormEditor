@@ -8,7 +8,7 @@ import { IFormElement } from '../../../../interfaces/form-element';
 
 interface PageProps {
   value: ITabPage;
-  selectedItem: IFormElement;
+  selectedItem: IFormElement | undefined;
   onSelectItem: (value: IFormElement) => void;
   update: () => void;
 }

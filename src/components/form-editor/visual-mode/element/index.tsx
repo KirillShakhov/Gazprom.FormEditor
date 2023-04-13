@@ -17,7 +17,7 @@ import { IFormElement } from '../../../../interfaces/form-element';
 
 interface ElementProps {
   value: IFormControl;
-  selectedItem: IFormElement;
+  selectedItem: IFormElement | undefined;
   onSelectItem: (value: IFormElement) => void;
 }
 

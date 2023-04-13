@@ -10,7 +10,7 @@ import { IFormElement } from '../../../../interfaces/form-element';
 
 interface GroupProps {
   value: IFormGroup;
-  selectedItem: IFormElement;
+  selectedItem: IFormElement | undefined;
   onSelectItem: (value: IFormElement) => void;
   update: () => void;
 }

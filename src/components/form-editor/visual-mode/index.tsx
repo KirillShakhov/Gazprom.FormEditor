@@ -9,13 +9,13 @@ import { IFormElement } from '../../../interfaces/form-element';
 
 interface VisualModeProps {
   form: IForm;
+  selectedItem: IFormElement | undefined;
   onSelectItem: (value: IFormElement) => void;
   update: () => void;
-  selectedItem: IFormElement;
 }
 
 export const VisualMode: React.FC<VisualModeProps> = (props) => {
-  const { form, onSelectItem, update, selectedItem } = props;
+  const { form, selectedItem, onSelectItem, update } = props;
 
   const print = () => {
     console.log(JSON.stringify(form.items));
@@ -46,18 +46,25 @@ export const VisualMode: React.FC<VisualModeProps> = (props) => {
             getChildPayload={(i) => (form.items ? form.items[i] : [])}
             groupName={'pages-groups'}
             onDrop={onDrop}
+            dropPlaceholder={{
+              className: 'dropPlaceholderPageGroup',
+              animationDuration: 250,
+              showOnTop: true,
+            }}
           >
             {form.items?.map((item, index) => {
               return (
-                <Draggable key={index}>
-                  <PageGroup
-                    value={item as ITabPageController}
-                    key={index}
-                    selectedItem={selectedItem}
-                    onSelectItem={onSelectItem}
-                    update={update}
-                  />
-                </Draggable>
+                isTabPageController(item) && (
+                  <Draggable key={index}>
+                    <PageGroup
+                      value={item as ITabPageController}
+                      key={index}
+                      selectedItem={selectedItem}
+                      onSelectItem={onSelectItem}
+                      update={update}
+                    />
+                  </Draggable>
+                )
               );
             })}
           </Container>

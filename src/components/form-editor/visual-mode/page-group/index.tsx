@@ -10,7 +10,7 @@ import { IFormElement } from '../../../../interfaces/form-element';
 
 interface PageGroupProps {
   value: ITabPageController;
-  selectedItem: IFormElement;
+  selectedItem: IFormElement | undefined;
   onSelectItem: (value: IFormElement) => void;
   update: () => void;
 }
@@ -74,6 +74,7 @@ export const PageGroup: React.FC<PageGroupProps> = (props) => {
   return (
     <div
       style={{
+        background: theme.palette.background.default,
         padding: 5,
         border: 1,
         borderRadius: 10,
@@ -92,6 +93,7 @@ export const PageGroup: React.FC<PageGroupProps> = (props) => {
             orientation={'horizontal'}
             style={{
               display: 'flex',
+              overflowY: 'hidden',
             }}
             onDrop={onDrop}
             dropPlaceholder={{
