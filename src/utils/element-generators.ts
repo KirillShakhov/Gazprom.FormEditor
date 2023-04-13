@@ -1,27 +1,34 @@
 import { generateCode } from './id-generator';
-import {FORM_GROUP_DIRECTION, IFormGroup, IFormItem, ITabPage, ITabPageController} from '../interfaces/form-config';
+import {
+  FORM_GROUP_DIRECTION,
+  IForm,
+  IFormGroup,
+  IFormItem,
+  ITabPage,
+  ITabPageController,
+} from '../interfaces/form-config';
 import { CONTROL_TYPE, IFormControl } from '../interfaces/form-control';
 import { IParameter, PARAMETER_TYPE } from '../interfaces/parameter';
 
-export const generatePageGroup = (): ITabPageController => {
+export const generatePageGroup = (form: IForm): ITabPageController => {
   return {
-    code: 'TabGroup ' + generateCode(),
+    code: generateCode(form, 'TabGroup'),
     name: 'Группа табы',
     pages: [],
   };
 };
 
-export const generatePage = (): ITabPage => {
+export const generatePage = (form: IForm): ITabPage => {
   return {
-    code: 'Page1' + generateCode(),
+    code: generateCode(form, 'Page'),
     name: 'Страница',
     items: [],
   };
 };
 
-export const generateGroup = (): IFormGroup => {
+export const generateGroup = (form: IForm): IFormGroup => {
   return {
-    code: 'Group1',
+    code: generateCode(form, 'Group'),
     name: 'Группа',
     direction: FORM_GROUP_DIRECTION.FORCE_HORIZONTAL,
     items: [],
@@ -29,9 +36,9 @@ export const generateGroup = (): IFormGroup => {
 };
 
 /** Генерация стандартного поля. */
-export const generateElement = (parameter: IParameter): IFormItem & IFormControl => {
+export const generateElement = (form: IForm, parameter: IParameter): IFormItem & IFormControl => {
   const item: IFormItem & IFormControl = {
-    code: `Element(${parameter.code})`,
+    code: generateCode(form, 'Element'),
     name: `Элемент(${parameter.name})`,
     dataSource: parameter.code,
     type: CONTROL_TYPE.TEXT,

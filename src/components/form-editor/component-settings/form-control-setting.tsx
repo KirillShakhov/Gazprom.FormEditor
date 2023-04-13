@@ -4,15 +4,17 @@ import { FormControl, InputLabel, MenuItem, Select, SelectChangeEvent } from '@m
 import { IParameter } from '../../../interfaces/parameter';
 import { datasourceMatch, getTypesByParameter } from '../../../utils/datasource-match';
 import { generateElement } from '../../../utils/element-generators';
+import { IForm } from '../../../interfaces/form-config';
 
 interface ElementProps {
+  form: IForm;
   value: IFormControl;
   properties: IParameter[];
   update: () => void;
 }
 
 export const FormControlSetting: React.FC<ElementProps> = (props) => {
-  const { value, properties, update } = props;
+  const { form, value, properties, update } = props;
 
   const currentPropertyIndex = useCallback(() => {
     let indexProperty = -1;
@@ -33,7 +35,7 @@ export const FormControlSetting: React.FC<ElementProps> = (props) => {
     const index = Number(event.target.value);
     const parameter = properties[index];
     if (!datasourceMatch(parameter.type, value.type)) {
-      const standardElement = generateElement(parameter);
+      const standardElement = generateElement(form, parameter);
       value.properties = standardElement.properties;
       value.type = standardElement.type;
     }

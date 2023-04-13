@@ -1,6 +1,5 @@
-import TreeItem, { treeItemClasses, TreeItemProps } from '@mui/lab/TreeItem';
+import { TreeItemProps } from '@mui/lab/TreeItem';
 import React from 'react';
-import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { ITabPage } from '../../../../interfaces/form-config';
@@ -10,10 +9,11 @@ import AppsRoundedIcon from '@mui/icons-material/AppsRounded';
 import { StyledTreeItemRoot } from './StyledTreeItem';
 import { Container, Draggable, DropResult } from 'react-smooth-dnd';
 import { checkImplementFormControl } from '../../../../utils/check-objects';
+import { IFormElement } from '../../../../interfaces/form-element';
 
 type TreeViewGroupProps = TreeItemProps & {
   group: ITabPage;
-  onSelectItem: (value: IFormControl) => void;
+  onSelectItem: (value: IFormElement) => void;
   update: () => void;
 };
 
@@ -36,6 +36,10 @@ export function TreeViewGroup(props: TreeViewGroupProps) {
     update();
   };
 
+  const onClick = () => {
+    onSelectItem(group);
+  };
+
   return (
     <StyledTreeItemRoot
       label={
@@ -46,6 +50,7 @@ export function TreeViewGroup(props: TreeViewGroupProps) {
           </Typography>
         </Box>
       }
+      onClick={onClick}
       {...other}
     >
       <Container

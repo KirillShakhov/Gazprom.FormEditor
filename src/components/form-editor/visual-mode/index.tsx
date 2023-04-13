@@ -57,6 +57,7 @@ export const VisualMode: React.FC<VisualModeProps> = (props) => {
                 isTabPageController(item) && (
                   <Draggable key={index}>
                     <PageGroup
+                      form={form}
                       value={item as ITabPageController}
                       key={index}
                       selectedItem={selectedItem}

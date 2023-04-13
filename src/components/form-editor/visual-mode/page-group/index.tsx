@@ -1,7 +1,7 @@
 import React from 'react';
 import { Box, Tab, useTheme } from '@mui/material';
 import { Page } from '../page';
-import { ITabPageController } from '../../../../interfaces/form-config';
+import {IForm, ITabPageController} from '../../../../interfaces/form-config';
 import { Container, Draggable, DropResult } from 'react-smooth-dnd';
 import { Experimental } from '../../../../utils/experimental';
 import '../style.css';
@@ -9,6 +9,7 @@ import { checkImplementFormElement } from '../../../../utils/check-objects';
 import { IFormElement } from '../../../../interfaces/form-element';
 
 interface PageGroupProps {
+  form: IForm;
   value: ITabPageController;
   selectedItem: IFormElement | undefined;
   onSelectItem: (value: IFormElement | undefined) => void;
@@ -16,7 +17,7 @@ interface PageGroupProps {
 }
 
 export const PageGroup: React.FC<PageGroupProps> = (props) => {
-  const { value, selectedItem, onSelectItem, update } = props;
+  const { form, value, selectedItem, onSelectItem, update } = props;
   const [tabIndex, setTabIndex] = React.useState(0);
   const theme = useTheme();
 
@@ -97,7 +98,7 @@ export const PageGroup: React.FC<PageGroupProps> = (props) => {
         <span style={{ fontSize: 18, margin: 0 }} key={value.code} role={'presentation'} onClick={handleClick}>
           {value.name}
         </span>
-        <div style={{ marginTop: 20, height: '90%' }}>
+        <div style={{ marginTop: 10, height: '90%' }}>
           <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
             <Container
               getChildPayload={(i) => value.pages[i]}
@@ -159,6 +160,7 @@ export const PageGroup: React.FC<PageGroupProps> = (props) => {
             return (
               index == tabIndex && (
                 <Page
+                  form={form}
                   key={index}
                   value={item}
                   selectedItem={selectedItem}

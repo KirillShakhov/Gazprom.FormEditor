@@ -5,10 +5,7 @@ import { generateElement } from './element-generators';
 /** Генерация стандартной формы. */
 export const generateStandardForm = (parameters: IParameter[]): IForm => {
   const items: IFormItem[] = [];
-  parameters.forEach((param) => {
-    items.push(generateElement(param));
-  });
-  return {
+  const form = {
     code: 'FormCode',
     name: 'Пример формы',
     description: 'FormDescription',
@@ -33,4 +30,8 @@ export const generateStandardForm = (parameters: IParameter[]): IForm => {
       },
     ],
   };
+  parameters.forEach((param) => {
+    items.push(generateElement(form, param));
+  });
+  return form;
 };

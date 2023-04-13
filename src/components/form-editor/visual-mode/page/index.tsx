@@ -1,12 +1,13 @@
 import React from 'react';
 import { Container, Draggable, DropResult } from 'react-smooth-dnd';
-import { IFormGroup, ITabPage } from '../../../../interfaces/form-config';
+import {IForm, IFormGroup, ITabPage} from '../../../../interfaces/form-config';
 import { Group } from '../group';
 import { isFormGroup } from '../../../../utils/form-config';
 import '../style.css';
 import { IFormElement } from '../../../../interfaces/form-element';
 
 interface PageProps {
+  form: IForm;
   value: ITabPage;
   selectedItem: IFormElement | undefined;
   onSelectItem: (value: IFormElement | undefined) => void;
@@ -14,7 +15,7 @@ interface PageProps {
 }
 
 export const Page: React.FC<PageProps> = (props) => {
-  const { value, selectedItem, onSelectItem, update } = props;
+  const { form, value, selectedItem, onSelectItem, update } = props;
 
   const onDrop = (dropResult: DropResult) => {
     const { removedIndex, addedIndex } = dropResult;
@@ -48,12 +49,13 @@ export const Page: React.FC<PageProps> = (props) => {
         return (
           <Draggable key={index}>
             <Group
-              value={item as IFormGroup}
+              form={form}
+              formGroup={item as IFormGroup}
               key={index}
               selectedItem={selectedItem}
               onSelectItem={onSelectItem}
               update={update}
-            ></Group>
+            />
           </Draggable>
         );
       })}

@@ -12,7 +12,7 @@ interface ComponentsTabProps {
 }
 
 export const ComponentsTab: React.FC<ComponentsTabProps> = (props) => {
-  const { parameters } = props;
+  const { form, parameters } = props;
 
   const onClick = () => {
     console.log('onClick');
@@ -20,7 +20,13 @@ export const ComponentsTab: React.FC<ComponentsTabProps> = (props) => {
 
   return (
     <div className="tab-item">
-      <Container getChildPayload={generatePageGroup} groupName={'pages-groups'} behaviour={'copy'}>
+      <Container
+        getChildPayload={() => {
+          return generatePageGroup(form);
+        }}
+        groupName={'pages-groups'}
+        behaviour={'copy'}
+      >
         <Draggable>
           <div className="component-item">
             <AddCircleOutlineRoundedIcon style={{ color: '#bcbcd0' }} fontSize={'small'} onClick={onClick} />
@@ -28,7 +34,13 @@ export const ComponentsTab: React.FC<ComponentsTabProps> = (props) => {
           </div>
         </Draggable>
       </Container>
-      <Container getChildPayload={generatePage} groupName={'pages'} behaviour={'copy'}>
+      <Container
+        getChildPayload={() => {
+          return generatePage(form);
+        }}
+        groupName={'pages'}
+        behaviour={'copy'}
+      >
         <Draggable>
           <div className="component-item">
             <AddCircleOutlineRoundedIcon style={{ color: '#bcbcd0' }} fontSize={'small'} onClick={onClick} />
@@ -36,7 +48,13 @@ export const ComponentsTab: React.FC<ComponentsTabProps> = (props) => {
           </div>
         </Draggable>
       </Container>
-      <Container getChildPayload={generateGroup} groupName={'groups'} behaviour={'copy'}>
+      <Container
+        getChildPayload={() => {
+          return generateGroup(form);
+        }}
+        groupName={'groups'}
+        behaviour={'copy'}
+      >
         <Draggable>
           <div className="component-item">
             <AddCircleOutlineRoundedIcon style={{ color: '#bcbcd0' }} fontSize={'small'} onClick={onClick} />
@@ -45,7 +63,13 @@ export const ComponentsTab: React.FC<ComponentsTabProps> = (props) => {
         </Draggable>
       </Container>
       {parameters?.length > 0 && (
-        <Container getChildPayload={() => generateElement(parameters[0])} groupName={'parameters'} behaviour={'copy'}>
+        <Container
+          getChildPayload={() => {
+            return generateElement(form, parameters[0]);
+          }}
+          groupName={'parameters'}
+          behaviour={'copy'}
+        >
           <Draggable>
             <div className="component-item">
               <AddCircleOutlineRoundedIcon style={{ color: '#bcbcd0' }} fontSize={'small'} onClick={onClick} />

@@ -1,6 +1,5 @@
-import TreeItem, { treeItemClasses, TreeItemProps } from '@mui/lab/TreeItem';
+import { TreeItemProps } from '@mui/lab/TreeItem';
 import React, { useCallback } from 'react';
-import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { ITabPage } from '../../../../interfaces/form-config';
@@ -17,15 +16,16 @@ import RadioButtonCheckedRoundedIcon from '@mui/icons-material/RadioButtonChecke
 import ViewStreamRoundedIcon from '@mui/icons-material/ViewStreamRounded';
 import ReorderRoundedIcon from '@mui/icons-material/ReorderRounded';
 import { StyledTreeItemRoot } from './StyledTreeItem';
+import { IFormElement } from '../../../../interfaces/form-element';
 
 type TreeViewElementProps = TreeItemProps & {
   element: ITabPage & IFormControl;
-  onSelectItem: (value: IFormControl) => void;
+  onSelectItem: (value: IFormElement) => void;
   update: () => void;
 };
 
 export function TreeViewElement(props: TreeViewElementProps) {
-  const { element, onSelectItem, update, ...other } = props;
+  const { element, onSelectItem, ...other } = props;
 
   const onClick = () => {
     onSelectItem(element);

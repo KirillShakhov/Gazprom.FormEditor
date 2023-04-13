@@ -4,14 +4,14 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { ITabPageController } from '../../../../interfaces/form-config';
 import { TreeViewPage } from './TreeViewPage';
-import { IFormControl } from '../../../../interfaces/form-control';
 import PagesRoundedIcon from '@mui/icons-material/PagesRounded';
 import { Container, Draggable, DropResult } from 'react-smooth-dnd';
 import { StyledTreeItemRoot } from './StyledTreeItem';
+import { IFormElement } from '../../../../interfaces/form-element';
 
 type TreeViewPageGroupProps = TreeItemProps & {
   group: ITabPageController;
-  onSelectItem: (value: IFormControl) => void;
+  onSelectItem: (value: IFormElement) => void;
   update: () => void;
 };
 
@@ -32,6 +32,10 @@ export function TreeViewPageGroup(props: TreeViewPageGroupProps) {
     update();
   };
 
+  const onClick = () => {
+    onSelectItem(group);
+  };
+
   return (
     <StyledTreeItemRoot
       label={
@@ -42,6 +46,7 @@ export function TreeViewPageGroup(props: TreeViewPageGroupProps) {
           </Typography>
         </Box>
       }
+      onClick={onClick}
       {...other}
     >
       <Container groupName={'tree-pages'} getChildPayload={(i) => (group.pages ? group.pages[i] : [])} onDrop={onDrop}>
@@ -50,7 +55,7 @@ export function TreeViewPageGroup(props: TreeViewPageGroupProps) {
             <Draggable key={index}>
               <TreeViewPage
                 key={index}
-                nodeId={`page_${page.code}`}
+                nodeId={`page_${page.code}_${page.name}`}
                 page={page}
                 onSelectItem={onSelectItem}
                 update={update}

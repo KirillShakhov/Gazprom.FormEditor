@@ -9,10 +9,11 @@ import { IFormControl } from '../../../../interfaces/form-control';
 import { Container, Draggable, DropResult } from 'react-smooth-dnd';
 import { StyledTreeItemRoot } from './StyledTreeItem';
 import { isFormGroup } from '../../../../utils/form-config';
+import {IFormElement} from "../../../../interfaces/form-element";
 
 type TreeViewPageProps = TreeItemProps & {
   page: ITabPage;
-  onSelectItem: (value: IFormControl) => void;
+  onSelectItem: (value: IFormElement) => void;
   update: () => void;
 };
 
@@ -35,6 +36,10 @@ export function TreeViewPage(props: TreeViewPageProps) {
     update();
   };
 
+  const onClick = () => {
+    onSelectItem(page);
+  };
+
   return (
     <StyledTreeItemRoot
       label={
@@ -45,6 +50,7 @@ export function TreeViewPage(props: TreeViewPageProps) {
           </Typography>
         </Box>
       }
+      onClick={onClick}
       {...other}
     >
       {page.items && (

@@ -50,7 +50,9 @@ export const ComponentSettings: React.FC<VisualModeProps> = (props) => {
             Компонент не выбран
           </span>
         )}
-        {value && isFormControl(value) && <FormControlSetting value={value} properties={properties} update={update} />}
+        {value && isFormControl(value) && (
+          <FormControlSetting form={form} value={value} properties={properties} update={update} />
+        )}
         {value && <ComponentSettingProperties formItem={value} config={config} update={update} />}
       </div>
     </div>
