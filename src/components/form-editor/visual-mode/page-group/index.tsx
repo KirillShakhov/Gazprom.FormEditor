@@ -1,7 +1,7 @@
 import React from 'react';
-import { Box, Tab, useTheme } from '@mui/material';
+import { useTheme } from '@mui/material';
 import { Page } from '../page';
-import {IForm, ITabPageController} from '../../../../interfaces/form-config';
+import { IForm, ITabPageController } from '../../../../interfaces/form-config';
 import { Container, Draggable, DropResult } from 'react-smooth-dnd';
 import { Experimental } from '../../../../utils/experimental';
 import '../style.css';
@@ -28,15 +28,6 @@ export const PageGroup: React.FC<PageGroupProps> = (props) => {
       return;
     }
     onSelectItem(value.pages[newValue]);
-  };
-
-  const tabStyle = {
-    minWidth: 20,
-    minHeight: 30,
-    height: 30,
-    padding: 10,
-    fontSize: 14,
-    borderRadius: 6,
   };
 
   const onMouseEnter = (e: any, id: number) => {
@@ -80,6 +71,39 @@ export const PageGroup: React.FC<PageGroupProps> = (props) => {
     onSelectItem(value);
   };
 
+  function onDropReady(dropResult: any) {
+    const { removedIndex, addedIndex, payload } = dropResult;
+    const element: HTMLDivElement = dropResult.element;
+    if (payload.hasOwnProperty('isNew')) {
+      console.log('removedIndex ' + removedIndex);
+      console.log('addedIndex ' + addedIndex);
+      console.log('payload ' + JSON.stringify(payload));
+      console.log('element ' + element.clientWidth);
+      // const ghost = document.getElementsByClassName('smooth-dnd-ghost');
+      const ghost = document.getElementsByClassName('dropPlaceholderPage');
+      const el = document.createElement('div');
+      el.className = 'page-blob';
+      const g = ghost.item(0);
+      g?.replaceWith(el);
+    }
+  }
+
+  const shouldAcceptDrop = (sourceContainerOptions: any, payload: any) => {
+    console.log('shouldAcceptDrop');
+    console.log('sourceContainerOptions ' + sourceContainerOptions);
+    console.log('payload ' + payload);
+
+    return true;
+  };
+
+  const shouldAnimateDrop = (sourceContainerOptions: any, payload: any) => {
+    console.log('shouldAnimateDrop');
+    console.log('sourceContainerOptions ' + sourceContainerOptions);
+    console.log('payload ' + payload);
+
+    return false;
+  };
+
   return (
     <div
       style={{
@@ -100,64 +124,75 @@ export const PageGroup: React.FC<PageGroupProps> = (props) => {
           {value.name}
         </span>
         <div style={{ marginTop: 10, height: '90%' }}>
-          <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-            <Container
-              getChildPayload={(i) => value.pages[i]}
-              groupName={'pages'}
-              orientation={'horizontal'}
-              style={{
-                display: 'flex',
-                overflowY: 'hidden',
-              }}
-              onDrop={onDrop}
-              dropPlaceholder={{
-                className: 'dropPlaceholderPage',
-                animationDuration: 250,
-                showOnTop: true,
-              }}
-            >
-              {value.pages.map((item, index) => {
-                return (
-                  <Draggable key={index}>
+          {/*<Box sx={{ border: 1, borderRadius: 2, borderColor: 'divider' }}>*/}
+          <Container
+            getChildPayload={(i) => value.pages[i]}
+            groupName={'pages'}
+            orientation={'horizontal'}
+            onDrop={onDrop}
+            style={{
+              display: 'flex',
+              overflowY: 'hidden',
+            }}
+            dropPlaceholder={{
+              className: 'dropPlaceholderPage',
+              animationDuration: 250,
+              showOnTop: true,
+            }}
+            onDropReady={onDropReady}
+          >
+            {value.pages.map((item, index) => {
+              return (
+                <Draggable key={index}>
+                  <div>
                     <div
                       style={{
+                        padding: 5,
+                        paddingLeft: 10,
+                        paddingRight: 10,
                         background: '#ffffff',
                         border: 1,
                         borderRadius: 6,
                         borderColor: selectedItem == item ? '#3373d9' : '#e0e0e0',
                         borderStyle: 'dotted',
-                        marginRight: 5,
+                        // marginRight: 5,
                       }}
+                      role={'presentation'}
                       onMouseEnter={(e) => {
                         onMouseEnter(e, index);
                       }}
+                      onClick={() => {
+                        handleChange(index);
+                      }}
                     >
-                      <Tab
-                        key={index}
-                        label={item.name}
-                        style={tabStyle}
-                        onClick={() => {
-                          handleChange(index);
+                      <div
+                        style={{
+                          fontSize: 16,
+                          whiteSpace: 'nowrap',
+                          color: theme.palette.text.primary,
+                        }}
+                      >
+                        {item.name}
+                      </div>
+                    </div>
+                    {tabIndex == index && (
+                      <div
+                        style={{
+                          height: 2,
+                          marginTop: -4,
+                          marginLeft: 10,
+                          marginRight: 15,
+                          borderRadius: 10,
+                          background: theme.palette.primary.main,
                         }}
                       />
-                      {tabIndex == index && (
-                        <div
-                          style={{
-                            height: 2,
-                            marginTop: -2,
-                            marginLeft: 5,
-                            marginRight: 5,
-                            borderRadius: 10,
-                            background: theme.palette.primary.main,
-                          }}
-                        />
-                      )}
-                    </div>
-                  </Draggable>
-                );
-              })}
-            </Container>
-          </Box>
+                    )}
+                  </div>
+                </Draggable>
+              );
+            })}
+          </Container>
+          {/*</Box>*/}
           {value.pages.map((item, index) => {
             return (
               index == tabIndex && (

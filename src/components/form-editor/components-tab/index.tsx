@@ -5,6 +5,8 @@ import { IForm } from '../../../interfaces/form-config';
 import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRounded';
 import { generateElement, generateGroup, generatePage, generatePageGroup } from '../../../utils/element-generators';
 import { IParameter } from '../../../interfaces/parameter';
+import { renderToStaticMarkup } from 'react-dom/server';
+import { Button } from '@mui/material';
 
 interface ComponentsTabProps {
   form: IForm;
@@ -16,6 +18,10 @@ export const ComponentsTab: React.FC<ComponentsTabProps> = (props) => {
 
   const onClick = () => {
     console.log('onClick');
+  };
+
+  const getGhostParent = (): HTMLElement => {
+    return document.body;
   };
 
   return (
@@ -36,15 +42,21 @@ export const ComponentsTab: React.FC<ComponentsTabProps> = (props) => {
       </Container>
       <Container
         getChildPayload={() => {
-          return generatePage(form);
+          const page = generatePage(form) as any;
+          page.isNew = true;
+          return page;
         }}
         groupName={'pages'}
         behaviour={'copy'}
+        dragClass={'page-blob'}
+        getGhostParent={(): HTMLElement => {
+          return document.body;
+        }}
       >
         <Draggable>
           <div className="component-item">
             <AddCircleOutlineRoundedIcon style={{ color: '#bcbcd0' }} fontSize={'small'} onClick={onClick} />
-            Страницы
+            Страница
           </div>
         </Draggable>
       </Container>

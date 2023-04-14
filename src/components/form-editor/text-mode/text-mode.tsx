@@ -4,37 +4,57 @@ import AceEditor from 'react-ace';
 import { IForm } from '../../../interfaces/form-config';
 import 'ace-builds/src-noconflict/mode-json';
 import 'ace-builds/src-noconflict/theme-github';
-import Ajv from 'ajv';
+import 'ace-builds/src-noconflict/ext-language_tools';
+
 import ErrorOutlineRoundedIcon from '@mui/icons-material/ErrorOutlineRounded';
+import { validate } from '../../../utils/validate-halper';
 interface TextModeProps {
   value: IForm;
-  onChange: (value: string) => void;
+  onChange: (value: IForm) => void;
 }
-
-const ajv = new Ajv(); // options can be passed, e.g. {allErrors: true}
 
 export const TextMode: React.FC<TextModeProps> = (props) => {
   const { value, onChange } = props;
-  const ace = useRef(null);
+  const ace = useRef<AceEditor>(null);
   const [error, setError] = useState<string>('');
-
   const [text, setText] = useState(JSON.stringify(value, null, 2));
 
   useEffect(() => {
     setText(JSON.stringify(value, null, 2));
     setError('');
+    console.log('123');
   }, [value]);
 
   function handleChange(text: string) {
     try {
       try {
-        JSON.parse(text);
+        const json = JSON.parse(text);
+        validate(json).then((e) => {
+          setError(`${e}`);
+        });
+        // const userSchema = object({
+        //   name: string().required('Необходимо ввести name'),
+        //   age: number().required('Необходимо ввести age').positive().integer(),
+        //   email: string().email(),
+        //   website: string().url().nullable(),
+        //   createdOn: date().default(() => new Date()),
+        // });
+        // const user = userSchema.validate(json);
+        // user
+        //   .then((res) => {
+        //     console.log('res ' + res);
+        //   })
+        //   .catch((e) => {
+        //     setError(`${e.message}`);
+        //   });
+        // type UserType = InferType<typeof userSchema>;
+        // console.log('user ' + user);
       } catch (e) {
         setError(`${e}`);
       }
 
       setText(text);
-      onChange(text);
+      onChange(JSON.parse(text));
       setError('');
       // const validate = ajv.compile(schema);
       // const valid = validate(text);
@@ -43,6 +63,8 @@ export const TextMode: React.FC<TextModeProps> = (props) => {
       // pass, user is editing
     }
   }
+
+  // const editor = ace.edit('editor');
 
   return (
     <div className="json-editor">

@@ -44,6 +44,9 @@ export const Page: React.FC<PageProps> = (props) => {
         animationDuration: 250,
         showOnTop: true,
       }}
+      getGhostParent={(): HTMLElement => {
+        return document.body;
+      }}
     >
       {value.items?.map((item, index) => {
         return (

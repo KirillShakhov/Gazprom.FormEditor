@@ -85,6 +85,9 @@ export const Group: React.FC<GroupProps> = (props) => {
           animationDuration: 250,
           showOnTop: true,
         }}
+        getGhostParent={(): HTMLElement => {
+          return document.body;
+        }}
       >
         {formGroup.items?.map((item, index) => {
           return (
