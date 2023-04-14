@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import { IPropertyConfig, PROPERTY_VALUE_TYPE } from '../../../interfaces/property-metadata';
+import { IPropertyConfig, PROPERTY_VALUE_TYPE } from '../../../../interfaces/property-metadata';
 import {
   Checkbox,
   FormControl,
@@ -11,41 +11,61 @@ import {
   SelectChangeEvent,
   TextField,
 } from '@mui/material';
-import { IFormElement } from '../../../interfaces/form-element';
+import { IFormElement } from '../../../../interfaces/form-element';
 import { NumericFormat } from 'react-number-format';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
+import { IForm } from '../../../../interfaces/form-config';
 
 interface ElementProps {
-  value: IFormElement;
+  value: IFormElement | IForm;
   propertiesConfig: IPropertyConfig;
   update: () => void;
 }
 
-export const ParameterType: React.FC<ElementProps> = (props) => {
+export const PropertyConfig: React.FC<ElementProps> = (props) => {
   const { value, propertiesConfig, update } = props;
   const [index, setIndex] = React.useState(0);
 
   const getPropertyValue = useCallback(() => {
-    if (value.properties === undefined) return '';
-    if (value.properties.hasOwnProperty(propertiesConfig.code)) {
-      return value.properties[propertiesConfig.code];
+    if (propertiesConfig.isOwnProperty == true) {
+      const obj = value as any;
+      if (obj.hasOwnProperty(propertiesConfig.code)) {
+        return obj[propertiesConfig.code];
+      }
+    } else {
+      if (value.properties === undefined) return '';
+      if (value.properties.hasOwnProperty(propertiesConfig.code)) {
+        return value.properties[propertiesConfig.code];
+      }
     }
     return '';
   }, [propertiesConfig, value]);
 
   const changeValue = (val: any) => {
-    if (value.properties === undefined) value.properties = {};
-    value.properties[propertiesConfig.code] = val;
+    if (propertiesConfig.isOwnProperty == true) {
+      const obj = value as any;
+      obj[propertiesConfig.code] = val;
+    } else {
+      if (value.properties === undefined) value.properties = {};
+      value.properties[propertiesConfig.code] = val;
+    }
     update();
   };
 
   const cleanValue = () => {
-    if (value.properties === undefined) return;
-    if (value.properties.hasOwnProperty(propertiesConfig.code)) {
-      delete value.properties[propertiesConfig.code];
+    if (propertiesConfig.isOwnProperty == true) {
+      const obj = value as any;
+      if (obj.hasOwnProperty(propertiesConfig.code)) {
+        delete obj[propertiesConfig.code];
+      }
+    } else {
+      if (value.properties === undefined) return;
+      if (value.properties.hasOwnProperty(propertiesConfig.code)) {
+        delete value.properties[propertiesConfig.code];
+      }
     }
     update();
   };
@@ -94,11 +114,7 @@ export const ParameterType: React.FC<ElementProps> = (props) => {
             style={{ width: '100%', marginLeft: 2 }}
             control={
               <Checkbox
-                checked={
-                  value.properties !== undefined &&
-                  value.properties.hasOwnProperty(propertiesConfig.code) &&
-                  value.properties[propertiesConfig.code] === true
-                }
+                checked={getPropertyValue() == '' ? false : getPropertyValue()}
                 onChange={(e) => {
                   if (e.target.checked) {
                     changeValue(true);

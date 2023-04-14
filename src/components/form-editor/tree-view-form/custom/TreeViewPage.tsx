@@ -1,6 +1,5 @@
-import TreeItem, { treeItemClasses, TreeItemProps } from '@mui/lab/TreeItem';
+import { TreeItemProps } from '@mui/lab/TreeItem';
 import React from 'react';
-import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { ITabPage } from '../../../../interfaces/form-config';
@@ -10,10 +9,11 @@ import { IFormControl } from '../../../../interfaces/form-control';
 import { Container, Draggable, DropResult } from 'react-smooth-dnd';
 import { StyledTreeItemRoot } from './StyledTreeItem';
 import { isFormGroup } from '../../../../utils/form-config';
+import {IFormElement} from "../../../../interfaces/form-element";
 
 type TreeViewPageProps = TreeItemProps & {
   page: ITabPage;
-  onSelectItem: (value: IFormControl) => void;
+  onSelectItem: (value: IFormElement) => void;
   update: () => void;
 };
 
@@ -21,16 +21,23 @@ export function TreeViewPage(props: TreeViewPageProps) {
   const { page, onSelectItem, update, ...other } = props;
 
   const onDrop = (dropResult: DropResult) => {
-    const { removedIndex, addedIndex } = dropResult;
-    if (removedIndex == null || addedIndex == null) return;
-    if (dropResult.payload != null) return;
-    if (page.items == undefined) return;
-    const group = { ...page.items[removedIndex] };
+    const { removedIndex, addedIndex, payload } = dropResult;
+    if (payload == null) return;
+    if (page.items == undefined) page.items = [];
+    const group = { ...payload };
     if (isFormGroup(group)) {
-      page.items?.splice(removedIndex, 1);
-      page.items?.splice(addedIndex, 0, group);
+      if (removedIndex != null) {
+        page.items?.splice(removedIndex, 1);
+      }
+      if (addedIndex != null) {
+        page.items?.splice(addedIndex, 0, group);
+      }
     }
     update();
+  };
+
+  const onClick = () => {
+    onSelectItem(page);
   };
 
   return (
@@ -43,31 +50,35 @@ export function TreeViewPage(props: TreeViewPageProps) {
           </Typography>
         </Box>
       }
+      onClick={onClick}
       {...other}
     >
-      <Container
-        groupName={'tree-groups'}
-        onDrop={onDrop}
-        dropPlaceholder={{
-          className: 'treeShadowPlaceholder',
-          animationDuration: 250,
-          showOnTop: true,
-        }}
-      >
-        {page.items?.map((group, index) => {
-          return (
-            <Draggable key={index}>
-              <TreeViewGroup
-                key={index}
-                nodeId={`group_${index}_${group.code}`}
-                group={group}
-                onSelectItem={onSelectItem}
-                update={update}
-              />
-            </Draggable>
-          );
-        })}
-      </Container>
+      {page.items && (
+        <Container
+          groupName={'tree-groups'}
+          onDrop={onDrop}
+          getChildPayload={(i) => (page.items ? page.items[i] : [])}
+          dropPlaceholder={{
+            className: 'treeShadowPlaceholder',
+            animationDuration: 250,
+            showOnTop: true,
+          }}
+        >
+          {page.items.map((group, index) => {
+            return (
+              <Draggable key={index}>
+                <TreeViewGroup
+                  key={index}
+                  nodeId={`group_${group.code}`}
+                  group={group}
+                  onSelectItem={onSelectItem}
+                  update={update}
+                />
+              </Draggable>
+            );
+          })}
+        </Container>
+      )}
     </StyledTreeItemRoot>
   );
 }

@@ -1,6 +1,6 @@
 import React from 'react';
 import { IFormControl } from '../../../../../interfaces/form-control';
-import { Checkbox, FormControlLabel, Switch } from '@mui/material';
+import { Checkbox, FormControlLabel } from '@mui/material';
 
 interface ElementProps {
   value: IFormControl;

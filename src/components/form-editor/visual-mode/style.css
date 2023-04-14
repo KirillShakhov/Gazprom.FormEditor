@@ -1,7 +1,4 @@
 .visual-mode{
-    /*display: flex;*/
-    /*align-items: center;*/
-    /*justify-content: center;*/
     height: 100%;
     background: #565963;
     padding: 20px;
@@ -20,18 +17,50 @@
 
 .dropPlaceholderElement{
     background: rgba(220, 220, 220, 0.6);
+    border-color: #bbbbbb;
+    border-style: dashed;
     border-radius: 10px;
-    margin-top: 20px;
+    margin-top: 10px;
+}
+
+.dropPlaceholderPageGroup{
+    background: rgba(220, 220, 220, 0.6);
+    border-color: #bbbbbb;
+    border-style: dashed;
+    border-radius: 10px;
+    margin-top: 10px;
 }
 
 .dropPlaceholderPage{
     background: rgba(220, 220, 220, 0.6);
+    border-color: #bbbbbb;
+    border-style: dashed;
     border-radius: 6px;
+    /*margin-right: 5px;*/
 }
 
 .dropPlaceholderGroup{
     background: rgba(220, 220, 220, 0.6);
     border-color: #bbbbbb;
-    border-radius: 6px;
     border-style: dashed;
+    border-radius: 10px;
+    margin-top: 10px;
+}
+
+.smooth-dnd-container::-webkit-scrollbar {
+    display: none;  /* Safari and Chrome browsers */
+    -webkit-appearance: none;
+    width: 0;
+    height: 0;
+}
+
+.smooth-dnd-container {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none;  /* mozilla */
+}
+
+.page-blob {
+    background: red;
+    width: 50px;
+    height: 30px;
 }

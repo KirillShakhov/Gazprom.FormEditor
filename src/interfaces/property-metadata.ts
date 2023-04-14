@@ -27,6 +27,8 @@ export interface IPropertyConfig {
   name: string;
   /** Тип свойства. */
   type: PROPERTY_VALUE_TYPE;
+  /** Признак собственного свойства */
+  isOwnProperty?: boolean;
   /** Опции (для варианта отображения). */
   options?: string[];
 }
@@ -66,8 +68,9 @@ export interface IPropertyMetadata {
 /** Пример объекта. */
 export const metadata: IPropertyMetadata = {
   byElementType: {
+    FORM: [{ code: 'title', name: 'Наименование', type: PROPERTY_VALUE_TYPE.STRING, isOwnProperty: true }],
     // Общие свойства для всех элементов.
-    ELEMENT: [{ code: 'title', name: 'Наименование', type: PROPERTY_VALUE_TYPE.STRING }],
+    ELEMENT: [{ code: 'title', name: 'Наименование', type: PROPERTY_VALUE_TYPE.STRING, isOwnProperty: true }],
     PAGES: [],
     PAGE: [],
     GROUP: [
@@ -76,6 +79,7 @@ export const metadata: IPropertyMetadata = {
         name: 'Ориентация',
         type: PROPERTY_VALUE_TYPE.LIST,
         options: ['FORCE_HORIZONTAL', 'HORIZONTAL', 'VERTICAL'],
+        isOwnProperty: true,
       },
       { code: 'showTitle', name: 'Отображать заголовок', type: PROPERTY_VALUE_TYPE.BOOLEAN },
     ],
@@ -83,8 +87,8 @@ export const metadata: IPropertyMetadata = {
     CONTROL: [
       { code: 'readonly', name: 'Только чтение', type: PROPERTY_VALUE_TYPE.BOOLEAN },
       { code: 'hidden', name: 'Скрытый', type: PROPERTY_VALUE_TYPE.BOOLEAN },
-      { code: 'info', name: 'Информационное поле', type: PROPERTY_VALUE_TYPE.BOOLEAN },
-      { code: 'hint', name: 'Подсказка', type: PROPERTY_VALUE_TYPE.STRING },
+      { code: 'info', name: 'Информационное поле', type: PROPERTY_VALUE_TYPE.BOOLEAN, isOwnProperty: true },
+      { code: 'hint', name: 'Подсказка', type: PROPERTY_VALUE_TYPE.STRING, isOwnProperty: true },
     ],
   },
   byParameterType: {
@@ -129,7 +133,17 @@ export const metadata: IPropertyMetadata = {
     DATEPICKER: [],
     DATETIMEPICKER: [],
     FILE: [],
-    TEXT: [{ code: 'mask', name: 'Маска ввода', type: PROPERTY_VALUE_TYPE.STRING }],
+    TEXT: [
+      { code: 'mask', name: 'Маска ввода', type: PROPERTY_VALUE_TYPE.STRING },
+      { code: 'mask', name: 'Маска ввода', type: PROPERTY_VALUE_TYPE.STRING },
+      { code: 'mask', name: 'Маска ввода', type: PROPERTY_VALUE_TYPE.STRING },
+      { code: 'mask', name: 'Маска ввода', type: PROPERTY_VALUE_TYPE.STRING },
+      { code: 'mask', name: 'Маска ввода', type: PROPERTY_VALUE_TYPE.STRING },
+      { code: 'mask', name: 'Маска ввода', type: PROPERTY_VALUE_TYPE.STRING },
+      { code: 'mask', name: 'Маска ввода', type: PROPERTY_VALUE_TYPE.STRING },
+      { code: 'mask', name: 'Маска ввода', type: PROPERTY_VALUE_TYPE.STRING },
+      { code: 'mask', name: 'Маска ввода', type: PROPERTY_VALUE_TYPE.STRING },
+    ],
     TEXTAREA: [{ code: 'lineCount', name: 'Количество строк', type: PROPERTY_VALUE_TYPE.INTEGER }],
     COMBOBOX: [],
     NUMBER: [],

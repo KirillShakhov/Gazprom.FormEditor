@@ -9,5 +9,13 @@ interface ElementProps {
 export const FileType: React.FC<ElementProps> = (props) => {
   const { value } = props;
 
-  return <Button name={value.name} fullWidth></Button>;
+  return (
+    <div>
+      <div style={{ fontSize: 12, color: '#a4a4a4', marginLeft: 3, marginBottom: 3 }}>{value.name}</div>
+      <Button variant="contained" component="label" disabled>
+        Upload File
+        <input type="file" hidden />
+      </Button>
+    </div>
+  );
 };

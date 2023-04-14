@@ -171,7 +171,7 @@ export const form: IForm = {
           ],
         },
         {
-          code: 'Page1',
+          code: 'Page2',
           name: 'Страница 2',
           items: [
             {

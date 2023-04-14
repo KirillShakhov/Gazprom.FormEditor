@@ -1,4 +1,5 @@
 import React from 'react';
+import { IFormElement } from '../../../../interfaces/form-element';
 import { CONTROL_TYPE, IFormControl } from '../../../../interfaces/form-control';
 import { DefaultType } from './types/default-type';
 import { NumberType } from './types/number-type';
@@ -9,11 +10,15 @@ import { SwitchType } from './types/switch-type';
 import { CheckBoxType } from './types/checkbox-type';
 import { RadioGroupType } from './types/radiogroup-type';
 import { DateTimePickerType } from './types/datetimepicker-type';
+import { LinkType } from './types/link-type';
+import { FileType } from './types/file-type';
+import { ComboBoxType } from './types/combobox-type';
+import { SelectType } from './types/select-type';
 
 interface ElementProps {
   value: IFormControl;
-  isSelected: boolean;
-  onSelectItem: (value: IFormControl) => void;
+  selectedItem: IFormElement | undefined;
+  onSelectItem: (value: IFormElement | undefined) => void;
 }
 
 function renderSwitch(value: IFormControl) {
@@ -34,40 +39,41 @@ function renderSwitch(value: IFormControl) {
       return <DatePickerType value={value} />;
     case CONTROL_TYPE.DATETIMEPICKER:
       return <DateTimePickerType value={value} />;
-      break;
     case CONTROL_TYPE.LINK:
-      break;
+      return <LinkType value={value} />;
     case CONTROL_TYPE.FILE:
-      break;
+      return <FileType value={value} />;
     case CONTROL_TYPE.COMBOBOX:
-      break;
+      return <ComboBoxType value={value} />;
     case CONTROL_TYPE.SELECT:
-      break;
+      return <SelectType value={value} />;
     default:
       return <DefaultType value={value}></DefaultType>;
   }
 }
 
 export const Element: React.FC<ElementProps> = (props) => {
-  const { value, isSelected, onSelectItem } = props;
+  const { value, selectedItem, onSelectItem } = props;
 
   const onClick = () => {
-    if (!isSelected) {
-      // console.log(JSON.stringify(value));
-      onSelectItem(value);
+    if (selectedItem == value) {
+      onSelectItem(undefined);
+      return;
     }
+    onSelectItem(value);
   };
 
   return (
     <div
       style={{
-        marginTop: 20,
+        marginTop: 10,
         border: 1,
         borderRadius: 10,
-        borderColor: isSelected ? '#3373d9' : '#e0e0e0',
+        borderColor: selectedItem == value ? '#3373d9' : '#e0e0e0',
         borderStyle: 'dotted',
         padding: 5,
         background: '#ffffff',
+        zIndex: 100,
       }}
       role="presentation"
       onClick={onClick}

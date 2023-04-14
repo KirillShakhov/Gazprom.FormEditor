@@ -1,57 +1,33 @@
 import React from 'react';
-import { Box, Tab, useTheme } from '@mui/material';
+import { useTheme } from '@mui/material';
 import { Page } from '../page';
-import { ITabPageController } from '../../../../interfaces/form-config';
+import { IForm, ITabPageController } from '../../../../interfaces/form-config';
 import { Container, Draggable, DropResult } from 'react-smooth-dnd';
-import { IFormControl } from '../../../../interfaces/form-control';
 import { Experimental } from '../../../../utils/experimental';
 import '../style.css';
 import { checkImplementFormElement } from '../../../../utils/check-objects';
+import { IFormElement } from '../../../../interfaces/form-element';
 
 interface PageGroupProps {
+  form: IForm;
   value: ITabPageController;
-  onSelectItem: (value: IFormControl) => void;
+  selectedItem: IFormElement | undefined;
+  onSelectItem: (value: IFormElement | undefined) => void;
   update: () => void;
 }
 
-interface TabPanelProps {
-  children?: React.ReactNode;
-  index: number;
-  value: number;
-}
-
 export const PageGroup: React.FC<PageGroupProps> = (props) => {
-  const { value, onSelectItem, update } = props;
+  const { form, value, selectedItem, onSelectItem, update } = props;
   const [tabIndex, setTabIndex] = React.useState(0);
   const theme = useTheme();
 
   const handleChange = (newValue: number) => {
     setTabIndex(newValue);
-  };
-
-  function TabPanel(props: TabPanelProps) {
-    const { children, value, index, ...other } = props;
-    return (
-      <div
-        role="tabpanel"
-        hidden={value !== index}
-        style={{
-          height: '98%',
-        }}
-        {...other}
-      >
-        {children}
-      </div>
-    );
-  }
-
-  const tabStyle = {
-    minWidth: 20,
-    minHeight: 30,
-    height: 30,
-    padding: 10,
-    fontSize: 14,
-    borderRadius: 6,
+    if (selectedItem == value.pages[newValue]) {
+      onSelectItem(undefined);
+      return;
+    }
+    onSelectItem(value.pages[newValue]);
   };
 
   const onMouseEnter = (e: any, id: number) => {
@@ -63,15 +39,12 @@ export const PageGroup: React.FC<PageGroupProps> = (props) => {
   };
 
   const onDrop = (dropResult: DropResult) => {
-    const { removedIndex, addedIndex, element, payload } = dropResult;
+    const { removedIndex, addedIndex, payload } = dropResult;
     if (removedIndex == null && addedIndex == null) return;
-    if (dropResult.payload != null) {
-      console.log('check0');
-      if (value.pages === undefined) return;
-      const page = { ...dropResult.payload };
-      console.log('check1');
+    if (payload != null) {
+      if (value.pages == undefined) value.pages = [];
+      const page = { ...payload };
       if (checkImplementFormElement(page)) {
-        console.log('check2');
         if (removedIndex != null) {
           value.pages?.splice(removedIndex, 1);
         }
@@ -90,52 +63,125 @@ export const PageGroup: React.FC<PageGroupProps> = (props) => {
     }
   };
 
+  const handleClick = () => {
+    if (selectedItem == value) {
+      onSelectItem(undefined);
+      return;
+    }
+    onSelectItem(value);
+  };
+
+  function onDropReady(dropResult: any) {
+    const { removedIndex, addedIndex, payload } = dropResult;
+    const element: HTMLDivElement = dropResult.element;
+    if (payload.hasOwnProperty('isNew')) {
+      console.log('removedIndex ' + removedIndex);
+      console.log('addedIndex ' + addedIndex);
+      console.log('payload ' + JSON.stringify(payload));
+      console.log('element ' + element.clientWidth);
+      // const ghost = document.getElementsByClassName('smooth-dnd-ghost');
+      const ghost = document.getElementsByClassName('dropPlaceholderPage');
+      const el = document.createElement('div');
+      el.className = 'page-blob';
+      const g = ghost.item(0);
+      g?.replaceWith(el);
+    }
+  }
+
+  const shouldAcceptDrop = (sourceContainerOptions: any, payload: any) => {
+    console.log('shouldAcceptDrop');
+    console.log('sourceContainerOptions ' + sourceContainerOptions);
+    console.log('payload ' + payload);
+
+    return true;
+  };
+
+  const shouldAnimateDrop = (sourceContainerOptions: any, payload: any) => {
+    console.log('shouldAnimateDrop');
+    console.log('sourceContainerOptions ' + sourceContainerOptions);
+    console.log('payload ' + payload);
+
+    return false;
+  };
+
   return (
-    <div>
-      <span style={{ fontSize: 18, margin: 0 }}>{value.name}</span>
-      <div style={{ marginTop: 20, height: '90%' }}>
-        <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+    <div
+      style={{
+        background: theme.palette.background.default,
+        border: 1,
+        borderRadius: 10,
+        borderColor: selectedItem == value ? '#3373d9' : '#e0e0e0',
+        borderStyle: 'dotted',
+        marginTop: 10,
+      }}
+    >
+      <div
+        style={{
+          padding: 10,
+        }}
+      >
+        <span style={{ fontSize: 18, margin: 0 }} key={value.code} role={'presentation'} onClick={handleClick}>
+          {value.name}
+        </span>
+        <div style={{ marginTop: 10, height: '90%' }}>
+          {/*<Box sx={{ border: 1, borderRadius: 2, borderColor: 'divider' }}>*/}
           <Container
             getChildPayload={(i) => value.pages[i]}
             groupName={'pages'}
             orientation={'horizontal'}
+            onDrop={onDrop}
             style={{
               display: 'flex',
+              overflowY: 'hidden',
             }}
-            onDrop={onDrop}
             dropPlaceholder={{
               className: 'dropPlaceholderPage',
               animationDuration: 250,
               showOnTop: true,
             }}
+            onDropReady={onDropReady}
           >
             {value.pages.map((item, index) => {
               return (
                 <Draggable key={index}>
-                  <div
-                    style={{
-                      background: '#ffffff',
-                      borderRadius: 6,
-                    }}
-                    onMouseEnter={(e) => {
-                      onMouseEnter(e, index);
-                    }}
-                  >
-                    <Tab
-                      key={index}
-                      label={item.name}
-                      style={tabStyle}
+                  <div>
+                    <div
+                      style={{
+                        padding: 5,
+                        paddingLeft: 10,
+                        paddingRight: 10,
+                        background: '#ffffff',
+                        border: 1,
+                        borderRadius: 6,
+                        borderColor: selectedItem == item ? '#3373d9' : '#e0e0e0',
+                        borderStyle: 'dotted',
+                        // marginRight: 5,
+                      }}
+                      role={'presentation'}
+                      onMouseEnter={(e) => {
+                        onMouseEnter(e, index);
+                      }}
                       onClick={() => {
                         handleChange(index);
                       }}
-                    />
+                    >
+                      <div
+                        style={{
+                          fontSize: 16,
+                          whiteSpace: 'nowrap',
+                          color: theme.palette.text.primary,
+                        }}
+                      >
+                        {item.name}
+                      </div>
+                    </div>
                     {tabIndex == index && (
                       <div
                         style={{
                           height: 2,
-                          marginTop: -2,
-                          marginLeft: 5,
-                          marginRight: 5,
+                          marginTop: -4,
+                          marginLeft: 10,
+                          marginRight: 15,
                           borderRadius: 10,
                           background: theme.palette.primary.main,
                         }}
@@ -146,14 +192,22 @@ export const PageGroup: React.FC<PageGroupProps> = (props) => {
               );
             })}
           </Container>
-        </Box>
-        {value.pages.map((item, index) => {
-          return (
-            <div hidden={index != tabIndex} key={index}>
-              <Page key={index} value={item} onSelectItem={onSelectItem} update={update} />
-            </div>
-          );
-        })}
+          {/*</Box>*/}
+          {value.pages.map((item, index) => {
+            return (
+              index == tabIndex && (
+                <Page
+                  form={form}
+                  key={index}
+                  value={item}
+                  selectedItem={selectedItem}
+                  onSelectItem={onSelectItem}
+                  update={update}
+                />
+              )
+            );
+          })}
+        </div>
       </div>
     </div>
   );

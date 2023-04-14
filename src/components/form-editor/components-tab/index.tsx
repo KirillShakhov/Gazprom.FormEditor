@@ -1,54 +1,38 @@
 import React from 'react';
 import './style.css';
 import { Container, Draggable } from 'react-smooth-dnd';
-import { FORM_GROUP_DIRECTION, IForm } from '../../../interfaces/form-config';
+import { IForm } from '../../../interfaces/form-config';
 import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRounded';
-import {CONTROL_TYPE} from "../../../interfaces/form-control";
+import { generateElement, generateGroup, generatePage, generatePageGroup } from '../../../utils/element-generators';
+import { IParameter } from '../../../interfaces/parameter';
+import { renderToStaticMarkup } from 'react-dom/server';
+import { Button } from '@mui/material';
 
 interface ComponentsTabProps {
   form: IForm;
-  update: () => void;
+  parameters: IParameter[];
 }
 
 export const ComponentsTab: React.FC<ComponentsTabProps> = (props) => {
-  const { form, update } = props;
-
-  const list: any[] = [
-    {
-      code: 'TabGroup',
-      name: 'Группа табы',
-      pages: [],
-    },
-    {
-      code: 'Page1',
-      name: 'Страница',
-      items: [],
-    },
-    {
-      code: 'Group1',
-      name: 'Группа',
-      direction: FORM_GROUP_DIRECTION.FORCE_HORIZONTAL,
-      items: [],
-    },
-    {
-      code: 'Element1',
-      name: 'Элемент',
-      dataSource: 'Parameter1',
-      type: CONTROL_TYPE.NUMBER,
-      properties: {
-        minValue: 0,
-        maxValue: 100,
-      },
-    },
-  ];
+  const { form, parameters } = props;
 
   const onClick = () => {
     console.log('onClick');
   };
 
+  const getGhostParent = (): HTMLElement => {
+    return document.body;
+  };
+
   return (
     <div className="tab-item">
-      <Container getChildPayload={() => list[0]} groupName={'pages-groups'} behaviour={'copy'}>
+      <Container
+        getChildPayload={() => {
+          return generatePageGroup(form);
+        }}
+        groupName={'pages-groups'}
+        behaviour={'copy'}
+      >
         <Draggable>
           <div className="component-item">
             <AddCircleOutlineRoundedIcon style={{ color: '#bcbcd0' }} fontSize={'small'} onClick={onClick} />
@@ -56,15 +40,33 @@ export const ComponentsTab: React.FC<ComponentsTabProps> = (props) => {
           </div>
         </Draggable>
       </Container>
-      <Container getChildPayload={() => list[1]} groupName={'pages'} behaviour={'copy'}>
+      <Container
+        getChildPayload={() => {
+          const page = generatePage(form) as any;
+          page.isNew = true;
+          return page;
+        }}
+        groupName={'pages'}
+        behaviour={'copy'}
+        dragClass={'page-blob'}
+        getGhostParent={(): HTMLElement => {
+          return document.body;
+        }}
+      >
         <Draggable>
           <div className="component-item">
             <AddCircleOutlineRoundedIcon style={{ color: '#bcbcd0' }} fontSize={'small'} onClick={onClick} />
-            Страницы
+            Страница
           </div>
         </Draggable>
       </Container>
-      <Container getChildPayload={() => list[2]} groupName={'groups'} behaviour={'copy'}>
+      <Container
+        getChildPayload={() => {
+          return generateGroup(form);
+        }}
+        groupName={'groups'}
+        behaviour={'copy'}
+      >
         <Draggable>
           <div className="component-item">
             <AddCircleOutlineRoundedIcon style={{ color: '#bcbcd0' }} fontSize={'small'} onClick={onClick} />
@@ -72,14 +74,22 @@ export const ComponentsTab: React.FC<ComponentsTabProps> = (props) => {
           </div>
         </Draggable>
       </Container>
-      <Container getChildPayload={() => list[3]} groupName={'parameters'} behaviour={'copy'}>
-        <Draggable>
-          <div className="component-item">
-            <AddCircleOutlineRoundedIcon style={{ color: '#bcbcd0' }} fontSize={'small'} onClick={onClick} />
-            Поле ввода
-          </div>
-        </Draggable>
-      </Container>
+      {parameters?.length > 0 && (
+        <Container
+          getChildPayload={() => {
+            return generateElement(form, parameters[0]);
+          }}
+          groupName={'parameters'}
+          behaviour={'copy'}
+        >
+          <Draggable>
+            <div className="component-item">
+              <AddCircleOutlineRoundedIcon style={{ color: '#bcbcd0' }} fontSize={'small'} onClick={onClick} />
+              Поле ввода
+            </div>
+          </Draggable>
+        </Container>
+      )}
     </div>
   );
 };

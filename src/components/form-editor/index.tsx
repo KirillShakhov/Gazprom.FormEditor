@@ -4,10 +4,9 @@ import { CommandLine } from './command-line';
 import { VisualMode } from './visual-mode';
 import { TextMode } from './text-mode/text-mode';
 import { ComponentSettings } from './component-settings';
-import { generateStandardForm } from '../../utils/generate-form';
+import { generateStandardForm } from '../../utils/form-generator';
 import { checkImplementForm, checkImplementParameters } from '../../utils/check-objects';
-import { form, parameters } from '../../interfaces/example';
-import { IFormControl } from '../../interfaces/form-control';
+import { form as standardForm, parameters as standardParameters } from '../../interfaces/example';
 import { IPropertyMetadata, metadata } from '../../interfaces/property-metadata';
 import { IParameter } from '../../interfaces/parameter';
 import { IForm } from '../../interfaces/form-config';
@@ -15,6 +14,8 @@ import { ParametersTab } from './parameters-tab';
 import { TreeViewForm } from './tree-view-form';
 import { ComponentsTab } from './components-tab';
 import './style.css';
+import { IFormElement } from '../../interfaces/form-element';
+import { findAndDeleteFromForm } from '../../utils/find-and-delete-from-form';
 
 enum Modes {
   Visual,
@@ -51,10 +52,10 @@ const theme = createTheme({
 /** Редактор форм. */
 export const FormEditor: React.FC = () => {
   const [mode, setMode] = React.useState(Modes.Visual);
-  const [properties, setProperties] = React.useState<IParameter[]>(parameters);
-  const [data, setData] = React.useState<IForm>(form);
+  const [parameters, setParameters] = React.useState<IParameter[]>(standardParameters);
+  const [data, setData] = React.useState<IForm>(standardForm);
   const [config] = React.useState<IPropertyMetadata>(metadata);
-  const [selectedItem, setSelectedItem] = React.useState<IFormControl>();
+  const [selectedItem, setSelectedItem] = React.useState<IFormElement>();
   const [tabIndex, setTabIndex] = React.useState(1);
 
   const changeMode = () => {
@@ -69,7 +70,7 @@ export const FormEditor: React.FC = () => {
     try {
       const params: IParameter[] = JSON.parse(data);
       if (checkImplementParameters(params)) {
-        setProperties(params);
+        setParameters(params);
         setData(generateStandardForm(params));
         return;
       }
@@ -84,18 +85,21 @@ export const FormEditor: React.FC = () => {
   };
 
   const newBlankJson = () => {
-    setData(generateStandardForm(properties));
+    setData(generateStandardForm(parameters));
     setSelectedItem(undefined);
-  };
-
-  const onSelectItem = (value: IFormControl) => {
-    console.log(`IFormControl ${JSON.stringify(value)}`);
-    setSelectedItem(value);
   };
 
   const updateAll = () => {
     console.log('updateAll');
     setData({ ...data });
+  };
+
+  const deleteObject = () => {
+    if (selectedItem) {
+      setSelectedItem(undefined);
+      findAndDeleteFromForm(data, selectedItem);
+      updateAll();
+    }
   };
 
   const tabStyle = {
@@ -138,35 +142,33 @@ export const FormEditor: React.FC = () => {
               <Tab label="Компоненты" style={tabStyle} />
             </Tabs>
           </Box>
-
-          <div hidden={tabIndex !== 0}>
-            <ParametersTab properties={properties} />
-          </div>
-          <div hidden={tabIndex !== 1}>
-            <TreeViewForm form={form} onSelectItem={onSelectItem}  update={updateAll}/>
-          </div>
-          <div hidden={tabIndex !== 2}>
-            <ComponentsTab form={form} update={updateAll} />
-          </div>
+          {tabIndex === 0 && <ParametersTab properties={parameters} />}
+          {tabIndex === 1 && <TreeViewForm form={data} onSelectItem={setSelectedItem} update={updateAll} />}
+          {tabIndex === 2 && <ComponentsTab form={data} parameters={parameters} />}
         </div>
         <main>
-          <div hidden={mode != Modes.Visual} style={{ height: '100%' }}>
-            <VisualMode form={data} onSelectItem={onSelectItem} update={updateAll} />
-          </div>
-          <div hidden={mode != Modes.Text} style={{ height: '100%' }}>
+          {mode == Modes.Visual && (
+            <VisualMode form={data} selectedItem={selectedItem} onSelectItem={setSelectedItem} update={updateAll} />
+          )}
+          {mode == Modes.Text && (
             <TextMode
-              value={JSON.stringify(data)}
-              onChange={(data) => {
-                console.log('text ' + data);
-                setData({ ...JSON.parse(data) });
+              value={data}
+              onChange={(newData) => {
+                if (JSON.stringify(data) !== JSON.stringify(newData)) setData(newData);
                 setSelectedItem(undefined);
               }}
-              update={updateAll}
             />
-          </div>
+          )}
         </main>
         <div className="right-side">
-          <ComponentSettings value={selectedItem} properties={properties} config={config} update={updateAll} />
+          <ComponentSettings
+            form={data}
+            value={selectedItem}
+            properties={parameters}
+            config={config}
+            update={updateAll}
+            deleteObject={deleteObject}
+          />
         </div>
       </div>
     </ThemeProvider>

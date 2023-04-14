@@ -4,19 +4,18 @@ import { Button } from '@mui/material';
 import { PageGroup } from './page-group';
 import { IForm, ITabPageController } from '../../../interfaces/form-config';
 import { Container, Draggable, DropResult } from 'react-smooth-dnd';
-import { IFormControl } from '../../../interfaces/form-control';
-import {checkImplementForm, checkImplementFormControl, checkImplementParameter} from '../../../utils/check-objects';
-import { generateStandardElement } from '../../../utils/generate-form';
-import {isTabPageController} from "../../../utils/form-config";
+import { isTabPageController } from '../../../utils/form-config';
+import { IFormElement } from '../../../interfaces/form-element';
 
 interface VisualModeProps {
   form: IForm;
-  onSelectItem: (value: IFormControl) => void;
+  selectedItem: IFormElement | undefined;
+  onSelectItem: (value: IFormElement | undefined) => void;
   update: () => void;
 }
 
 export const VisualMode: React.FC<VisualModeProps> = (props) => {
-  const { form, onSelectItem, update } = props;
+  const { form, selectedItem, onSelectItem, update } = props;
 
   const print = () => {
     console.log(JSON.stringify(form.items));
@@ -47,17 +46,26 @@ export const VisualMode: React.FC<VisualModeProps> = (props) => {
             getChildPayload={(i) => (form.items ? form.items[i] : [])}
             groupName={'pages-groups'}
             onDrop={onDrop}
+            dropPlaceholder={{
+              className: 'dropPlaceholderPageGroup',
+              animationDuration: 250,
+              showOnTop: true,
+            }}
           >
             {form.items?.map((item, index) => {
               return (
-                <Draggable key={index}>
-                  <PageGroup
-                    value={item as ITabPageController}
-                    key={index}
-                    onSelectItem={onSelectItem}
-                    update={update}
-                  />
-                </Draggable>
+                isTabPageController(item) && (
+                  <Draggable key={index}>
+                    <PageGroup
+                      form={form}
+                      value={item as ITabPageController}
+                      key={index}
+                      selectedItem={selectedItem}
+                      onSelectItem={onSelectItem}
+                      update={update}
+                    />
+                  </Draggable>
+                )
               );
             })}
           </Container>
