@@ -1,12 +1,21 @@
 import React, { useEffect, useState } from 'react';
+import ErrorOutlineRoundedIcon from '@mui/icons-material/ErrorOutlineRounded';
 import './text-mode.css';
 import AceEditor from 'react-ace';
 import { IForm } from '../../../interfaces/form-config';
+
+import 'ace-builds';
+import 'ace-builds/webpack-resolver';
+// then the mode, theme & extension
 import 'ace-builds/src-noconflict/mode-json';
-import 'ace-builds/src-noconflict/theme-github';
+import 'ace-builds/src-noconflict/ext-searchbox';
+
+import 'ace-builds/src-noconflict/worker-json';
+import 'ace-builds/src-noconflict/theme-textmate';
 import 'ace-builds/src-noconflict/ext-language_tools';
-import ace from 'ace-builds';
-const Range = ace.require('ace/range').Range;
+
+// import ace from 'ace-builds';
+// const Range = ace.require('ace/range').Range;
 // editor.setTheme('ace/theme/monokai');
 // editor.session.setMode('ace/mode/javascript');
 
@@ -112,7 +121,7 @@ export const TextMode: React.FC<TextModeProps> = (props) => {
             zIndex: 100,
           }}
         >
-          {/*<ErrorOutlineRoundedIcon sx={{ color: '#fa8181' }} />*/}
+          <ErrorOutlineRoundedIcon sx={{ color: '#fa8181' }} />
           <span
             style={{
               marginLeft: 10,
@@ -125,12 +134,11 @@ export const TextMode: React.FC<TextModeProps> = (props) => {
       </div>
       <AceEditor
         mode="json"
-        theme="github"
+        theme="textmate"
         onChange={handleChange}
         name="json-editor"
         editorProps={{ $blockScrolling: true }}
         setOptions={{
-          useWorker: false,
           tabSize: 2,
         }}
         value={text}
