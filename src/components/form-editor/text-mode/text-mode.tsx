@@ -1,13 +1,18 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './text-mode.css';
 import AceEditor from 'react-ace';
 import { IForm } from '../../../interfaces/form-config';
 import 'ace-builds/src-noconflict/mode-json';
 import 'ace-builds/src-noconflict/theme-github';
 import 'ace-builds/src-noconflict/ext-language_tools';
+import ace from 'ace-builds';
+const Range = ace.require('ace/range').Range;
+// editor.setTheme('ace/theme/monokai');
+// editor.session.setMode('ace/mode/javascript');
 
-import ErrorOutlineRoundedIcon from '@mui/icons-material/ErrorOutlineRounded';
 import { validate } from '../../../utils/validate-halper';
+import { checkUniqueCode } from '../../../utils/check-unique-code';
+
 interface TextModeProps {
   value: IForm;
   onChange: (value: IForm) => void;
@@ -15,22 +20,50 @@ interface TextModeProps {
 
 export const TextMode: React.FC<TextModeProps> = (props) => {
   const { value, onChange } = props;
-  const ace = useRef<AceEditor>(null);
   const [error, setError] = useState<string>('');
   const [text, setText] = useState(JSON.stringify(value, null, 2));
 
   useEffect(() => {
     setText(JSON.stringify(value, null, 2));
-    setError('');
-    console.log('123');
   }, [value]);
 
   function handleChange(text: string) {
     try {
       try {
         const json = JSON.parse(text);
-        validate(json).then((e) => {
-          setError(`${e}`);
+        validate(json).then((errors) => {
+          if (errors == null) {
+            const errorUnique = checkUniqueCode(JSON.parse(text) as IForm);
+            if (errorUnique === '') {
+              setError('');
+            } else {
+              setError('not unique code ' + errorUnique);
+              console.log('errorUnique ' + errorUnique);
+            }
+            return;
+          }
+          console.log(errors);
+          let errorMessage = '';
+          errors.forEach((error) => {
+            // ace.current
+            errorMessage += error.instancePath + ' ' + error.message;
+            // const editor = ace.edit('json-editor');
+            // const highlight1: MarkerLike = {
+            //   update: {},
+            // };
+            // highlight1.update = customUpdateWithOverlay.call(
+            //   highlight1,
+            //   'marker1',
+            //   word1.range,
+            //   'bottom',
+            //   'Lorem Ipsum Popover',
+            //   'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque venenatis velit tellus.',
+            //   false,
+            // );
+            // editor.getSession().addDynamicMarker(highlight1, true);
+            // editor.getSession().addMarker(new Range(0, 0, 1, 5), 'blue', 'text');
+          });
+          setError(`${errorMessage}`);
         });
         // const userSchema = object({
         //   name: string().required('Необходимо ввести name'),
@@ -55,12 +88,8 @@ export const TextMode: React.FC<TextModeProps> = (props) => {
 
       setText(text);
       onChange(JSON.parse(text));
-      setError('');
-      // const validate = ajv.compile(schema);
-      // const valid = validate(text);
-      // if (!valid) console.log(validate.errors);
     } catch (error) {
-      // pass, user is editing
+      console.log(error);
     }
   }
 
@@ -83,7 +112,7 @@ export const TextMode: React.FC<TextModeProps> = (props) => {
             zIndex: 100,
           }}
         >
-          <ErrorOutlineRoundedIcon sx={{ color: '#fa8181' }} />
+          {/*<ErrorOutlineRoundedIcon sx={{ color: '#fa8181' }} />*/}
           <span
             style={{
               marginLeft: 10,
@@ -95,7 +124,6 @@ export const TextMode: React.FC<TextModeProps> = (props) => {
         </div>
       </div>
       <AceEditor
-        ref={ace}
         mode="json"
         theme="github"
         onChange={handleChange}
