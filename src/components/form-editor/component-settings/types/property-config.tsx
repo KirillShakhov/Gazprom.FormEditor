@@ -27,7 +27,6 @@ interface ElementProps {
 
 export const PropertyConfig: React.FC<ElementProps> = (props) => {
   const { value, propertiesConfig, update } = props;
-  const [index, setIndex] = React.useState(0);
 
   const getPropertyValue = useCallback(() => {
     if (propertiesConfig.isOwnProperty == true) {
@@ -45,6 +44,7 @@ export const PropertyConfig: React.FC<ElementProps> = (props) => {
   }, [propertiesConfig, value]);
 
   const changeValue = (val: any) => {
+    console.log('val '+val)
     if (propertiesConfig.isOwnProperty == true) {
       const obj = value as any;
       obj[propertiesConfig.code] = val;
@@ -169,20 +169,16 @@ export const PropertyConfig: React.FC<ElementProps> = (props) => {
             <Select
               labelId="data-source-label"
               id="data-source"
-              value={index}
+              value={getPropertyValue()}
               label={propertyConfig.name}
-              onChange={(event: SelectChangeEvent<number>) => {
-                if (propertyConfig.options !== undefined) {
-                  const index = Number(event.target.value);
-                  changeValue(propertyConfig.options[index]);
-                  setIndex(index);
-                }
+              onChange={(event: SelectChangeEvent) => {
+                changeValue(event.target.value);
               }}
               fullWidth
             >
               {propertyConfig.options?.map((param, index) => {
                 return (
-                  <MenuItem value={index} key={index}>
+                  <MenuItem value={param} key={index}>
                     {param}
                   </MenuItem>
                 );
