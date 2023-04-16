@@ -87,8 +87,8 @@ export const metadata: IPropertyMetadata = {
     CONTROL: [
       { code: 'readonly', name: 'Только чтение', type: PROPERTY_VALUE_TYPE.BOOLEAN },
       { code: 'hidden', name: 'Скрытый', type: PROPERTY_VALUE_TYPE.BOOLEAN },
-      { code: 'info', name: 'Информационное поле', type: PROPERTY_VALUE_TYPE.BOOLEAN, isOwnProperty: true },
-      { code: 'hint', name: 'Подсказка', type: PROPERTY_VALUE_TYPE.STRING, isOwnProperty: true },
+      { code: 'info', name: 'Информационное поле', type: PROPERTY_VALUE_TYPE.BOOLEAN },
+      { code: 'hint', name: 'Подсказка', type: PROPERTY_VALUE_TYPE.STRING },
     ],
   },
   byParameterType: {

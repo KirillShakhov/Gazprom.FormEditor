@@ -1,10 +1,10 @@
 import React, { useCallback } from 'react';
 import { TextField } from '@mui/material';
-import { CONTROL_TYPE, IFormControl } from '../../../../interfaces/form-control';
-import { IPropertyConfig, IPropertyMetadata } from '../../../../interfaces/property-metadata';
+import { CONTROL_TYPE, IFormControl } from '../../../interfaces/form-control';
+import { IPropertyConfig, IPropertyMetadata } from '../../../interfaces/property-metadata';
 import { PropertyConfig } from './property-config';
-import { isFormControl, isFormGroup, isFormPage, isTabPageController } from '../../../../utils/form-config';
-import { IFormElement } from '../../../../interfaces/form-element';
+import { isFormControl, isFormGroup, isFormPage, isTabPageController } from '../../../utils/form-config';
+import { IFormElement } from '../../../interfaces/form-element';
 
 interface ElementProps {
   formItem: IFormElement;
@@ -143,7 +143,7 @@ export const ComponentSettingProperties: React.FC<ElementProps> = (props) => {
       >
         {config &&
           getAllProperties().map((property, index) => {
-            return <PropertyConfig propertiesConfig={property} key={index} value={formItem} update={update} />;
+            return <PropertyConfig propertyConfig={property} key={index} value={formItem} update={update} />;
           })}
       </div>
     </div>
