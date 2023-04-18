@@ -139,7 +139,7 @@ export const PageGroup: React.FC<PageGroupProps> = (props) => {
               animationDuration: 250,
               showOnTop: true,
             }}
-            onDropReady={onDropReady}
+            // onDropReady={onDropReady}
           >
             {value.pages.map((item, index) => {
               return (

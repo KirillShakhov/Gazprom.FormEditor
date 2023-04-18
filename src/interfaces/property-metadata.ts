@@ -86,7 +86,7 @@ export const metadata: IPropertyMetadata = {
     // Общие свойства для всех полей ввода
     CONTROL: [
       { code: 'readonly', name: 'Только чтение', type: PROPERTY_VALUE_TYPE.BOOLEAN },
-      { code: 'hidden', name: 'Скрытый', type: PROPERTY_VALUE_TYPE.BOOLEAN },
+      { code: 'hidden', name: 'Скрытый', type: PROPERTY_VALUE_TYPE.BOOLEAN, isOwnProperty: true },
       { code: 'info', name: 'Информационное поле', type: PROPERTY_VALUE_TYPE.BOOLEAN },
       { code: 'hint', name: 'Подсказка', type: PROPERTY_VALUE_TYPE.STRING },
     ],

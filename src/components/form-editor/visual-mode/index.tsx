@@ -2,10 +2,13 @@ import React from 'react';
 import './style.css';
 import { Button } from '@mui/material';
 import { PageGroup } from './page-group';
-import { IForm, ITabPageController } from '../../../interfaces/form-config';
+import { IForm, IFormGroup, ITabPageController } from '../../../interfaces/form-config';
 import { Container, Draggable, DropResult } from 'react-smooth-dnd';
-import { isTabPageController } from '../../../utils/form-config';
+import { isFormControl, isFormGroup, isTabPageController } from '../../../utils/form-config';
 import { IFormElement } from '../../../interfaces/form-element';
+import { Group } from './group';
+import { Element } from './element';
+import { IFormControl } from '../../../interfaces/form-control';
 
 interface VisualModeProps {
   form: IForm;
@@ -26,7 +29,7 @@ export const VisualMode: React.FC<VisualModeProps> = (props) => {
     if (removedIndex == null && addedIndex == null) return;
     if (dropResult.payload != null) {
       const param = dropResult.payload;
-      if (isTabPageController(param)) {
+      if (isTabPageController(param) || isFormGroup(param) || isFormControl(param)) {
         if (removedIndex != null) {
           form.items?.splice(removedIndex, 1);
         }
@@ -36,6 +39,10 @@ export const VisualMode: React.FC<VisualModeProps> = (props) => {
       }
       update();
     }
+  };
+
+  const shouldAcceptDrop = (sourceContainerOptions: any, payload: any) => {
+    return isTabPageController(payload) || isFormGroup(payload) || isFormControl(payload);
   };
 
   return (
@@ -51,11 +58,12 @@ export const VisualMode: React.FC<VisualModeProps> = (props) => {
               animationDuration: 250,
               showOnTop: true,
             }}
+            shouldAcceptDrop={shouldAcceptDrop}
           >
             {form.items?.map((item, index) => {
               return (
-                isTabPageController(item) && (
-                  <Draggable key={index}>
+                <Draggable key={index}>
+                  {isTabPageController(item) && (
                     <PageGroup
                       form={form}
                       value={item as ITabPageController}
@@ -64,8 +72,26 @@ export const VisualMode: React.FC<VisualModeProps> = (props) => {
                       onSelectItem={onSelectItem}
                       update={update}
                     />
-                  </Draggable>
-                )
+                  )}
+                  {isFormGroup(item) && (
+                    <Group
+                      form={form}
+                      formGroup={item as IFormGroup}
+                      key={index}
+                      selectedItem={selectedItem}
+                      onSelectItem={onSelectItem}
+                      update={update}
+                    />
+                  )}
+                  {isFormControl(item) && (
+                    <Element
+                      value={item as IFormControl}
+                      key={index}
+                      selectedItem={selectedItem}
+                      onSelectItem={onSelectItem}
+                    />
+                  )}
+                </Draggable>
               );
             })}
           </Container>
