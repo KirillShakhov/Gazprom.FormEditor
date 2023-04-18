@@ -1,4 +1,4 @@
-import { IFormGroup, ITabPage, ITabPageController } from '../interfaces/form-config';
+import { IFormGroup, IFormItem, ITabPage, ITabPageController } from '../interfaces/form-config';
 import { IFormControl } from '../interfaces/form-control';
 import { IFormElement } from '../interfaces/form-element';
 
@@ -19,3 +19,8 @@ export const isFormPage = (item: IFormElement): item is ITabPage => {
 /** Является ли элемент полем ввода. */
 export const isFormControl = (item: IFormElement): item is IFormControl =>
   (item as IFormControl).dataSource !== undefined;
+
+/** Является ли элемент IFormItem. */
+export const isFormItem = (item: IFormElement): item is IFormItem => {
+  return isTabPageController(item) || isFormGroup(item) || isFormControl(item);
+};

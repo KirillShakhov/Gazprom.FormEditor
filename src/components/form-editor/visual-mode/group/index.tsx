@@ -7,6 +7,8 @@ import { checkImplementFormControl, checkImplementParameter } from '../../../../
 import { generateElement } from '../../../../utils/element-generators';
 import '../style.css';
 import { IFormElement } from '../../../../interfaces/form-element';
+import {FormItem} from "../form-item";
+import {isFormItem} from "../../../../utils/form-config";
 
 interface GroupProps {
   form: IForm;
@@ -25,7 +27,7 @@ export const Group: React.FC<GroupProps> = (props) => {
     if (dropResult.payload == null) return;
     if (formGroup.items == undefined) formGroup.items = [];
     const param = dropResult.payload;
-    if (checkImplementFormControl(param)) {
+    if (isFormItem(param)) {
       if (removedIndex != null) {
         formGroup.items?.splice(removedIndex, 1);
       }
@@ -47,6 +49,10 @@ export const Group: React.FC<GroupProps> = (props) => {
       return;
     }
     onSelectItem(formGroup);
+  };
+
+  const shouldAcceptDrop = (sourceContainerOptions: any, payload: any) => {
+    return isFormItem(payload);
   };
 
   return (
@@ -88,15 +94,17 @@ export const Group: React.FC<GroupProps> = (props) => {
         getGhostParent={(): HTMLElement => {
           return document.body;
         }}
+        shouldAcceptDrop={shouldAcceptDrop}
       >
         {formGroup.items?.map((item, index) => {
           return (
             <Draggable key={index}>
-              <Element
-                value={item as IFormControl}
-                key={index}
-                selectedItem={selectedItem}
+              <FormItem
+                form={form}
+                formItem={item}
                 onSelectItem={onSelectItem}
+                selectedItem={selectedItem}
+                update={update}
               />
             </Draggable>
           );

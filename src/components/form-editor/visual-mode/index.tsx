@@ -1,14 +1,11 @@
 import React from 'react';
 import './style.css';
 import { Button } from '@mui/material';
-import { PageGroup } from './page-group';
-import { IForm, IFormGroup, ITabPageController } from '../../../interfaces/form-config';
+import { IForm } from '../../../interfaces/form-config';
 import { Container, Draggable, DropResult } from 'react-smooth-dnd';
-import { isFormControl, isFormGroup, isTabPageController } from '../../../utils/form-config';
+import {isFormControl, isFormGroup, isFormItem, isTabPageController} from '../../../utils/form-config';
 import { IFormElement } from '../../../interfaces/form-element';
-import { Group } from './group';
-import { Element } from './element';
-import { IFormControl } from '../../../interfaces/form-control';
+import { FormItem } from './form-item';
 
 interface VisualModeProps {
   form: IForm;
@@ -42,7 +39,7 @@ export const VisualMode: React.FC<VisualModeProps> = (props) => {
   };
 
   const shouldAcceptDrop = (sourceContainerOptions: any, payload: any) => {
-    return isTabPageController(payload) || isFormGroup(payload) || isFormControl(payload);
+    return isFormItem(payload);
   };
 
   return (
@@ -63,34 +60,13 @@ export const VisualMode: React.FC<VisualModeProps> = (props) => {
             {form.items?.map((item, index) => {
               return (
                 <Draggable key={index}>
-                  {isTabPageController(item) && (
-                    <PageGroup
-                      form={form}
-                      value={item as ITabPageController}
-                      key={index}
-                      selectedItem={selectedItem}
-                      onSelectItem={onSelectItem}
-                      update={update}
-                    />
-                  )}
-                  {isFormGroup(item) && (
-                    <Group
-                      form={form}
-                      formGroup={item as IFormGroup}
-                      key={index}
-                      selectedItem={selectedItem}
-                      onSelectItem={onSelectItem}
-                      update={update}
-                    />
-                  )}
-                  {isFormControl(item) && (
-                    <Element
-                      value={item as IFormControl}
-                      key={index}
-                      selectedItem={selectedItem}
-                      onSelectItem={onSelectItem}
-                    />
-                  )}
+                  <FormItem
+                    form={form}
+                    formItem={item}
+                    onSelectItem={onSelectItem}
+                    selectedItem={selectedItem}
+                    update={update}
+                  />
                 </Draggable>
               );
             })}
