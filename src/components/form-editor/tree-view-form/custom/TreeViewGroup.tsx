@@ -3,13 +3,12 @@ import React from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { ITabPage } from '../../../../interfaces/form-config';
-import { IFormControl } from '../../../../interfaces/form-control';
-import { TreeViewElement } from './TreeViewElement';
 import AppsRoundedIcon from '@mui/icons-material/AppsRounded';
 import { StyledTreeItemRoot } from './StyledTreeItem';
 import { Container, Draggable, DropResult } from 'react-smooth-dnd';
-import { checkImplementFormControl } from '../../../../utils/check-objects';
 import { IFormElement } from '../../../../interfaces/form-element';
+import { TreeViewFormItem } from './TreeViewFormItem';
+import { isFormItem } from '../../../../utils/form-config';
 
 type TreeViewGroupProps = TreeItemProps & {
   group: ITabPage;
@@ -25,7 +24,7 @@ export function TreeViewGroup(props: TreeViewGroupProps) {
     if (payload == null) return;
     if (group.items == undefined) group.items = [];
     const element = { ...payload };
-    if (checkImplementFormControl(element)) {
+    if (isFormItem(element)) {
       if (removedIndex != null) {
         group.items?.splice(removedIndex, 1);
       }
@@ -34,6 +33,10 @@ export function TreeViewGroup(props: TreeViewGroupProps) {
       }
     }
     update();
+  };
+
+  const shouldAcceptDrop = (sourceContainerOptions: any, payload: any) => {
+    return isFormItem(payload);
   };
 
   const onClick = () => {
@@ -62,17 +65,13 @@ export function TreeViewGroup(props: TreeViewGroupProps) {
           animationDuration: 250,
           showOnTop: true,
         }}
+        shouldAcceptDrop={shouldAcceptDrop}
+        getGhostParent={() => document.body}
       >
-        {group.items?.map((element, index) => {
+        {group.items?.map((item, index) => {
           return (
             <Draggable key={index}>
-              <TreeViewElement
-                key={index}
-                nodeId={`element_${element.code}`}
-                element={element as ITabPage & IFormControl}
-                onSelectItem={onSelectItem}
-                update={update}
-              />
+              <TreeViewFormItem key={index} formItem={item} onSelectItem={onSelectItem} update={update} />
             </Draggable>
           );
         })}

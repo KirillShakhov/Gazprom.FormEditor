@@ -8,8 +8,9 @@ import { TreeViewGroup } from './TreeViewGroup';
 import { IFormControl } from '../../../../interfaces/form-control';
 import { Container, Draggable, DropResult } from 'react-smooth-dnd';
 import { StyledTreeItemRoot } from './StyledTreeItem';
-import { isFormGroup } from '../../../../utils/form-config';
+import {isFormGroup, isFormItem} from '../../../../utils/form-config';
 import {IFormElement} from "../../../../interfaces/form-element";
+import {TreeViewFormItem} from "./TreeViewFormItem";
 
 type TreeViewPageProps = TreeItemProps & {
   page: ITabPage;
@@ -25,7 +26,7 @@ export function TreeViewPage(props: TreeViewPageProps) {
     if (payload == null) return;
     if (page.items == undefined) page.items = [];
     const group = { ...payload };
-    if (isFormGroup(group)) {
+    if (isFormItem(group)) {
       if (removedIndex != null) {
         page.items?.splice(removedIndex, 1);
       }
@@ -34,6 +35,10 @@ export function TreeViewPage(props: TreeViewPageProps) {
       }
     }
     update();
+  };
+
+  const shouldAcceptDrop = (sourceContainerOptions: any, payload: any) => {
+    return isFormItem(payload);
   };
 
   const onClick = () => {
@@ -63,17 +68,13 @@ export function TreeViewPage(props: TreeViewPageProps) {
             animationDuration: 250,
             showOnTop: true,
           }}
+          shouldAcceptDrop={shouldAcceptDrop}
+          getGhostParent={() => document.body}
         >
-          {page.items.map((group, index) => {
+          {page.items.map((item, index) => {
             return (
               <Draggable key={index}>
-                <TreeViewGroup
-                  key={index}
-                  nodeId={`group_${group.code}`}
-                  group={group}
-                  onSelectItem={onSelectItem}
-                  update={update}
-                />
+                <TreeViewFormItem key={index} formItem={item} onSelectItem={onSelectItem} update={update} />
               </Draggable>
             );
           })}

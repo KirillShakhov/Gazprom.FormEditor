@@ -33,7 +33,6 @@ export const PageGroup: React.FC<PageGroupProps> = (props) => {
   const onMouseEnter = (e: any, id: number) => {
     if (!Experimental.GROUP_DRAG_AND_DROP) return;
     if (e.nativeEvent.which) {
-      // console.log('e.target.key ' + id);
       setTabIndex(id);
     }
   };
@@ -71,38 +70,22 @@ export const PageGroup: React.FC<PageGroupProps> = (props) => {
     onSelectItem(value);
   };
 
-  function onDropReady(dropResult: any) {
-    const { removedIndex, addedIndex, payload } = dropResult;
-    const element: HTMLDivElement = dropResult.element;
-    if (payload.hasOwnProperty('isNew')) {
-      console.log('removedIndex ' + removedIndex);
-      console.log('addedIndex ' + addedIndex);
-      console.log('payload ' + JSON.stringify(payload));
-      console.log('element ' + element.clientWidth);
-      // const ghost = document.getElementsByClassName('smooth-dnd-ghost');
-      const ghost = document.getElementsByClassName('dropPlaceholderPage');
-      const el = document.createElement('div');
-      el.className = 'page-blob';
-      const g = ghost.item(0);
-      g?.replaceWith(el);
-    }
-  }
-
-  const shouldAcceptDrop = (sourceContainerOptions: any, payload: any) => {
-    console.log('shouldAcceptDrop');
-    console.log('sourceContainerOptions ' + sourceContainerOptions);
-    console.log('payload ' + payload);
-
-    return true;
-  };
-
-  const shouldAnimateDrop = (sourceContainerOptions: any, payload: any) => {
-    console.log('shouldAnimateDrop');
-    console.log('sourceContainerOptions ' + sourceContainerOptions);
-    console.log('payload ' + payload);
-
-    return false;
-  };
+  // function onDropReady(dropResult: any) {
+  //   const { removedIndex, addedIndex, payload } = dropResult;
+  //   const element: HTMLDivElement = dropResult.element;
+  //   if (payload.hasOwnProperty('isNew')) {
+  //     console.log('removedIndex ' + removedIndex);
+  //     console.log('addedIndex ' + addedIndex);
+  //     console.log('payload ' + JSON.stringify(payload));
+  //     console.log('element ' + element.clientWidth);
+  //     // const ghost = document.getElementsByClassName('smooth-dnd-ghost');
+  //     const ghost = document.getElementsByClassName('dropPlaceholderPage');
+  //     const el = document.createElement('div');
+  //     el.className = 'page-blob';
+  //     const g = ghost.item(0);
+  //     g?.replaceWith(el);
+  //   }
+  // }
 
   return (
     <div
@@ -124,7 +107,6 @@ export const PageGroup: React.FC<PageGroupProps> = (props) => {
           {value.name}
         </span>
         <div style={{ marginTop: 10, height: '90%' }}>
-          {/*<Box sx={{ border: 1, borderRadius: 2, borderColor: 'divider' }}>*/}
           <Container
             getChildPayload={(i) => value.pages[i]}
             groupName={'pages'}
@@ -139,7 +121,6 @@ export const PageGroup: React.FC<PageGroupProps> = (props) => {
               animationDuration: 250,
               showOnTop: true,
             }}
-            // onDropReady={onDropReady}
           >
             {value.pages.map((item, index) => {
               return (
@@ -192,7 +173,6 @@ export const PageGroup: React.FC<PageGroupProps> = (props) => {
               );
             })}
           </Container>
-          {/*</Box>*/}
           {value.pages.map((item, index) => {
             return (
               index == tabIndex && (

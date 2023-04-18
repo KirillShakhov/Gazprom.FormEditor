@@ -49,7 +49,12 @@ export function TreeViewPageGroup(props: TreeViewPageGroupProps) {
       onClick={onClick}
       {...other}
     >
-      <Container groupName={'tree-pages'} getChildPayload={(i) => (group.pages ? group.pages[i] : [])} onDrop={onDrop}>
+      <Container
+        groupName={'tree-pages'}
+        getChildPayload={(i) => (group.pages ? group.pages[i] : [])}
+        onDrop={onDrop}
+        getGhostParent={() => document.body}
+      >
         {group.pages?.map((page, index) => {
           return (
             <Draggable key={index}>
