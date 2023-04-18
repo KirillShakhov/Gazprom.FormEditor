@@ -26,6 +26,7 @@ export const IntegerType: React.FC<ElementProps> = (props) => {
           cleanValue();
         }
       }}
+      fullWidth
     />
   );
 };

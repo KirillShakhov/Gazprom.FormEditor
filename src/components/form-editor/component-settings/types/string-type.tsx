@@ -25,6 +25,7 @@ export const StringType: React.FC<ElementProps> = (props) => {
           cleanValue();
         }
       }}
+      fullWidth
     />
   );
 };
