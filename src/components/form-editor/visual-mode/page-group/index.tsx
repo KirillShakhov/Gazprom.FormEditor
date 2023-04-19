@@ -125,7 +125,7 @@ export const PageGroup: React.FC<PageGroupProps> = (props) => {
             >
               {value.pages.map((item, index) => {
                 return (
-                  <Draggable key={index} className={'page-ghost'}>
+                  <Draggable key={item.code + item.name + index} className={'page-ghost'}>
                     <div>
                       <div
                         style={{

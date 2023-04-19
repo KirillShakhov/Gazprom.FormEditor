@@ -56,7 +56,7 @@ export const Page: React.FC<PageProps> = (props) => {
     >
       {value.items?.map((item, index) => {
         return (
-          <Draggable key={index}>
+          <Draggable key={item.code + item.name + index}>
             <FormItem
               form={form}
               formItem={item}

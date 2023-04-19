@@ -65,10 +65,15 @@ export const TreeViewForm: React.FC<TreeViewFormProps> = (props) => {
           shouldAcceptDrop={shouldAcceptDrop}
           getGhostParent={() => document.body}
         >
-          {form.items?.map((formItem) => {
+          {form.items?.map((formItem, index) => {
             return (
-              <Draggable key={formItem.code}>
-                <TreeViewFormItem key={formItem.code} formItem={formItem} onSelectItem={onSelectItem} update={update} />
+              <Draggable key={formItem.code + formItem.name + index}>
+                <TreeViewFormItem
+                  key={formItem.code + formItem.name + index}
+                  formItem={formItem}
+                  onSelectItem={onSelectItem}
+                  update={update}
+                />
               </Draggable>
             );
           })}

@@ -57,9 +57,9 @@ export function TreeViewPageGroup(props: TreeViewPageGroupProps) {
       >
         {group.pages?.map((page, index) => {
           return (
-            <Draggable key={index}>
+            <Draggable key={page.code + page.name + index}>
               <TreeViewPage
-                key={index}
+                key={page.code + page.name + index}
                 nodeId={`page_${page.code}_${page.name}`}
                 page={page}
                 onSelectItem={onSelectItem}

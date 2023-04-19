@@ -71,10 +71,15 @@ export function TreeViewPage(props: TreeViewPageProps) {
           shouldAcceptDrop={shouldAcceptDrop}
           getGhostParent={() => document.body}
         >
-          {page.items.map((formItem) => {
+          {page.items.map((formItem, index) => {
             return (
-              <Draggable key={formItem.code}>
-                <TreeViewFormItem key={formItem.code} formItem={formItem} onSelectItem={onSelectItem} update={update} />
+              <Draggable key={formItem.code + formItem.name + index}>
+                <TreeViewFormItem
+                  key={formItem.code + formItem.name + index}
+                  formItem={formItem}
+                  onSelectItem={onSelectItem}
+                  update={update}
+                />
               </Draggable>
             );
           })}

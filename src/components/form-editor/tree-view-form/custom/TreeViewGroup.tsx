@@ -77,8 +77,13 @@ export function TreeViewGroup(props: TreeViewGroupProps) {
       >
         {group.items?.map((formItem, index) => {
           return (
-            <Draggable key={formItem.code}>
-              <TreeViewFormItem key={formItem.code} formItem={formItem} onSelectItem={onSelectItem} update={update} />
+            <Draggable key={formItem.code + formItem.name + index}>
+              <TreeViewFormItem
+                key={formItem.code + formItem.name + index}
+                formItem={formItem}
+                onSelectItem={onSelectItem}
+                update={update}
+              />
             </Draggable>
           );
         })}

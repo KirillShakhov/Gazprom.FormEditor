@@ -59,7 +59,7 @@ export const VisualMode: React.FC<VisualModeProps> = (props) => {
           >
             {form.items?.map((item, index) => {
               return (
-                <Draggable key={index}>
+                <Draggable key={item.code + item.name + index}>
                   <FormItem
                     form={form}
                     formItem={item}
