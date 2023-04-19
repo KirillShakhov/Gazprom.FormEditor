@@ -1,8 +1,6 @@
 import React from 'react';
 import { IForm, IFormGroup } from '../../../../interfaces/form-config';
 import { Container, Draggable, DropResult } from 'react-smooth-dnd';
-import { checkImplementParameter } from '../../../../utils/check-objects';
-import { generateElement } from '../../../../utils/element-generators';
 import '../style.css';
 import { IFormElement } from '../../../../interfaces/form-element';
 import { FormItem } from '../form-item';

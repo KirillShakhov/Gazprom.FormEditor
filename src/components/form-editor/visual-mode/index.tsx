@@ -3,7 +3,7 @@ import './style.css';
 import { Button } from '@mui/material';
 import { IForm } from '../../../interfaces/form-config';
 import { Container, Draggable, DropResult } from 'react-smooth-dnd';
-import { isFormControl, isFormGroup, isFormItem, isTabPageController } from '../../../utils/form-config';
+import { isFormItem } from '../../../utils/form-config';
 import { IFormElement } from '../../../interfaces/form-element';
 import { FormItem } from './form-item';
 

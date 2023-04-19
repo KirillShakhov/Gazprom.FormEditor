@@ -5,9 +5,8 @@ import { IForm, ITabPageController } from '../../../../interfaces/form-config';
 import { Container, Draggable, DropResult } from 'react-smooth-dnd';
 import { Experimental } from '../../../../utils/experimental';
 import '../style.css';
-import { checkImplementFormElement } from '../../../../utils/check-objects';
 import { IFormElement } from '../../../../interfaces/form-element';
-import {isFormPage} from "../../../../utils/form-config";
+import { isFormPage } from '../../../../utils/form-config';
 
 interface PageGroupProps {
   form: IForm;

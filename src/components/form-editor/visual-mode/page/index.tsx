@@ -1,11 +1,10 @@
 import React from 'react';
 import { Container, Draggable, DropResult } from 'react-smooth-dnd';
-import { IForm, IFormGroup, ITabPage } from '../../../../interfaces/form-config';
-import { Group } from '../group';
-import {isFormControl, isFormGroup, isFormItem, isTabPageController} from '../../../../utils/form-config';
+import { IForm, ITabPage } from '../../../../interfaces/form-config';
+import { isFormItem } from '../../../../utils/form-config';
 import '../style.css';
 import { IFormElement } from '../../../../interfaces/form-element';
-import {FormItem} from "../form-item";
+import { FormItem } from '../form-item';
 
 interface PageProps {
   form: IForm;
