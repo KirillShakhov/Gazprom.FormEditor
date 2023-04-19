@@ -123,7 +123,7 @@ export const PageGroup: React.FC<PageGroupProps> = (props) => {
           {value.name}
         </span>
         <div style={{ marginTop: 10, height: '90%' }}>
-          <div style={{ width: '100%', overflowY: 'hidden' }} className={'no-scroll'}>
+          <div style={{ width: '100%', overflowY: 'hidden', paddingBottom: 1 }} className={'no-scroll'}>
             <Container
               getChildPayload={(i) => value.pages[i]}
               groupName={'pages'}
