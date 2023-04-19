@@ -8,7 +8,7 @@ import { TreeViewPageGroup } from './TreeViewPageGroup';
 
 type TreeViewGroupProps = {
   formItem: IFormItem;
-  onSelectItem: (value: IFormElement) => void;
+  onSelectItem: (value: IFormElement | undefined) => void;
   update: () => void;
 };
 

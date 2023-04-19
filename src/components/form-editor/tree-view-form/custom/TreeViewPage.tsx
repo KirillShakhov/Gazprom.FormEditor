@@ -4,17 +4,15 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { ITabPage } from '../../../../interfaces/form-config';
 import FeedRoundedIcon from '@mui/icons-material/FeedRounded';
-import { TreeViewGroup } from './TreeViewGroup';
-import { IFormControl } from '../../../../interfaces/form-control';
 import { Container, Draggable, DropResult } from 'react-smooth-dnd';
 import { StyledTreeItemRoot } from './StyledTreeItem';
-import {isFormGroup, isFormItem} from '../../../../utils/form-config';
-import {IFormElement} from "../../../../interfaces/form-element";
-import {TreeViewFormItem} from "./TreeViewFormItem";
+import { isFormItem } from '../../../../utils/form-config';
+import { IFormElement } from '../../../../interfaces/form-element';
+import { TreeViewFormItem } from './TreeViewFormItem';
 
 type TreeViewPageProps = TreeItemProps & {
   page: ITabPage;
-  onSelectItem: (value: IFormElement) => void;
+  onSelectItem: (value: IFormElement | undefined) => void;
   update: () => void;
 };
 
@@ -24,8 +22,9 @@ export function TreeViewPage(props: TreeViewPageProps) {
   const onDrop = (dropResult: DropResult) => {
     const { removedIndex, addedIndex, payload } = dropResult;
     if (payload == null) return;
+    onSelectItem(undefined);
     if (page.items == undefined) page.items = [];
-    const group = { ...payload };
+    const group = payload;
     if (isFormItem(group)) {
       if (removedIndex != null) {
         page.items?.splice(removedIndex, 1);
@@ -72,10 +71,10 @@ export function TreeViewPage(props: TreeViewPageProps) {
           shouldAcceptDrop={shouldAcceptDrop}
           getGhostParent={() => document.body}
         >
-          {page.items.map((item, index) => {
+          {page.items.map((formItem) => {
             return (
-              <Draggable key={index}>
-                <TreeViewFormItem key={index} formItem={item} onSelectItem={onSelectItem} update={update} />
+              <Draggable key={formItem.code}>
+                <TreeViewFormItem key={formItem.code} formItem={formItem} onSelectItem={onSelectItem} update={update} />
               </Draggable>
             );
           })}

@@ -11,7 +11,7 @@ import { IFormElement } from '../../../../interfaces/form-element';
 
 type TreeViewPageGroupProps = TreeItemProps & {
   group: ITabPageController;
-  onSelectItem: (value: IFormElement) => void;
+  onSelectItem: (value: IFormElement | undefined) => void;
   update: () => void;
 };
 
@@ -22,7 +22,7 @@ export function TreeViewPageGroup(props: TreeViewPageGroupProps) {
     const { removedIndex, addedIndex, payload } = dropResult;
     if (payload == null) return;
     if (group.pages == undefined) group.pages = [];
-    const page = { ...payload };
+    const page = payload;
     if (removedIndex != null) {
       group.pages?.splice(removedIndex, 1);
     }

@@ -12,7 +12,7 @@ import { isFormItem } from '../../../../utils/form-config';
 
 type TreeViewGroupProps = TreeItemProps & {
   group: ITabPage;
-  onSelectItem: (value: IFormElement) => void;
+  onSelectItem: (value: IFormElement | undefined) => void;
   update: () => void;
 };
 
@@ -21,11 +21,17 @@ export function TreeViewGroup(props: TreeViewGroupProps) {
 
   const onDrop = (dropResult: DropResult) => {
     const { removedIndex, addedIndex, payload } = dropResult;
+    console.log('onDrop group');
+    console.log('group ' + JSON.stringify(group));
+    console.log('removedIndex ' + removedIndex);
+    console.log('addedIndex ' + addedIndex);
     if (payload == null) return;
     if (group.items == undefined) group.items = [];
-    const element = { ...payload };
+    const element = payload;
     if (isFormItem(element)) {
+      console.log('onDrop element');
       if (removedIndex != null) {
+        console.log('onDrop removedIndex');
         group.items?.splice(removedIndex, 1);
       }
       if (addedIndex != null) {
@@ -69,10 +75,10 @@ export function TreeViewGroup(props: TreeViewGroupProps) {
         shouldAcceptDrop={shouldAcceptDrop}
         getGhostParent={() => document.body}
       >
-        {group.items?.map((item, index) => {
+        {group.items?.map((formItem, index) => {
           return (
-            <Draggable key={index}>
-              <TreeViewFormItem key={index} formItem={item} onSelectItem={onSelectItem} update={update} />
+            <Draggable key={formItem.code}>
+              <TreeViewFormItem key={formItem.code} formItem={formItem} onSelectItem={onSelectItem} update={update} />
             </Draggable>
           );
         })}

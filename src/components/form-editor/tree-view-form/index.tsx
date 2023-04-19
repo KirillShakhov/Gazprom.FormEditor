@@ -11,7 +11,7 @@ import { isFormItem } from '../../../utils/form-config';
 
 interface TreeViewFormProps {
   form: IForm;
-  onSelectItem: (value: IFormElement) => void;
+  onSelectItem: (value: IFormElement | undefined) => void;
   update: () => void;
 }
 
@@ -26,7 +26,7 @@ export const TreeViewForm: React.FC<TreeViewFormProps> = (props) => {
     const { removedIndex, addedIndex, payload } = dropResult;
     if (payload == null) return;
     if (form.items == undefined) form.items = [];
-    const item = { ...payload };
+    const item = payload;
     if (isFormItem(item)) {
       if (removedIndex != null) {
         form.items?.splice(removedIndex, 1);
@@ -65,10 +65,10 @@ export const TreeViewForm: React.FC<TreeViewFormProps> = (props) => {
           shouldAcceptDrop={shouldAcceptDrop}
           getGhostParent={() => document.body}
         >
-          {form.items?.map((item, index) => {
+          {form.items?.map((formItem) => {
             return (
-              <Draggable key={index}>
-                <TreeViewFormItem key={index} formItem={item} onSelectItem={onSelectItem} update={update} />
+              <Draggable key={formItem.code}>
+                <TreeViewFormItem key={formItem.code} formItem={formItem} onSelectItem={onSelectItem} update={update} />
               </Draggable>
             );
           })}
