@@ -1,16 +1,29 @@
 import React from 'react';
 import { Container } from 'react-smooth-dnd';
-import { IForm } from '../../../interfaces/form-config';
 import DeleteForeverRoundedIcon from '@mui/icons-material/DeleteForeverRounded';
+import './style.css';
 
-interface ElementProps {
-  form: IForm;
-}
+export const DropZone: React.FC = () => {
+  const [draggable, setDraggable] = React.useState(false);
 
-export const DropZone: React.FC<ElementProps> = (props) => {
-  const { form } = props;
+  const onDrop = () => {
+    setDraggable(false);
+  };
+
   return (
-    <Container style={{ height: '100%', width: '100%', display: 'flex' }} shouldAcceptDrop={() => true} behaviour={'drop-zone'}>
+    <Container
+      style={{ height: '100%', width: '100%', display: 'flex' }}
+      shouldAcceptDrop={() => true}
+      behaviour={'drop-zone'}
+      onDrop={onDrop}
+      onDragEnter={() => {
+        setDraggable(true);
+      }}
+      onDragLeave={() => {
+        setDraggable(false);
+      }}
+      dragClass={'dropClass'}
+    >
       <div
         style={{
           display: 'flex',
@@ -19,14 +32,15 @@ export const DropZone: React.FC<ElementProps> = (props) => {
           height: '100%',
           width: '100%',
           margin: 10,
-          border: '3px dotted #e0e0e0',
+          border: draggable ? '3px solid #dc7777' : '3px dotted #e0e0e0',
           borderRadius: '6px',
         }}
+        className={'noSelect'}
       >
-        <DeleteForeverRoundedIcon sx={{ color: '#808080' }} />
+        <DeleteForeverRoundedIcon sx={{ color: draggable ? '#dc7777' : '#808080' }} />
         <span
           style={{
-            color: '#808080',
+            color: draggable ? '#dc7777' : '#808080',
           }}
         >
           Удаление компонента

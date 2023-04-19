@@ -151,7 +151,7 @@ export const FormEditor: React.FC = () => {
             )}
           </div>
           <div style={{ width: '100%', height: '8%' }}>
-            <DropZone form={data} />
+            <DropZone />
           </div>
         </div>
         <main>

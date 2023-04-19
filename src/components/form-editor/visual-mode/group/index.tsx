@@ -79,7 +79,6 @@ export const Group: React.FC<GroupProps> = (props) => {
         getChildPayload={(i) => (formGroup.items ? formGroup.items[i] : [])}
         groupName={'parameters'}
         onDrop={onDrop}
-        removeOnDropOut={true}
         dropPlaceholder={{
           className: 'dropPlaceholderElement',
           animationDuration: 250,

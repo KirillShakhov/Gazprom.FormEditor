@@ -3,7 +3,7 @@ import './style.css';
 import { Button } from '@mui/material';
 import { IForm } from '../../../interfaces/form-config';
 import { Container, Draggable, DropResult } from 'react-smooth-dnd';
-import {isFormControl, isFormGroup, isFormItem, isTabPageController} from '../../../utils/form-config';
+import { isFormControl, isFormGroup, isFormItem, isTabPageController } from '../../../utils/form-config';
 import { IFormElement } from '../../../interfaces/form-element';
 import { FormItem } from './form-item';
 
@@ -22,20 +22,20 @@ export const VisualMode: React.FC<VisualModeProps> = (props) => {
   };
 
   const onDrop = (dropResult: DropResult) => {
-    const { removedIndex, addedIndex } = dropResult;
-    if (removedIndex == null && addedIndex == null) return;
-    if (dropResult.payload != null) {
-      const param = dropResult.payload;
-      if (isTabPageController(param) || isFormGroup(param) || isFormControl(param)) {
-        if (removedIndex != null) {
-          form.items?.splice(removedIndex, 1);
-        }
-        if (addedIndex != null) {
-          form.items?.splice(addedIndex, 0, param);
-        }
+    const { removedIndex, addedIndex, payload } = dropResult;
+    console.log('removedIndex ' + removedIndex);
+    console.log('addedIndex ' + addedIndex);
+    if (payload == null) return;
+    const param = payload;
+    if (isFormItem(param)) {
+      if (removedIndex != null) {
+        form.items?.splice(removedIndex, 1);
       }
-      update();
+      if (addedIndex != null) {
+        form.items?.splice(addedIndex, 0, param);
+      }
     }
+    update();
   };
 
   const shouldAcceptDrop = (sourceContainerOptions: any, payload: any) => {
