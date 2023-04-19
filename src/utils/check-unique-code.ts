@@ -1,33 +1,68 @@
-import { IForm } from '../interfaces/form-config';
-import { isFormGroup, isTabPageController } from './form-config';
+import { IForm, IFormGroup, IFormItem, ITabPage, ITabPageController } from '../interfaces/form-config';
+import { isFormControl, isFormGroup, isTabPageController } from './form-config';
+import { IFormElement } from '../interfaces/form-element';
 
 export const checkUniqueCode = (form: IForm): string => {
   const list: string[] = [];
-  list.push(form.code);
+  const itemRes = checkElement(form, list);
+  if (itemRes != '') return itemRes;
   if (form.items == undefined) return '';
-  console.log('start');
-  for (const pageGroup of form.items) {
-    if (list.includes(pageGroup.code)) return pageGroup.code;
-    list.push(pageGroup.code);
-    if (isTabPageController(pageGroup)) {
-      if (pageGroup.pages === undefined) continue;
-      for (const page of pageGroup.pages) {
-        if (list.includes(page.code)) return page.code;
-        list.push(page.code);
-        if (page.items === undefined) continue;
-        for (const group of page.items) {
-          if (list.includes(group.code)) return group.code;
-          list.push(group.code);
-          if (isFormGroup(group)) {
-            if (group.items === undefined) continue;
-            for (const element of group.items) {
-              if (list.includes(element.code)) return element.code;
-              list.push(element.code);
-            }
-          }
-        }
-      }
-    }
+  for (const item of form.items) {
+    const elementRes = checkFormItem(item, list);
+    if (elementRes != '') return elementRes;
   }
+  return '';
+};
+
+const checkPageGroup = (item: ITabPageController, list: string[]): string => {
+  const itemRes = checkElement(item, list);
+  if (itemRes != '') return itemRes;
+  if (item.pages === undefined) return '';
+  for (const page of item.pages) {
+    const itemRes = checkPage(page, list);
+    if (itemRes != '') return itemRes;
+  }
+  return '';
+};
+
+const checkPage = (item: ITabPage, list: string[]): string => {
+  const itemRes = checkElement(item, list);
+  if (itemRes != '') return itemRes;
+  if (item.items === undefined) return '';
+  for (const i of item.items) {
+    const itemRes = checkFormItem(i, list);
+    if (itemRes != '') return itemRes;
+  }
+  return '';
+};
+
+const checkFormItem = (item: IFormItem, list: string[]): string => {
+  if (isTabPageController(item)) {
+    const elementRes = checkPageGroup(item, list);
+    if (elementRes != '') return elementRes;
+  } else if (isFormGroup(item)) {
+    const elementRes = checkGroup(item, list);
+    if (elementRes != '') return elementRes;
+  } else if (isFormControl(item)) {
+    const elementRes = checkElement(item, list);
+    if (elementRes != '') return elementRes;
+  }
+  return '';
+};
+
+const checkGroup = (item: IFormGroup, list: string[]): string => {
+  const itemRes = checkElement(item, list);
+  if (itemRes != '') return itemRes;
+  if (item.items === undefined) return '';
+  for (const element of item.items) {
+    const elementRes = checkFormItem(element, list);
+    if (elementRes != '') return elementRes;
+  }
+  return '';
+};
+
+const checkElement = (item: IFormElement, list: string[]): string => {
+  if (list.includes(item.code)) return item.code;
+  list.push(item.code);
   return '';
 };
