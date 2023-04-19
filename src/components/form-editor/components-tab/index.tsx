@@ -53,7 +53,7 @@ export const ComponentsTab: React.FC<ComponentsTabProps> = (props) => {
           return document.body;
         }}
       >
-        <Draggable>
+        <Draggable className={'page-ghost'}>
           <div className="component-item">
             <AddCircleOutlineRoundedIcon style={{ color: '#bcbcd0' }} fontSize={'small'} onClick={onClick} />
             Страница

@@ -31,9 +31,13 @@ export const PageGroup: React.FC<PageGroupProps> = (props) => {
   };
 
   const calculateWidth = useCallback(() => {
-    let width = 200;
+    let width = 150;
     if (value.pages !== undefined) {
-      width += value.pages.length * 100;
+      let count = 0;
+      value.pages.forEach((page) => {
+        count += page.name.length;
+      });
+      width += 25 + count * 10;
     }
     return width;
   }, [value.pages]);
