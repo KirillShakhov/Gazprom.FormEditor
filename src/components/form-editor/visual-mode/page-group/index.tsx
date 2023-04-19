@@ -7,6 +7,7 @@ import { Experimental } from '../../../../utils/experimental';
 import '../style.css';
 import { checkImplementFormElement } from '../../../../utils/check-objects';
 import { IFormElement } from '../../../../interfaces/form-element';
+import {isFormPage} from "../../../../utils/form-config";
 
 interface PageGroupProps {
   form: IForm;
@@ -59,7 +60,7 @@ export const PageGroup: React.FC<PageGroupProps> = (props) => {
     if (payload != null) {
       if (value.pages == undefined) value.pages = [];
       const page = { ...payload };
-      if (checkImplementFormElement(page)) {
+      if (isFormPage(page)) {
         if (removedIndex != null) {
           value.pages?.splice(removedIndex, 1);
         }
@@ -85,23 +86,6 @@ export const PageGroup: React.FC<PageGroupProps> = (props) => {
     }
     onSelectItem(value);
   };
-
-  // function onDropReady(dropResult: any) {
-  //   const { removedIndex, addedIndex, payload } = dropResult;
-  //   const element: HTMLDivElement = dropResult.element;
-  //   if (payload.hasOwnProperty('isNew')) {
-  //     console.log('removedIndex ' + removedIndex);
-  //     console.log('addedIndex ' + addedIndex);
-  //     console.log('payload ' + JSON.stringify(payload));
-  //     console.log('element ' + element.clientWidth);
-  //     // const ghost = document.getElementsByClassName('smooth-dnd-ghost');
-  //     const ghost = document.getElementsByClassName('dropPlaceholderPage');
-  //     const el = document.createElement('div');
-  //     el.className = 'page-blob';
-  //     const g = ghost.item(0);
-  //     g?.replaceWith(el);
-  //   }
-  // }
 
   return (
     <div

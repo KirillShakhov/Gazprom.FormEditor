@@ -32,11 +32,6 @@ export const Group: React.FC<GroupProps> = (props) => {
       if (addedIndex != null) {
         formGroup.items?.splice(addedIndex, 0, param);
       }
-    } else if (checkImplementParameter(param)) {
-      if (addedIndex != null) {
-        const item = generateElement(form, param);
-        formGroup.items?.splice(addedIndex, 0, item);
-      }
     }
     update();
   };

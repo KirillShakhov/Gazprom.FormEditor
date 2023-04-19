@@ -16,6 +16,7 @@ import { ComponentsTab } from './components-tab';
 import './style.css';
 import { IFormElement } from '../../interfaces/form-element';
 import { findAndDeleteFromForm } from '../../utils/find-and-delete-from-form';
+import { DropZone } from './drop-zone';
 
 enum Modes {
   Visual,
@@ -142,11 +143,16 @@ export const FormEditor: React.FC = () => {
               <Tab label="Компоненты" style={tabStyle} />
             </Tabs>
           </Box>
-          {tabIndex === 0 && <ParametersTab form={data} properties={parameters} />}
-          {tabIndex === 1 && <TreeViewForm form={data} onSelectItem={setSelectedItem} update={updateAll} />}
-          {tabIndex === 2 && (
-            <ComponentsTab form={data} parameters={parameters} selectedItem={selectedItem} update={updateAll} />
-          )}
+          <div style={{ width: '100%', height: '84%' }}>
+            {tabIndex === 0 && <ParametersTab form={data} properties={parameters} />}
+            {tabIndex === 1 && <TreeViewForm form={data} onSelectItem={setSelectedItem} update={updateAll} />}
+            {tabIndex === 2 && (
+              <ComponentsTab form={data} parameters={parameters} selectedItem={selectedItem} update={updateAll} />
+            )}
+          </div>
+          <div style={{ width: '100%', height: '8%' }}>
+            <DropZone form={data} />
+          </div>
         </div>
         <main>
           {mode == Modes.Visual && (
