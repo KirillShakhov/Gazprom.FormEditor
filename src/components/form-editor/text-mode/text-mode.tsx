@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import ErrorOutlineRoundedIcon from '@mui/icons-material/ErrorOutlineRounded';
 import './text-mode.css';
 import AceEditor from 'react-ace';
 import { IForm } from '../../../interfaces/form-config';

@@ -144,7 +144,7 @@ export const FormEditor: React.FC = () => {
           </Box>
           {tabIndex === 0 && <ParametersTab properties={parameters} />}
           {tabIndex === 1 && <TreeViewForm form={data} onSelectItem={setSelectedItem} update={updateAll} />}
-          {tabIndex === 2 && <ComponentsTab form={data} parameters={parameters} />}
+          {tabIndex === 2 && <ComponentsTab form={data} parameters={parameters} selectedItem={selectedItem} update={updateAll} />}
         </div>
         <main>
           {mode == Modes.Visual && (
