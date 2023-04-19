@@ -4,16 +4,15 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { ITabPage } from '../../../../interfaces/form-config';
 import FeedRoundedIcon from '@mui/icons-material/FeedRounded';
-import { TreeViewGroup } from './TreeViewGroup';
-import { IFormControl } from '../../../../interfaces/form-control';
 import { Container, Draggable, DropResult } from 'react-smooth-dnd';
 import { StyledTreeItemRoot } from './StyledTreeItem';
-import { isFormGroup } from '../../../../utils/form-config';
-import {IFormElement} from "../../../../interfaces/form-element";
+import { isFormItem } from '../../../../utils/form-config';
+import { IFormElement } from '../../../../interfaces/form-element';
+import { TreeViewFormItem } from './TreeViewFormItem';
 
 type TreeViewPageProps = TreeItemProps & {
   page: ITabPage;
-  onSelectItem: (value: IFormElement) => void;
+  onSelectItem: (value: IFormElement | undefined) => void;
   update: () => void;
 };
 
@@ -23,9 +22,10 @@ export function TreeViewPage(props: TreeViewPageProps) {
   const onDrop = (dropResult: DropResult) => {
     const { removedIndex, addedIndex, payload } = dropResult;
     if (payload == null) return;
+    onSelectItem(undefined);
     if (page.items == undefined) page.items = [];
-    const group = { ...payload };
-    if (isFormGroup(group)) {
+    const group = payload;
+    if (isFormItem(group)) {
       if (removedIndex != null) {
         page.items?.splice(removedIndex, 1);
       }
@@ -34,6 +34,11 @@ export function TreeViewPage(props: TreeViewPageProps) {
       }
     }
     update();
+  };
+
+  const shouldAcceptDrop = (sourceContainerOptions: any, payload: any) => {
+    if (page == payload) return false;
+    return isFormItem(payload);
   };
 
   const onClick = () => {
@@ -63,14 +68,15 @@ export function TreeViewPage(props: TreeViewPageProps) {
             animationDuration: 250,
             showOnTop: true,
           }}
+          shouldAcceptDrop={shouldAcceptDrop}
+          getGhostParent={() => document.body}
         >
-          {page.items.map((group, index) => {
+          {page.items.map((formItem, index) => {
             return (
-              <Draggable key={index}>
-                <TreeViewGroup
-                  key={index}
-                  nodeId={`group_${group.code}`}
-                  group={group}
+              <Draggable key={formItem.code + formItem.name + index}>
+                <TreeViewFormItem
+                  key={formItem.code + formItem.name + index}
+                  formItem={formItem}
                   onSelectItem={onSelectItem}
                   update={update}
                 />

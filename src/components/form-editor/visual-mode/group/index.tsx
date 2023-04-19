@@ -1,12 +1,10 @@
 import React from 'react';
 import { IForm, IFormGroup } from '../../../../interfaces/form-config';
-import { Element } from '../element';
-import { IFormControl } from '../../../../interfaces/form-control';
 import { Container, Draggable, DropResult } from 'react-smooth-dnd';
-import { checkImplementFormControl, checkImplementParameter } from '../../../../utils/check-objects';
-import { generateElement } from '../../../../utils/element-generators';
 import '../style.css';
 import { IFormElement } from '../../../../interfaces/form-element';
+import { FormItem } from '../form-item';
+import { isFormItem } from '../../../../utils/form-config';
 
 interface GroupProps {
   form: IForm;
@@ -25,17 +23,12 @@ export const Group: React.FC<GroupProps> = (props) => {
     if (dropResult.payload == null) return;
     if (formGroup.items == undefined) formGroup.items = [];
     const param = dropResult.payload;
-    if (checkImplementFormControl(param)) {
+    if (isFormItem(param)) {
       if (removedIndex != null) {
         formGroup.items?.splice(removedIndex, 1);
       }
       if (addedIndex != null) {
         formGroup.items?.splice(addedIndex, 0, param);
-      }
-    } else if (checkImplementParameter(param)) {
-      if (addedIndex != null) {
-        const item = generateElement(form, param);
-        formGroup.items?.splice(addedIndex, 0, item);
       }
     }
     update();
@@ -47,6 +40,11 @@ export const Group: React.FC<GroupProps> = (props) => {
       return;
     }
     onSelectItem(formGroup);
+  };
+
+  const shouldAcceptDrop = (sourceContainerOptions: any, payload: any) => {
+    if (formGroup == payload) return false;
+    return isFormItem(payload);
   };
 
   return (
@@ -79,7 +77,6 @@ export const Group: React.FC<GroupProps> = (props) => {
         getChildPayload={(i) => (formGroup.items ? formGroup.items[i] : [])}
         groupName={'parameters'}
         onDrop={onDrop}
-        removeOnDropOut={true}
         dropPlaceholder={{
           className: 'dropPlaceholderElement',
           animationDuration: 250,
@@ -88,15 +85,17 @@ export const Group: React.FC<GroupProps> = (props) => {
         getGhostParent={(): HTMLElement => {
           return document.body;
         }}
+        shouldAcceptDrop={shouldAcceptDrop}
       >
         {formGroup.items?.map((item, index) => {
           return (
-            <Draggable key={index}>
-              <Element
-                value={item as IFormControl}
-                key={index}
-                selectedItem={selectedItem}
+            <Draggable key={item.code + item.name + index}>
+              <FormItem
+                form={form}
+                formItem={item}
                 onSelectItem={onSelectItem}
+                selectedItem={selectedItem}
+                update={update}
               />
             </Draggable>
           );

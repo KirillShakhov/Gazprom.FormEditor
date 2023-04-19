@@ -10,7 +10,7 @@ export const TextType: React.FC<ElementProps> = (props) => {
   const { value } = props;
 
   return (
-    <div hidden={value.properties && value.properties.hasOwnProperty('hidden')}>
+    <div hidden={value.properties && value.properties.hasOwnProperty('hidden') && value.properties['hidden'] === true}>
       <TextField
         label={value.name}
         name={value.name}

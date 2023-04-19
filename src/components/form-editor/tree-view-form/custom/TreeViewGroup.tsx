@@ -3,17 +3,16 @@ import React from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { ITabPage } from '../../../../interfaces/form-config';
-import { IFormControl } from '../../../../interfaces/form-control';
-import { TreeViewElement } from './TreeViewElement';
 import AppsRoundedIcon from '@mui/icons-material/AppsRounded';
 import { StyledTreeItemRoot } from './StyledTreeItem';
 import { Container, Draggable, DropResult } from 'react-smooth-dnd';
-import { checkImplementFormControl } from '../../../../utils/check-objects';
 import { IFormElement } from '../../../../interfaces/form-element';
+import { TreeViewFormItem } from './TreeViewFormItem';
+import { isFormItem } from '../../../../utils/form-config';
 
 type TreeViewGroupProps = TreeItemProps & {
   group: ITabPage;
-  onSelectItem: (value: IFormElement) => void;
+  onSelectItem: (value: IFormElement | undefined) => void;
   update: () => void;
 };
 
@@ -22,11 +21,17 @@ export function TreeViewGroup(props: TreeViewGroupProps) {
 
   const onDrop = (dropResult: DropResult) => {
     const { removedIndex, addedIndex, payload } = dropResult;
+    console.log('onDrop group');
+    console.log('group ' + JSON.stringify(group));
+    console.log('removedIndex ' + removedIndex);
+    console.log('addedIndex ' + addedIndex);
     if (payload == null) return;
     if (group.items == undefined) group.items = [];
-    const element = { ...payload };
-    if (checkImplementFormControl(element)) {
+    const element = payload;
+    if (isFormItem(element)) {
+      console.log('onDrop element');
       if (removedIndex != null) {
+        console.log('onDrop removedIndex');
         group.items?.splice(removedIndex, 1);
       }
       if (addedIndex != null) {
@@ -34,6 +39,11 @@ export function TreeViewGroup(props: TreeViewGroupProps) {
       }
     }
     update();
+  };
+
+  const shouldAcceptDrop = (sourceContainerOptions: any, payload: any) => {
+    if (group == payload) return false;
+    return isFormItem(payload);
   };
 
   const onClick = () => {
@@ -62,14 +72,15 @@ export function TreeViewGroup(props: TreeViewGroupProps) {
           animationDuration: 250,
           showOnTop: true,
         }}
+        shouldAcceptDrop={shouldAcceptDrop}
+        getGhostParent={() => document.body}
       >
-        {group.items?.map((element, index) => {
+        {group.items?.map((formItem, index) => {
           return (
-            <Draggable key={index}>
-              <TreeViewElement
-                key={index}
-                nodeId={`element_${element.code}`}
-                element={element as ITabPage & IFormControl}
+            <Draggable key={formItem.code + formItem.name + index}>
+              <TreeViewFormItem
+                key={formItem.code + formItem.name + index}
+                formItem={formItem}
                 onSelectItem={onSelectItem}
                 update={update}
               />

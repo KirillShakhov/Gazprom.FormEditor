@@ -47,14 +47,14 @@
     margin-top: 10px;
 }
 
-.smooth-dnd-container::-webkit-scrollbar {
+.no-scroll::-webkit-scrollbar {
     display: none;  /* Safari and Chrome browsers */
     -webkit-appearance: none;
     width: 0;
     height: 0;
 }
 
-.smooth-dnd-container {
+.no-scroll {
     -ms-overflow-style: none; /* IE and Edge */
     scrollbar-width: none;  /* mozilla */
 }

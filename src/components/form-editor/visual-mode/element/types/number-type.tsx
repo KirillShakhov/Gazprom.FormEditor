@@ -1,6 +1,5 @@
 import React from 'react';
 import { IFormControl } from '../../../../../interfaces/form-control';
-import { NumericFormat } from 'react-number-format';
 import { TextField } from '@mui/material';
 
 interface ElementProps {
@@ -18,7 +17,7 @@ export const NumberType: React.FC<ElementProps> = (props) => {
   };
 
   return (
-    <div hidden={value.properties && value.properties.hasOwnProperty('hidden')}>
+    <div hidden={value.properties && value.properties.hasOwnProperty('hidden') && value.properties['hidden'] === true}>
       <TextField
         label={value.name}
         onChange={handleChange}

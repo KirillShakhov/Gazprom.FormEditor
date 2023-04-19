@@ -11,7 +11,7 @@ import { IFormElement } from '../../../../interfaces/form-element';
 
 type TreeViewPageGroupProps = TreeItemProps & {
   group: ITabPageController;
-  onSelectItem: (value: IFormElement) => void;
+  onSelectItem: (value: IFormElement | undefined) => void;
   update: () => void;
 };
 
@@ -22,7 +22,7 @@ export function TreeViewPageGroup(props: TreeViewPageGroupProps) {
     const { removedIndex, addedIndex, payload } = dropResult;
     if (payload == null) return;
     if (group.pages == undefined) group.pages = [];
-    const page = { ...payload };
+    const page = payload;
     if (removedIndex != null) {
       group.pages?.splice(removedIndex, 1);
     }
@@ -49,12 +49,17 @@ export function TreeViewPageGroup(props: TreeViewPageGroupProps) {
       onClick={onClick}
       {...other}
     >
-      <Container groupName={'tree-pages'} getChildPayload={(i) => (group.pages ? group.pages[i] : [])} onDrop={onDrop}>
+      <Container
+        groupName={'tree-pages'}
+        getChildPayload={(i) => (group.pages ? group.pages[i] : [])}
+        onDrop={onDrop}
+        getGhostParent={() => document.body}
+      >
         {group.pages?.map((page, index) => {
           return (
-            <Draggable key={index}>
+            <Draggable key={page.code + page.name + index}>
               <TreeViewPage
-                key={index}
+                key={page.code + page.name + index}
                 nodeId={`page_${page.code}_${page.name}`}
                 page={page}
                 onSelectItem={onSelectItem}

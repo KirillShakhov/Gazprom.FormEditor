@@ -1,10 +1,10 @@
 import React from 'react';
 import { Container, Draggable, DropResult } from 'react-smooth-dnd';
-import {IForm, IFormGroup, ITabPage} from '../../../../interfaces/form-config';
-import { Group } from '../group';
-import { isFormGroup } from '../../../../utils/form-config';
+import { IForm, ITabPage } from '../../../../interfaces/form-config';
+import { isFormItem } from '../../../../utils/form-config';
 import '../style.css';
 import { IFormElement } from '../../../../interfaces/form-element';
+import { FormItem } from '../form-item';
 
 interface PageProps {
   form: IForm;
@@ -23,7 +23,7 @@ export const Page: React.FC<PageProps> = (props) => {
     if (dropResult.payload == null) return;
     if (value.items == undefined) value.items = [];
     const group = dropResult.payload;
-    if (isFormGroup(group)) {
+    if (isFormItem(group)) {
       if (removedIndex != null) {
         value.items?.splice(removedIndex, 1);
       }
@@ -32,6 +32,10 @@ export const Page: React.FC<PageProps> = (props) => {
       }
     }
     update();
+  };
+
+  const shouldAcceptDrop = (sourceContainerOptions: any, payload: any) => {
+    return isFormItem(payload);
   };
 
   return (
@@ -47,13 +51,14 @@ export const Page: React.FC<PageProps> = (props) => {
       getGhostParent={(): HTMLElement => {
         return document.body;
       }}
+      shouldAcceptDrop={shouldAcceptDrop}
     >
       {value.items?.map((item, index) => {
         return (
-          <Draggable key={index}>
-            <Group
+          <Draggable key={item.code + item.name + index}>
+            <FormItem
               form={form}
-              formGroup={item as IFormGroup}
+              formItem={item}
               key={index}
               selectedItem={selectedItem}
               onSelectItem={onSelectItem}

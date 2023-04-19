@@ -1,13 +1,19 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './text-mode.css';
 import AceEditor from 'react-ace';
 import { IForm } from '../../../interfaces/form-config';
+import 'ace-builds';
+import 'ace-builds/webpack-resolver';
 import 'ace-builds/src-noconflict/mode-json';
-import 'ace-builds/src-noconflict/theme-github';
+import 'ace-builds/src-noconflict/ext-searchbox';
+import 'ace-builds/src-noconflict/worker-json';
+import 'ace-builds/src-noconflict/theme-textmate';
 import 'ace-builds/src-noconflict/ext-language_tools';
 
-import ErrorOutlineRoundedIcon from '@mui/icons-material/ErrorOutlineRounded';
 import { validate } from '../../../utils/validate-halper';
+import { checkUniqueCode } from '../../../utils/check-unique-code';
+import { ErrorComponent, Error, ErrorType } from '../error-component';
+
 interface TextModeProps {
   value: IForm;
   onChange: (value: IForm) => void;
@@ -15,94 +21,64 @@ interface TextModeProps {
 
 export const TextMode: React.FC<TextModeProps> = (props) => {
   const { value, onChange } = props;
-  const ace = useRef<AceEditor>(null);
-  const [error, setError] = useState<string>('');
+  const [errors, setErrors] = useState<Error[]>([]);
   const [text, setText] = useState(JSON.stringify(value, null, 2));
 
   useEffect(() => {
     setText(JSON.stringify(value, null, 2));
-    setError('');
-    console.log('123');
   }, [value]);
 
   function handleChange(text: string) {
     try {
       try {
         const json = JSON.parse(text);
-        validate(json).then((e) => {
-          setError(`${e}`);
+        validate(json).then((errors) => {
+          if (errors == null) {
+            const errorUnique = checkUniqueCode(JSON.parse(text) as IForm);
+            if (errorUnique === '') {
+              setErrors([]);
+            } else {
+              setErrors([{ type: ErrorType.Error, text: 'not unique code ' + errorUnique }]);
+              console.log('errorUnique ' + errorUnique);
+            }
+            return;
+          }
+          console.log(errors);
+          let errorMessage = '';
+          errors.forEach((error) => {
+            errorMessage += error.instancePath + ' ' + error.message;
+          });
+          setErrors([{ type: ErrorType.Error, text: `${errorMessage}` }]);
         });
-        // const userSchema = object({
-        //   name: string().required('Необходимо ввести name'),
-        //   age: number().required('Необходимо ввести age').positive().integer(),
-        //   email: string().email(),
-        //   website: string().url().nullable(),
-        //   createdOn: date().default(() => new Date()),
-        // });
-        // const user = userSchema.validate(json);
-        // user
-        //   .then((res) => {
-        //     console.log('res ' + res);
-        //   })
-        //   .catch((e) => {
-        //     setError(`${e.message}`);
-        //   });
-        // type UserType = InferType<typeof userSchema>;
-        // console.log('user ' + user);
       } catch (e) {
-        setError(`${e}`);
+        setErrors([{ type: ErrorType.Error, text: `${e}` }]);
       }
-
       setText(text);
       onChange(JSON.parse(text));
-      setError('');
-      // const validate = ajv.compile(schema);
-      // const valid = validate(text);
-      // if (!valid) console.log(validate.errors);
     } catch (error) {
-      // pass, user is editing
+      console.log(error);
     }
   }
 
-  // const editor = ace.edit('editor');
-
   return (
     <div className="json-editor">
-      <div hidden={error == ''}>
-        <div
-          style={{
-            position: 'fixed',
-            display: 'flex',
-            padding: 10,
-            top: 10,
-            right: 30,
-            width: 300,
-            background: 'rgba(238,238,238,0.8)',
-            backdropFilter: 'blur(4px)',
-            borderRadius: 10,
-            zIndex: 100,
-          }}
-        >
-          <ErrorOutlineRoundedIcon sx={{ color: '#fa8181' }} />
-          <span
-            style={{
-              marginLeft: 10,
-              color: '#000000',
-            }}
-          >
-            {error}
-          </span>
-        </div>
+      <div
+        style={{
+          position: 'fixed',
+          top: 10,
+          right: 30,
+          zIndex: 100,
+        }}
+      >
+        <ErrorComponent errors={errors} />
       </div>
       <AceEditor
-        ref={ace}
         mode="json"
-        theme="github"
+        theme="textmate"
         onChange={handleChange}
         name="json-editor"
         editorProps={{ $blockScrolling: true }}
         setOptions={{
-          useWorker: false,
           tabSize: 2,
         }}
         value={text}

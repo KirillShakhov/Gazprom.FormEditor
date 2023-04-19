@@ -86,9 +86,9 @@ export const metadata: IPropertyMetadata = {
     // Общие свойства для всех полей ввода
     CONTROL: [
       { code: 'readonly', name: 'Только чтение', type: PROPERTY_VALUE_TYPE.BOOLEAN },
-      { code: 'hidden', name: 'Скрытый', type: PROPERTY_VALUE_TYPE.BOOLEAN },
-      { code: 'info', name: 'Информационное поле', type: PROPERTY_VALUE_TYPE.BOOLEAN, isOwnProperty: true },
-      { code: 'hint', name: 'Подсказка', type: PROPERTY_VALUE_TYPE.STRING, isOwnProperty: true },
+      { code: 'hidden', name: 'Скрытый', type: PROPERTY_VALUE_TYPE.BOOLEAN, isOwnProperty: true },
+      { code: 'info', name: 'Информационное поле', type: PROPERTY_VALUE_TYPE.BOOLEAN },
+      { code: 'hint', name: 'Подсказка', type: PROPERTY_VALUE_TYPE.STRING },
     ],
   },
   byParameterType: {
@@ -133,17 +133,7 @@ export const metadata: IPropertyMetadata = {
     DATEPICKER: [],
     DATETIMEPICKER: [],
     FILE: [],
-    TEXT: [
-      { code: 'mask', name: 'Маска ввода', type: PROPERTY_VALUE_TYPE.STRING },
-      { code: 'mask', name: 'Маска ввода', type: PROPERTY_VALUE_TYPE.STRING },
-      { code: 'mask', name: 'Маска ввода', type: PROPERTY_VALUE_TYPE.STRING },
-      { code: 'mask', name: 'Маска ввода', type: PROPERTY_VALUE_TYPE.STRING },
-      { code: 'mask', name: 'Маска ввода', type: PROPERTY_VALUE_TYPE.STRING },
-      { code: 'mask', name: 'Маска ввода', type: PROPERTY_VALUE_TYPE.STRING },
-      { code: 'mask', name: 'Маска ввода', type: PROPERTY_VALUE_TYPE.STRING },
-      { code: 'mask', name: 'Маска ввода', type: PROPERTY_VALUE_TYPE.STRING },
-      { code: 'mask', name: 'Маска ввода', type: PROPERTY_VALUE_TYPE.STRING },
-    ],
+    TEXT: [{ code: 'mask', name: 'Маска ввода', type: PROPERTY_VALUE_TYPE.STRING },],
     TEXTAREA: [{ code: 'lineCount', name: 'Количество строк', type: PROPERTY_VALUE_TYPE.INTEGER }],
     COMBOBOX: [],
     NUMBER: [],

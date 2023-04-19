@@ -1,12 +1,12 @@
 import React from 'react';
 import { IParameter } from '../../../interfaces/parameter';
-import { ComponentSettingProperties } from './types/component-setting-properties';
+import { ComponentSettingProperties } from './component-setting-properties';
 import { FormControlSetting } from './form-control-setting';
 import { IPropertyMetadata } from '../../../interfaces/property-metadata';
 import { isFormControl } from '../../../utils/form-config';
 import { IFormElement } from '../../../interfaces/form-element';
 import { IForm } from '../../../interfaces/form-config';
-import { PropertyConfig } from './types/property-config';
+import { PropertyConfig } from './property-config';
 import BlockRoundedIcon from '@mui/icons-material/BlockRounded';
 import { Button } from '@mui/material';
 
@@ -46,7 +46,7 @@ export const ComponentSettings: React.FC<VisualModeProps> = (props) => {
         {config &&
           config.byElementType.FORM &&
           config.byElementType.FORM.map((property, index) => {
-            return <PropertyConfig propertiesConfig={property} key={index} value={form} update={update} />;
+            return <PropertyConfig propertyConfig={property} key={index} value={form} update={update} />;
           })}
         <span style={{ fontSize: 18 }}>Настройки компонента</span>
         {!value && (
