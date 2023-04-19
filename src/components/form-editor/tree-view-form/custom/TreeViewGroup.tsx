@@ -36,6 +36,7 @@ export function TreeViewGroup(props: TreeViewGroupProps) {
   };
 
   const shouldAcceptDrop = (sourceContainerOptions: any, payload: any) => {
+    if (group == payload) return false;
     return isFormItem(payload);
   };
 

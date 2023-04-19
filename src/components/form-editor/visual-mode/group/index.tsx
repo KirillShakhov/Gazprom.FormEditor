@@ -52,6 +52,7 @@ export const Group: React.FC<GroupProps> = (props) => {
   };
 
   const shouldAcceptDrop = (sourceContainerOptions: any, payload: any) => {
+    if (formGroup == payload) return false;
     return isFormItem(payload);
   };
 

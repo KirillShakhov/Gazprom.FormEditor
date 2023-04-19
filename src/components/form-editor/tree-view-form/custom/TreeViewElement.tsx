@@ -21,7 +21,6 @@ import { IFormElement } from '../../../../interfaces/form-element';
 type TreeViewElementProps = TreeItemProps & {
   element: ITabPage & IFormControl;
   onSelectItem: (value: IFormElement) => void;
-  update: () => void;
 };
 
 export function TreeViewElement(props: TreeViewElementProps) {

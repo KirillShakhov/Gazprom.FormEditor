@@ -29,12 +29,7 @@ export function TreeViewFormItem(props: TreeViewGroupProps) {
         <TreeViewGroup nodeId={`group_${formItem.code}`} group={formItem} onSelectItem={onSelectItem} update={update} />
       )}
       {isFormControl(formItem) && (
-        <TreeViewElement
-          nodeId={`element_${formItem.code}`}
-          element={formItem}
-          onSelectItem={onSelectItem}
-          update={update}
-        />
+        <TreeViewElement nodeId={`element_${formItem.code}`} element={formItem} onSelectItem={onSelectItem} />
       )}
     </div>
   );

@@ -38,6 +38,7 @@ export function TreeViewPage(props: TreeViewPageProps) {
   };
 
   const shouldAcceptDrop = (sourceContainerOptions: any, payload: any) => {
+    if (page == payload) return false;
     return isFormItem(payload);
   };
 
