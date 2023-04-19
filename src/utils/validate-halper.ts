@@ -114,7 +114,6 @@ const tabPageController = object<ITabPageController>()
   });
 
 const schemaFormElement: Schema = {
-  $id: 'formElement',
   type: 'object',
   properties: {
     code: { type: 'string' },
@@ -125,27 +124,34 @@ const schemaFormElement: Schema = {
   additionalProperties: true,
 };
 
+const arrayFormItems: Schema = {
+  type: 'array',
+  items: schemaFormElement,
+};
+
 const schemaFormItem: Schema = {
-  $id: 'formItem',
   type: 'object',
-  properties: {},
-  required: [],
+  properties: {
+    pages: arrayFormItems,
+    items: arrayFormItems,
+  },
   additionalProperties: true,
-  $ref: 'formElement',
 };
 
 const schemaForm: Schema = {
   type: 'object',
   properties: {
+    code: { type: 'string' },
+    name: { type: 'string' },
+    properties: { type: 'object' },
     description: { type: 'string' },
     items: {
       type: 'array',
-      items: schemaFormElement,
+      items: schemaFormItem,
     },
   },
-  required: ['description'],
+  required: ['code', 'name', 'description'],
   additionalProperties: true,
-  $ref: 'formElement',
 };
 
 // const formElement = object<IFormElement>().shape({
