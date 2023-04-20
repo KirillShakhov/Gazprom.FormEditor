@@ -1,5 +1,5 @@
 import { Shadows, Box, Tab, Tabs, createTheme, ThemeProvider } from '@mui/material';
-import React from 'react';
+import React, { useState } from 'react';
 import { CommandLine } from './command-line';
 import { VisualMode } from './visual-mode';
 import { TextMode } from './text-mode/text-mode';
@@ -13,10 +13,11 @@ import { IForm } from '../../interfaces/form-config';
 import { ParametersTab } from './parameters-tab';
 import { TreeViewForm } from './tree-view-form';
 import { ComponentsTab } from './components-tab';
-import './style.css';
 import { IFormElement } from '../../interfaces/form-element';
 import { findAndDeleteFromForm } from '../../utils/find-and-delete-from-form';
 import { DropZone } from './drop-zone';
+import SplitPane, { Pane } from 'split-pane-react';
+import 'split-pane-react/esm/themes/default.css';
 
 enum Modes {
   Visual,
@@ -36,19 +37,6 @@ const theme = createTheme({
   },
   shadows: Array(25).fill('none') as Shadows,
 });
-// const theme = createTheme({
-//   palette: {
-//     primary: {
-//       main: '#f45757',
-//       contrastText: '#ffffff',
-//     },
-//     secondary: {
-//       main: '#E2E5EC',
-//       contrastText: '#525562',
-//     },
-//   },
-//   shadows: Array(25).fill('none') as Shadows,
-// });
 
 /** Редактор форм. */
 export const FormEditor: React.FC = () => {
@@ -111,74 +99,148 @@ export const FormEditor: React.FC = () => {
     height: 30,
   };
 
+  const [sizes, setSizes] = useState<number[] | string[]>(['20%', '50%', '25%']);
+
   return (
     <ThemeProvider theme={theme}>
-      <div className="layout">
-        <header>
-          <CommandLine
-            newData={newBlankJson}
-            loadData={loadProperties}
-            saveData={() => {
-              return JSON.stringify(data);
-            }}
-            changeMode={changeMode}
-          >
-            Редактор форм
-          </CommandLine>
-        </header>
-        <div className="left-side">
-          <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-            <Tabs
-              value={tabIndex}
-              onChange={(event: React.SyntheticEvent, newValue: number) => {
-                setTabIndex(newValue);
-              }}
-              textColor="inherit"
-              style={{
-                minHeight: 0,
-              }}
-            >
-              <Tab label="Параметры" style={tabStyle} />
-              <Tab label="Форма" style={tabStyle} />
-              <Tab label="Компоненты" style={tabStyle} />
-            </Tabs>
-          </Box>
-          <div style={{ width: '100%', height: '84%' }}>
-            {tabIndex === 0 && <ParametersTab form={data} properties={parameters} />}
-            {tabIndex === 1 && <TreeViewForm form={data} onSelectItem={setSelectedItem} update={updateAll} />}
-            {tabIndex === 2 && (
-              <ComponentsTab form={data} parameters={parameters} selectedItem={selectedItem} update={updateAll} />
+      <div style={{ height: '5%' }}>
+        <CommandLine
+          newData={newBlankJson}
+          loadData={loadProperties}
+          saveData={() => {
+            return JSON.stringify(data);
+          }}
+          changeMode={changeMode}
+        >
+          Редактор форм
+        </CommandLine>
+      </div>
+      <div style={{ height: '100%' }}>
+        <SplitPane
+          split="vertical"
+          sizes={sizes}
+          onChange={setSizes}
+          style={{ height: '100%', width: '100%' }}
+        >
+          <Pane minSize="15%" maxSize="30%">
+            <div style={{ height: '95%' }}>
+              <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+                <Tabs
+                  value={tabIndex}
+                  onChange={(event: React.SyntheticEvent, newValue: number) => {
+                    setTabIndex(newValue);
+                  }}
+                  textColor="inherit"
+                  style={{
+                    minHeight: 0,
+                  }}
+                >
+                  <Tab label="Параметры" style={tabStyle} />
+                  <Tab label="Форма" style={tabStyle} />
+                  <Tab label="Компоненты" style={tabStyle} />
+                </Tabs>
+              </Box>
+              <div style={{ width: '100%', height: '84%' }}>
+                {tabIndex === 0 && <ParametersTab form={data} properties={parameters} />}
+                {tabIndex === 1 && <TreeViewForm form={data} onSelectItem={setSelectedItem} update={updateAll} />}
+                {tabIndex === 2 && (
+                  <ComponentsTab form={data} parameters={parameters} selectedItem={selectedItem} update={updateAll} />
+                )}
+              </div>
+              <div style={{ width: '100%', height: '8%' }}>
+                <DropZone />
+              </div>
+            </div>
+          </Pane>
+          <div style={{ background: '#d5d7d9', height: '100%' }}>
+            {mode == Modes.Visual && (
+              <VisualMode form={data} selectedItem={selectedItem} onSelectItem={setSelectedItem} update={updateAll} />
+            )}
+            {mode == Modes.Text && (
+              <TextMode
+                value={data}
+                onChange={(newData) => {
+                  if (JSON.stringify(data) !== JSON.stringify(newData)) setData(newData);
+                  setSelectedItem(undefined);
+                }}
+              />
             )}
           </div>
-          <div style={{ width: '100%', height: '8%' }}>
-            <DropZone />
-          </div>
-        </div>
-        <main>
-          {mode == Modes.Visual && (
-            <VisualMode form={data} selectedItem={selectedItem} onSelectItem={setSelectedItem} update={updateAll} />
-          )}
-          {mode == Modes.Text && (
-            <TextMode
-              value={data}
-              onChange={(newData) => {
-                if (JSON.stringify(data) !== JSON.stringify(newData)) setData(newData);
-                setSelectedItem(undefined);
-              }}
-            />
-          )}
-        </main>
-        <div className="right-side">
-          <ComponentSettings
-            form={data}
-            value={selectedItem}
-            properties={parameters}
-            config={config}
-            update={updateAll}
-            deleteObject={deleteObject}
-          />
-        </div>
+          <Pane minSize="15%" maxSize="70%">
+            <div style={{ background: '#a1a5a9', height: '100%' }}>
+              <ComponentSettings
+                form={data}
+                value={selectedItem}
+                properties={parameters}
+                config={config}
+                update={updateAll}
+                deleteObject={deleteObject}
+              />
+            </div>
+          </Pane>
+        </SplitPane>
       </div>
+      {/*<div style={{ display: 'flex' }}>*/}
+      {/*  <div style={{ width: '21%', height: '100%', background: '#de4646' }}>qwe</div>*/}
+      {/*  <div style={{ width: '50%', height: '100%', background: '#55de46' }}>qwe</div>*/}
+      {/*  <div style={{ width: '25%', height: '100%', background: '#46a9de' }}>qwe</div>*/}
+      {/*</div>*/}
+      {/*  <SplitPane split="vertical" sizes={sizes} onChange={setSizes} sashRender={(i, t)=>{*/}
+
+      {/*  }}>*/}
+      {/*    <div className="left-side">*/}
+      {/*      <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>*/}
+      {/*        <Tabs*/}
+      {/*          value={tabIndex}*/}
+      {/*          onChange={(event: React.SyntheticEvent, newValue: number) => {*/}
+      {/*            setTabIndex(newValue);*/}
+      {/*          }}*/}
+      {/*          textColor="inherit"*/}
+      {/*          style={{*/}
+      {/*            minHeight: 0,*/}
+      {/*          }}*/}
+      {/*        >*/}
+      {/*          <Tab label="Параметры" style={tabStyle} />*/}
+      {/*          <Tab label="Форма" style={tabStyle} />*/}
+      {/*          <Tab label="Компоненты" style={tabStyle} />*/}
+      {/*        </Tabs>*/}
+      {/*      </Box>*/}
+      {/*      <div style={{ width: '100%', height: '84%' }}>*/}
+      {/*        {tabIndex === 0 && <ParametersTab form={data} properties={parameters} />}*/}
+      {/*        {tabIndex === 1 && <TreeViewForm form={data} onSelectItem={setSelectedItem} update={updateAll} />}*/}
+      {/*        {tabIndex === 2 && (*/}
+      {/*          <ComponentsTab form={data} parameters={parameters} selectedItem={selectedItem} update={updateAll} />*/}
+      {/*        )}*/}
+      {/*      </div>*/}
+      {/*      <div style={{ width: '100%', height: '8%' }}>*/}
+      {/*        <DropZone />*/}
+      {/*      </div>*/}
+      {/*    </div>*/}
+      {/*    <main>*/}
+      {/*      {mode == Modes.Visual && (*/}
+      {/*        <VisualMode form={data} selectedItem={selectedItem} onSelectItem={setSelectedItem} update={updateAll} />*/}
+      {/*      )}*/}
+      {/*      {mode == Modes.Text && (*/}
+      {/*        <TextMode*/}
+      {/*          value={data}*/}
+      {/*          onChange={(newData) => {*/}
+      {/*            if (JSON.stringify(data) !== JSON.stringify(newData)) setData(newData);*/}
+      {/*            setSelectedItem(undefined);*/}
+      {/*          }}*/}
+      {/*        />*/}
+      {/*      )}*/}
+      {/*    </main>*/}
+      {/*    <div className="right-side">*/}
+      {/*      <ComponentSettings*/}
+      {/*        form={data}*/}
+      {/*        value={selectedItem}*/}
+      {/*        properties={parameters}*/}
+      {/*        config={config}*/}
+      {/*        update={updateAll}*/}
+      {/*        deleteObject={deleteObject}*/}
+      {/*      />*/}
+      {/*    </div>*/}
+      {/*  </SplitPane>*/}
     </ThemeProvider>
   );
 };

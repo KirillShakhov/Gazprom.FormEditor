@@ -82,9 +82,9 @@ export const Group: React.FC<GroupProps> = (props) => {
           animationDuration: 250,
           showOnTop: true,
         }}
-        getGhostParent={(): HTMLElement => {
-          return document.body;
-        }}
+        // getGhostParent={(): HTMLElement => {
+        //   return document.body;
+        // }}
         shouldAcceptDrop={shouldAcceptDrop}
       >
         {formGroup.items?.map((item, index) => {
