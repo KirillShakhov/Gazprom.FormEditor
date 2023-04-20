@@ -1,5 +1,5 @@
 import { Shadows, Box, Tab, Tabs, createTheme, ThemeProvider } from '@mui/material';
-import React, { useState } from 'react';
+import React from 'react';
 import { CommandLine } from './command-line';
 import { VisualMode } from './visual-mode';
 import { TextMode } from './text-mode/text-mode';
@@ -18,6 +18,7 @@ import { findAndDeleteFromForm } from '../../utils/find-and-delete-from-form';
 import { DropZone } from './drop-zone';
 import SplitPane, { Pane } from 'split-pane-react';
 import 'split-pane-react/esm/themes/default.css';
+import { useLocalStorage } from '../../utils/local-storage';
 
 enum Modes {
   Visual,
@@ -99,7 +100,7 @@ export const FormEditor: React.FC = () => {
     height: 30,
   };
 
-  const [sizes, setSizes] = useState<number[] | string[]>(['20%', '50%', '25%']);
+  const [sizes, setSizes] = useLocalStorage<number[] | string[]>('sizes', ['20%', '50%', '25%']);
 
   return (
     <ThemeProvider theme={theme}>
@@ -121,6 +122,9 @@ export const FormEditor: React.FC = () => {
           sizes={sizes}
           onChange={setSizes}
           style={{ height: '100%', width: '100%' }}
+          sashRender={(index, b) => {
+            console.log(`index ${index} boolean ${b}`);
+          }}
         >
           <Pane minSize="15%" maxSize="30%">
             <div style={{ height: '95%' }}>
