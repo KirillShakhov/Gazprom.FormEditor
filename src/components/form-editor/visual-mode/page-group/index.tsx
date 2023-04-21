@@ -100,7 +100,7 @@ export const PageGroup: React.FC<PageGroupProps> = (props) => {
     >
       <div
         style={{
-          padding: 10 * zoom,
+          padding: 10 * zoom > 10 ? 10 : 10 * zoom,
         }}
       >
         <span

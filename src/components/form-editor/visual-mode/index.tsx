@@ -63,8 +63,18 @@ export const VisualMode: React.FC<VisualModeProps> = (props) => {
   }, ['Escape', 'Control']);
 
   return (
-    <div className="visual-mode" style={{ zoom: 1 }} role={'presentation'}>
-      <div className="box">
+    <div className="visual-mode" role={'presentation'}>
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'space-between',
+          height: '80%',
+          padding: 30 * zoom > 30 ? 30 : 30 * zoom,
+          borderRadius: 10,
+          background: '#ffffff',
+        }}
+      >
         <div style={{ overflowY: 'auto', height: 640 }}>
           <Container
             getChildPayload={(i) => (form.items ? form.items[i] : [])}
@@ -93,7 +103,7 @@ export const VisualMode: React.FC<VisualModeProps> = (props) => {
             })}
           </Container>
         </div>
-        <div style={{ display: 'flex', gap: 20, marginTop: 20 }}>
+        <div style={{ zoom: zoom, display: 'flex', gap: 20, marginTop: 20 }}>
           <Button variant="contained" onClick={print}>
             Ок
           </Button>
