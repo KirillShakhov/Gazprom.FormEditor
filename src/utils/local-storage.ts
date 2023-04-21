@@ -11,7 +11,9 @@ export const useLocalStorage = <S>(key: string, initialState: S | (() => S)) => 
       // Get from local storage by key
       const item = window.localStorage.getItem(key);
       // Parse stored json or if none return initialValue
-      return item ? JSON.parse(item) : initialState;
+      const itemValue = item ? JSON.parse(item) : initialState;
+      if (typeof itemValue == typeof initialState) return itemValue;
+      return itemValue;
     } catch (error) {
       // If error also return initialValue
       console.log(error);

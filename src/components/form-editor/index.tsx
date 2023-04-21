@@ -25,10 +25,24 @@ enum Modes {
   Text,
 }
 
+// const theme = createTheme({
+//   palette: {
+//     primary: {
+//       main: '#5775F4',
+//       contrastText: '#ffffff',
+//     },
+//     secondary: {
+//       main: '#E2E5EC',
+//       contrastText: '#525562',
+//     },
+//   },
+//   shadows: Array(25).fill('none') as Shadows,
+// });
+
 const theme = createTheme({
   palette: {
     primary: {
-      main: '#5775F4',
+      main: '#f45757',
       contrastText: '#ffffff',
     },
     secondary: {
@@ -42,12 +56,12 @@ const theme = createTheme({
 /** Редактор форм. */
 export const FormEditor: React.FC = () => {
   const [sizes, setSizes] = useLocalStorage<number[] | string[]>('sizes', ['20%', '50%', '25%']);
-  const [mode, setMode] = useLocalStorage('mode', Modes.Visual);
   const [parameters, setParameters] = useState<IParameter[]>(standardParameters);
   const [data, setData] = useState<IForm>(standardForm);
   const [config] = useState<IPropertyMetadata>(metadata);
   const [selectedItem, setSelectedItem] = useState<IFormElement>();
   const [tabIndex, setTabIndex] = React.useState(1);
+  const [mode, setMode] = useState(Modes.Visual);
 
   const changeMode = () => {
     if (mode === Modes.Text) {
@@ -100,20 +114,6 @@ export const FormEditor: React.FC = () => {
     padding: 10,
     height: 30,
   };
-
-  // $(window).bind('mousewheel DOMMouseScroll', function(event)
-  // {
-  //   if(event.ctrlKey == true)
-  //   {
-  //     event.preventDefault();
-  //     if(event.originalEvent.detail > 0) {
-  //       console.log('Down');
-  //     }else {
-  //       console.log('Up');
-  //     }
-  //   }
-  // });
-
 
   return (
     <ThemeProvider theme={theme}>
@@ -197,67 +197,6 @@ export const FormEditor: React.FC = () => {
           </Pane>
         </SplitPane>
       </div>
-      {/*<div style={{ display: 'flex' }}>*/}
-      {/*  <div style={{ width: '21%', height: '100%', background: '#de4646' }}>qwe</div>*/}
-      {/*  <div style={{ width: '50%', height: '100%', background: '#55de46' }}>qwe</div>*/}
-      {/*  <div style={{ width: '25%', height: '100%', background: '#46a9de' }}>qwe</div>*/}
-      {/*</div>*/}
-      {/*  <SplitPane split="vertical" sizes={sizes} onChange={setSizes} sashRender={(i, t)=>{*/}
-
-      {/*  }}>*/}
-      {/*    <div className="left-side">*/}
-      {/*      <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>*/}
-      {/*        <Tabs*/}
-      {/*          value={tabIndex}*/}
-      {/*          onChange={(event: React.SyntheticEvent, newValue: number) => {*/}
-      {/*            setTabIndex(newValue);*/}
-      {/*          }}*/}
-      {/*          textColor="inherit"*/}
-      {/*          style={{*/}
-      {/*            minHeight: 0,*/}
-      {/*          }}*/}
-      {/*        >*/}
-      {/*          <Tab label="Параметры" style={tabStyle} />*/}
-      {/*          <Tab label="Форма" style={tabStyle} />*/}
-      {/*          <Tab label="Компоненты" style={tabStyle} />*/}
-      {/*        </Tabs>*/}
-      {/*      </Box>*/}
-      {/*      <div style={{ width: '100%', height: '84%' }}>*/}
-      {/*        {tabIndex === 0 && <ParametersTab form={data} properties={parameters} />}*/}
-      {/*        {tabIndex === 1 && <TreeViewForm form={data} onSelectItem={setSelectedItem} update={updateAll} />}*/}
-      {/*        {tabIndex === 2 && (*/}
-      {/*          <ComponentsTab form={data} parameters={parameters} selectedItem={selectedItem} update={updateAll} />*/}
-      {/*        )}*/}
-      {/*      </div>*/}
-      {/*      <div style={{ width: '100%', height: '8%' }}>*/}
-      {/*        <DropZone />*/}
-      {/*      </div>*/}
-      {/*    </div>*/}
-      {/*    <main>*/}
-      {/*      {mode == Modes.Visual && (*/}
-      {/*        <VisualMode form={data} selectedItem={selectedItem} onSelectItem={setSelectedItem} update={updateAll} />*/}
-      {/*      )}*/}
-      {/*      {mode == Modes.Text && (*/}
-      {/*        <TextMode*/}
-      {/*          value={data}*/}
-      {/*          onChange={(newData) => {*/}
-      {/*            if (JSON.stringify(data) !== JSON.stringify(newData)) setData(newData);*/}
-      {/*            setSelectedItem(undefined);*/}
-      {/*          }}*/}
-      {/*        />*/}
-      {/*      )}*/}
-      {/*    </main>*/}
-      {/*    <div className="right-side">*/}
-      {/*      <ComponentSettings*/}
-      {/*        form={data}*/}
-      {/*        value={selectedItem}*/}
-      {/*        properties={parameters}*/}
-      {/*        config={config}*/}
-      {/*        update={updateAll}*/}
-      {/*        deleteObject={deleteObject}*/}
-      {/*      />*/}
-      {/*    </div>*/}
-      {/*  </SplitPane>*/}
     </ThemeProvider>
   );
 };

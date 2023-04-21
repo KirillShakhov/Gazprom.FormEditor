@@ -7,6 +7,7 @@ import { isFormItem } from '../../../utils/form-config';
 import { IFormElement } from '../../../interfaces/form-element';
 import { FormItem } from './form-item';
 import { useKeyDown, useMouseWheelZoom } from '../../../utils/key-down';
+import {useLocalStorage} from "../../../utils/local-storage";
 
 interface VisualModeProps {
   form: IForm;
@@ -43,7 +44,7 @@ export const VisualMode: React.FC<VisualModeProps> = (props) => {
     return isFormItem(payload);
   };
 
-  const [zoom, setZoom] = React.useState<number>(1.0);
+  const [zoom, setZoom] = useLocalStorage('zoom', 1.0);
 
   useMouseWheelZoom((delta) => {
     const newZoom = zoom + delta / 200;

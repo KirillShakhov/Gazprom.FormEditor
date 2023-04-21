@@ -17,8 +17,3 @@ textarea {
 
     resize: none; /*remove the resize handle on the bottom right*/
 }
-
-.blue {
-    position: absolute;
-    background-color: blue;
-}
