@@ -43,7 +43,7 @@ export const VisualMode: React.FC<VisualModeProps> = (props) => {
   };
 
   return (
-    <div className="visual-mode" style={{ zoom: 0.6 }}>
+    <div className="visual-mode" style={{ zoom: 1 }}>
       <div className="box">
         <div style={{ overflowY: 'auto', height: 640 }}>
           <Container

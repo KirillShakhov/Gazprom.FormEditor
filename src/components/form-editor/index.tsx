@@ -1,5 +1,5 @@
 import { Shadows, Box, Tab, Tabs, createTheme, ThemeProvider } from '@mui/material';
-import React from 'react';
+import React, { useState } from 'react';
 import { CommandLine } from './command-line';
 import { VisualMode } from './visual-mode';
 import { TextMode } from './text-mode/text-mode';
@@ -41,11 +41,12 @@ const theme = createTheme({
 
 /** Редактор форм. */
 export const FormEditor: React.FC = () => {
-  const [mode, setMode] = React.useState(Modes.Visual);
-  const [parameters, setParameters] = React.useState<IParameter[]>(standardParameters);
-  const [data, setData] = React.useState<IForm>(standardForm);
-  const [config] = React.useState<IPropertyMetadata>(metadata);
-  const [selectedItem, setSelectedItem] = React.useState<IFormElement>();
+  const [sizes, setSizes] = useLocalStorage<number[] | string[]>('sizes', ['20%', '50%', '25%']);
+  const [mode, setMode] = useLocalStorage('mode', Modes.Visual);
+  const [parameters, setParameters] = useState<IParameter[]>(standardParameters);
+  const [data, setData] = useState<IForm>(standardForm);
+  const [config] = useState<IPropertyMetadata>(metadata);
+  const [selectedItem, setSelectedItem] = useState<IFormElement>();
   const [tabIndex, setTabIndex] = React.useState(1);
 
   const changeMode = () => {
@@ -99,8 +100,6 @@ export const FormEditor: React.FC = () => {
     padding: 10,
     height: 30,
   };
-
-  const [sizes, setSizes] = useLocalStorage<number[] | string[]>('sizes', ['20%', '50%', '25%']);
 
   return (
     <ThemeProvider theme={theme}>
