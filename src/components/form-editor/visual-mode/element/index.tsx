@@ -66,6 +66,7 @@ export const Element: React.FC<ElementProps> = (props) => {
   return (
     <div
       style={{
+        zoom: 0.5,
         marginTop: 10,
         border: 1,
         borderRadius: 10,

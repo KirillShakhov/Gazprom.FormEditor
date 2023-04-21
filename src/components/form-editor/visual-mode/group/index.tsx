@@ -93,12 +93,17 @@ export const Group: React.FC<GroupProps> = (props) => {
       role="presentation"
     >
       <span
-        style={{ fontSize: 16, margin: 0, marginTop: 10 }}
+        style={{
+          zoom: 0.5,
+          fontSize: 16,
+          margin: 0,
+          marginTop: 10,
+        }}
         key={formGroup.code}
         role="presentation"
         onClick={handleClick}
       >
-        {formGroup.name} {formGroup.direction}
+        {formGroup.name}
       </span>
       <Container
         getChildPayload={(i) => (formGroup.items ? formGroup.items[i] : [])}
@@ -115,15 +120,16 @@ export const Group: React.FC<GroupProps> = (props) => {
           flexWrap: dropped ? 'nowrap' : getFlexWrap(),
           flexDirection: dropped ? 'column' : getFlexDirection(),
         }}
-        onDragStart={() => {
+        onDragStart={({ payload }) => {
+          if (payload == formGroup) return;
           setDropped(true);
         }}
         onDragEnd={() => {
           setDropped(false);
         }}
-        // getGhostParent={(): HTMLElement => {
-        //   return document.body;
-        // }}
+        getGhostParent={(): HTMLElement => {
+          return document.body;
+        }}
         shouldAcceptDrop={shouldAcceptDrop}
       >
         {formGroup.items?.map((item, index) => {
