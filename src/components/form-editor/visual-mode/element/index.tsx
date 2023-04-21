@@ -16,6 +16,7 @@ import { ComboBoxType } from './types/combobox-type';
 import { SelectType } from './types/select-type';
 
 interface ElementProps {
+  zoom: number;
   value: IFormControl;
   selectedItem: IFormElement | undefined;
   onSelectItem: (value: IFormElement | undefined) => void;
@@ -53,7 +54,7 @@ function renderSwitch(value: IFormControl) {
 }
 
 export const Element: React.FC<ElementProps> = (props) => {
-  const { value, selectedItem, onSelectItem } = props;
+  const { zoom, value, selectedItem, onSelectItem } = props;
 
   const onClick = () => {
     if (selectedItem == value) {
@@ -66,7 +67,7 @@ export const Element: React.FC<ElementProps> = (props) => {
   return (
     <div
       style={{
-        zoom: 0.5,
+        zoom: zoom,
         marginTop: 10,
         border: 1,
         borderRadius: 10,

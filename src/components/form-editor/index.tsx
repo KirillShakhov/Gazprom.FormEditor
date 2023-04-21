@@ -101,6 +101,20 @@ export const FormEditor: React.FC = () => {
     height: 30,
   };
 
+  // $(window).bind('mousewheel DOMMouseScroll', function(event)
+  // {
+  //   if(event.ctrlKey == true)
+  //   {
+  //     event.preventDefault();
+  //     if(event.originalEvent.detail > 0) {
+  //       console.log('Down');
+  //     }else {
+  //       console.log('Up');
+  //     }
+  //   }
+  // });
+
+
   return (
     <ThemeProvider theme={theme}>
       <div style={{ height: '5%' }}>

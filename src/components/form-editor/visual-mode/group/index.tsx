@@ -6,9 +6,9 @@ import { IFormElement } from '../../../../interfaces/form-element';
 import { FormItem } from '../form-item';
 import { isFormItem } from '../../../../utils/form-config';
 import type { Property } from 'csstype';
-import { bool } from 'yup';
 
 interface GroupProps {
+  zoom: number;
   form: IForm;
   formGroup: IFormGroup;
   selectedItem: IFormElement | undefined;
@@ -17,7 +17,7 @@ interface GroupProps {
 }
 
 export const Group: React.FC<GroupProps> = (props) => {
-  const { form, formGroup, selectedItem, onSelectItem, update } = props;
+  const { zoom, form, formGroup, selectedItem, onSelectItem, update } = props;
 
   const onDrop = (dropResult: DropResult) => {
     const { removedIndex, addedIndex } = dropResult;
@@ -94,7 +94,7 @@ export const Group: React.FC<GroupProps> = (props) => {
     >
       <span
         style={{
-          zoom: 0.5,
+          zoom: zoom,
           fontSize: 16,
           margin: 0,
           marginTop: 10,
@@ -141,6 +141,7 @@ export const Group: React.FC<GroupProps> = (props) => {
                 onSelectItem={onSelectItem}
                 selectedItem={selectedItem}
                 update={update}
+                zoom={zoom}
               />
             </Draggable>
           );

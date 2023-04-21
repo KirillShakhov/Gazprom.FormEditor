@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import './style.css';
 import { Button } from '@mui/material';
 import { IForm } from '../../../interfaces/form-config';
@@ -6,6 +6,7 @@ import { Container, Draggable, DropResult } from 'react-smooth-dnd';
 import { isFormItem } from '../../../utils/form-config';
 import { IFormElement } from '../../../interfaces/form-element';
 import { FormItem } from './form-item';
+import { useKeyDown, useMouseWheelZoom } from '../../../utils/key-down';
 
 interface VisualModeProps {
   form: IForm;
@@ -42,8 +43,27 @@ export const VisualMode: React.FC<VisualModeProps> = (props) => {
     return isFormItem(payload);
   };
 
+  const [zoom, setZoom] = React.useState<number>(1.0);
+
+  useMouseWheelZoom((delta) => {
+    const newZoom = zoom + delta / 200;
+    if (newZoom > 0.1 && newZoom < 5.0) {
+      setZoom(newZoom);
+    }
+    console.log('zoom ' + zoom);
+    update();
+  });
+
+  // useEffect(() => {
+  //   update();
+  // }, [update, zoom]);
+
+  useKeyDown(() => {
+    console.log('Escape');
+  }, ['Escape', 'Control']);
+
   return (
-    <div className="visual-mode" style={{ zoom: 1 }}>
+    <div className="visual-mode" style={{ zoom: 1 }} role={'presentation'}>
       <div className="box">
         <div style={{ overflowY: 'auto', height: 640 }}>
           <Container
@@ -61,6 +81,7 @@ export const VisualMode: React.FC<VisualModeProps> = (props) => {
               return (
                 <Draggable key={item.code + item.name + index}>
                   <FormItem
+                    zoom={zoom}
                     form={form}
                     formItem={item}
                     onSelectItem={onSelectItem}

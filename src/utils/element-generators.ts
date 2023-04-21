@@ -30,7 +30,7 @@ export const generateGroup = (form: IForm): IFormGroup => {
   return {
     code: generateCode(form, 'Group'),
     name: 'Группа',
-    direction: FORM_GROUP_DIRECTION.FORCE_HORIZONTAL,
+    direction: FORM_GROUP_DIRECTION.VERTICAL,
     items: [],
   };
 };

@@ -21,7 +21,7 @@ export const generateStandardForm = (parameters: IParameter[]): IForm => {
               {
                 code: 'Group1',
                 name: 'Группа 1',
-                direction: FORM_GROUP_DIRECTION.FORCE_HORIZONTAL,
+                direction: FORM_GROUP_DIRECTION.VERTICAL,
                 items: items,
               },
             ],

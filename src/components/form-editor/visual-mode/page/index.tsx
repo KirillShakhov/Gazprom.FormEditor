@@ -7,6 +7,7 @@ import { IFormElement } from '../../../../interfaces/form-element';
 import { FormItem } from '../form-item';
 
 interface PageProps {
+  zoom: number;
   form: IForm;
   value: ITabPage;
   selectedItem: IFormElement | undefined;
@@ -15,7 +16,7 @@ interface PageProps {
 }
 
 export const Page: React.FC<PageProps> = (props) => {
-  const { form, value, selectedItem, onSelectItem, update } = props;
+  const { zoom, form, value, selectedItem, onSelectItem, update } = props;
 
   const onDrop = (dropResult: DropResult) => {
     const { removedIndex, addedIndex } = dropResult;
@@ -63,6 +64,7 @@ export const Page: React.FC<PageProps> = (props) => {
               selectedItem={selectedItem}
               onSelectItem={onSelectItem}
               update={update}
+              zoom={zoom}
             />
           </Draggable>
         );

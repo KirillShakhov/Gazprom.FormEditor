@@ -9,6 +9,7 @@ import { IFormElement } from '../../../../interfaces/form-element';
 import { isFormPage } from '../../../../utils/form-config';
 
 interface PageGroupProps {
+  zoom: number;
   form: IForm;
   value: ITabPageController;
   selectedItem: IFormElement | undefined;
@@ -17,7 +18,7 @@ interface PageGroupProps {
 }
 
 export const PageGroup: React.FC<PageGroupProps> = (props) => {
-  const { form, value, selectedItem, onSelectItem, update } = props;
+  const { zoom, form, value, selectedItem, onSelectItem, update } = props;
   const [tabIndex, setTabIndex] = React.useState(0);
   const theme = useTheme();
 
@@ -94,19 +95,24 @@ export const PageGroup: React.FC<PageGroupProps> = (props) => {
         borderRadius: 10,
         borderColor: selectedItem == value ? '#3373d9' : '#e0e0e0',
         borderStyle: 'dotted',
-        marginTop: 10,
+        marginTop: 10 * zoom,
       }}
     >
       <div
         style={{
-          padding: 10,
+          padding: 10 * zoom,
         }}
       >
-        <span style={{ fontSize: 18, margin: 0 }} key={value.code} role={'presentation'} onClick={handleClick}>
+        <span
+          style={{ zoom: zoom, fontSize: 18, margin: 0 }}
+          key={value.code}
+          role={'presentation'}
+          onClick={handleClick}
+        >
           {value.name}
         </span>
-        <div style={{ marginTop: 10, height: '90%' }}>
-          <div style={{ width: '100%', overflowY: 'hidden', paddingBottom: 1 }} className={'no-scroll'}>
+        <div style={{ marginTop: 10 * zoom, height: '90%' }}>
+          <div style={{ zoom: zoom, width: '100%', overflowY: 'hidden', paddingBottom: 1 }} className={'no-scroll'}>
             <Container
               getChildPayload={(i) => value.pages[i]}
               groupName={'pages'}
@@ -183,6 +189,7 @@ export const PageGroup: React.FC<PageGroupProps> = (props) => {
                   selectedItem={selectedItem}
                   onSelectItem={onSelectItem}
                   update={update}
+                  zoom={zoom}
                 />
               )
             );
