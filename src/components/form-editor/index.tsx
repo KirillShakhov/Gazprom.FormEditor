@@ -1,4 +1,4 @@
-import { Shadows, Box, Tab, Tabs, createTheme, ThemeProvider } from '@mui/material';
+import { Shadows, Box, Tab, Tabs, createTheme, ThemeProvider, Button } from '@mui/material';
 import React, { useState } from 'react';
 import { CommandLine } from './command-line';
 import { VisualMode } from './visual-mode';
@@ -19,27 +19,28 @@ import { DropZone } from './drop-zone';
 import SplitPane, { Pane } from 'split-pane-react';
 import 'split-pane-react/esm/themes/default.css';
 import { useLocalStorage } from '../../utils/local-storage';
+import { TransformComponent, TransformWrapper } from 'react-zoom-pan-pinch';
 
 enum Modes {
   Visual,
   Text,
 }
 
-// const theme = createTheme({
-//   palette: {
-//     primary: {
-//       main: '#5775F4',
-//       contrastText: '#ffffff',
-//     },
-//     secondary: {
-//       main: '#E2E5EC',
-//       contrastText: '#525562',
-//     },
-//   },
-//   shadows: Array(25).fill('none') as Shadows,
-// });
-
 const theme = createTheme({
+  palette: {
+    primary: {
+      main: '#5775F4',
+      contrastText: '#ffffff',
+    },
+    secondary: {
+      main: '#E2E5EC',
+      contrastText: '#525562',
+    },
+  },
+  shadows: Array(25).fill('none') as Shadows,
+});
+
+const theme2 = createTheme({
   palette: {
     primary: {
       main: '#f45757',
@@ -57,7 +58,7 @@ const theme = createTheme({
 export const FormEditor: React.FC = () => {
   const [sizes, setSizes] = useLocalStorage<number[] | string[]>('sizes', ['20%', '50%', '25%']);
   const [parameters, setParameters] = useState<IParameter[]>(standardParameters);
-  const [data, setData] = useState<IForm>(standardForm);
+  const [data, setData] = useLocalStorage<IForm>('form', standardForm);
   const [config] = useState<IPropertyMetadata>(metadata);
   const [selectedItem, setSelectedItem] = useState<IFormElement>();
   const [tabIndex, setTabIndex] = React.useState(1);
@@ -107,6 +108,11 @@ export const FormEditor: React.FC = () => {
     }
   };
 
+  const [test, setTest] = useState(false);
+  const testClick = () => {
+    setTest(!test);
+  };
+
   const tabStyle = {
     fontSize: 12,
     minHeight: 30,
@@ -117,7 +123,7 @@ export const FormEditor: React.FC = () => {
 
   return (
     <ThemeProvider theme={theme}>
-      <div style={{ height: '5%' }}>
+      <div style={{ height: '5%', borderBottom: '1px solid', borderColor: '#dadada' }}>
         <CommandLine
           newData={newBlankJson}
           loadData={loadProperties}
@@ -131,16 +137,18 @@ export const FormEditor: React.FC = () => {
       </div>
       <div style={{ height: '100%' }}>
         <SplitPane
-          split="vertical"
+          performanceMode={false}
+          split={test ? 'horizontal' : 'vertical'}
           sizes={sizes}
           onChange={setSizes}
           style={{ height: '100%', width: '100%' }}
-          sashRender={(index, b) => {
-            console.log(`index ${index} boolean ${b}`);
-          }}
+          // sashRender={(index, active) => {
+          //   console.log(`index ${index} active ${active}`);
+          //   // return <SashContent active={active} type="vscode" />;
+          // }}
         >
           <Pane minSize="15%" maxSize="30%">
-            <div style={{ height: '95%' }}>
+            <div style={{ height: '95%', borderRight: '1px solid', borderColor: '#dadada' }}>
               <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
                 <Tabs
                   value={tabIndex}
@@ -166,6 +174,9 @@ export const FormEditor: React.FC = () => {
               </div>
               <div style={{ width: '100%', height: '8%' }}>
                 <DropZone />
+                <Button onClick={testClick} style={{ height: '100px', width: '100px', background: '#36c5d2' }}>
+                  Тест
+                </Button>
               </div>
             </div>
           </Pane>
@@ -184,7 +195,7 @@ export const FormEditor: React.FC = () => {
             )}
           </div>
           <Pane minSize="15%" maxSize="70%">
-            <div style={{ background: '#a1a5a9', height: '100%' }}>
+            <div style={{ background: '#a1a5a9', height: '100%', borderLeft: '1px solid', borderColor: '#dadada' }}>
               <ComponentSettings
                 form={data}
                 value={selectedItem}

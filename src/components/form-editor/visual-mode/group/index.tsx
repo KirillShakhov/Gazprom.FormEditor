@@ -33,6 +33,7 @@ export const Group: React.FC<GroupProps> = (props) => {
         formGroup.items?.splice(addedIndex, 0, param);
       }
     }
+    setDropped(false);
     update();
   };
 
@@ -120,8 +121,7 @@ export const Group: React.FC<GroupProps> = (props) => {
           flexWrap: dropped ? 'nowrap' : getFlexWrap(),
           flexDirection: dropped ? 'column' : getFlexDirection(),
         }}
-        onDragStart={({ payload }) => {
-          if (payload == formGroup) return;
+        onDragEnter={() => {
           setDropped(true);
         }}
         onDragEnd={() => {

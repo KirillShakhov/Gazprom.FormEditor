@@ -103,12 +103,7 @@ export const PageGroup: React.FC<PageGroupProps> = (props) => {
           padding: 10 * zoom > 10 ? 10 : 10 * zoom,
         }}
       >
-        <span
-          style={{ zoom: zoom, fontSize: 18, margin: 0 }}
-          key={value.code}
-          role={'presentation'}
-          onClick={handleClick}
-        >
+        <span style={{ fontSize: 18 * zoom, margin: 0 }} key={value.code} role={'presentation'} onClick={handleClick}>
           {value.name}
         </span>
         <div style={{ marginTop: 10 * zoom, height: '90%' }}>
@@ -127,6 +122,7 @@ export const PageGroup: React.FC<PageGroupProps> = (props) => {
                 animationDuration: 250,
                 showOnTop: true,
               }}
+              getGhostParent={() => document.body}
             >
               {value.pages.map((item, index) => {
                 return (
