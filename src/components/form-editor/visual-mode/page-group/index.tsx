@@ -107,14 +107,14 @@ export const PageGroup: React.FC<PageGroupProps> = (props) => {
           {value.name}
         </span>
         <div style={{ marginTop: 10 * zoom, height: '90%' }}>
-          <div style={{ zoom: zoom, width: '100%', overflowY: 'hidden', paddingBottom: 1 }} className={'no-scroll'}>
+          <div style={{ width: '100%', overflowY: 'hidden', paddingBottom: zoom }} className={'no-scroll'}>
             <Container
               getChildPayload={(i) => value.pages[i]}
               groupName={'pages'}
               orientation={'horizontal'}
               onDrop={onDrop}
               style={{
-                width: calculateWidth(),
+                width: calculateWidth() * zoom,
                 display: 'flex',
               }}
               dropPlaceholder={{
@@ -130,9 +130,9 @@ export const PageGroup: React.FC<PageGroupProps> = (props) => {
                     <div>
                       <div
                         style={{
-                          padding: 5,
-                          paddingLeft: 10,
-                          paddingRight: 10,
+                          padding: 5 * zoom,
+                          paddingLeft: 10 * zoom,
+                          paddingRight: 10 * zoom,
                           background: '#ffffff',
                           border: 1,
                           borderRadius: 6,
@@ -149,7 +149,7 @@ export const PageGroup: React.FC<PageGroupProps> = (props) => {
                       >
                         <div
                           style={{
-                            fontSize: 16,
+                            fontSize: 16 * zoom,
                             whiteSpace: 'nowrap',
                             color: theme.palette.text.primary,
                           }}
@@ -160,11 +160,11 @@ export const PageGroup: React.FC<PageGroupProps> = (props) => {
                       {tabIndex == index && (
                         <div
                           style={{
-                            height: 2,
-                            marginTop: -4,
-                            marginLeft: 10,
-                            marginRight: 15,
-                            borderRadius: 10,
+                            height: 2 * zoom,
+                            marginTop: -4 * zoom,
+                            marginLeft: 10 * zoom,
+                            marginRight: 15 * zoom,
+                            borderRadius: 10 * zoom,
                             background: theme.palette.primary.main,
                           }}
                         />
