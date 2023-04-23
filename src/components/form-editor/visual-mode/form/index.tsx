@@ -26,8 +26,6 @@ export const FormView: React.FC<GroupProps> = (props) => {
 
   const onDrop = (dropResult: DropResult) => {
     const { removedIndex, addedIndex, payload } = dropResult;
-    console.log('removedIndex ' + removedIndex);
-    console.log('addedIndex ' + addedIndex);
     if (payload == null) return;
     const param = payload;
     if (isFormItem(param)) {

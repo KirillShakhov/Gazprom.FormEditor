@@ -11,6 +11,8 @@ import RemoveRoundedIcon from '@mui/icons-material/RemoveRounded';
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import ZoomOutMapRoundedIcon from '@mui/icons-material/ZoomOutMapRounded';
 import ZoomInMapRoundedIcon from '@mui/icons-material/ZoomInMapRounded';
+import Grid3x3RoundedIcon from '@mui/icons-material/Grid3x3Rounded';
+import Grid4x4RoundedIcon from '@mui/icons-material/Grid4x4Rounded';
 import { TransformComponent, TransformWrapper } from 'react-zoom-pan-pinch';
 
 interface VisualModeProps {
@@ -47,6 +49,7 @@ export const VisualMode: React.FC<VisualModeProps> = (props) => {
   }, ['Escape', 'Control']);
 
   const [draggable, setDraggable] = React.useState(false);
+  const [formWidth, setFormWidth] = React.useState(800);
 
   return (
     <div
@@ -68,15 +71,17 @@ export const VisualMode: React.FC<VisualModeProps> = (props) => {
           zoomAnimation={{ disabled: true }}
         >
           <TransformComponent>
-            <FormView
-              zoom={zoom}
-              scrollable={scrollable}
-              form={form}
-              onSelectItem={onSelectItem}
-              update={update}
-              selectedItem={selectedItem}
-              setDraggable={setDraggable}
-            />
+            <div style={{ width: formWidth }}>
+              <FormView
+                zoom={zoom}
+                scrollable={scrollable}
+                form={form}
+                onSelectItem={onSelectItem}
+                update={update}
+                selectedItem={selectedItem}
+                setDraggable={setDraggable}
+              />
+            </div>
           </TransformComponent>
         </TransformWrapper>
       )}
@@ -134,6 +139,26 @@ export const VisualMode: React.FC<VisualModeProps> = (props) => {
           {scrollable && <ZoomInMapRoundedIcon />}
           {!scrollable && <ZoomOutMapRoundedIcon />}
         </IconButton>
+        {scrollable && (
+          <IconButton
+            style={{ height: 30, width: 30 }}
+            onClick={() => {
+              setFormWidth(formWidth - 50);
+            }}
+          >
+            <Grid3x3RoundedIcon />
+          </IconButton>
+        )}
+        {scrollable && (
+          <IconButton
+            style={{ height: 30, width: 30 }}
+            onClick={() => {
+              setFormWidth(formWidth + 50);
+            }}
+          >
+            <Grid4x4RoundedIcon />
+          </IconButton>
+        )}
       </div>
     </div>
   );
