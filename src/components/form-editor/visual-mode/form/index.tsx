@@ -54,7 +54,9 @@ export const FormView: React.FC<GroupProps> = (props) => {
               background: '#565963',
               padding: 20,
             }
-          : {}
+          : {
+              padding: 150,
+            }
       }
     >
       <div
@@ -64,7 +66,6 @@ export const FormView: React.FC<GroupProps> = (props) => {
                 display: 'flex',
                 flexDirection: 'column',
                 justifyContent: 'space-between',
-                height: '80%',
                 padding: 30 * zoom > 30 ? 30 : 30 * zoom,
                 borderRadius: 10,
                 background: '#ffffff',
