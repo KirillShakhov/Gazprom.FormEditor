@@ -39,19 +39,19 @@ const theme = createTheme({
   shadows: Array(25).fill('none') as Shadows,
 });
 
-const theme2 = createTheme({
-  palette: {
-    primary: {
-      main: '#f45757',
-      contrastText: '#ffffff',
-    },
-    secondary: {
-      main: '#E2E5EC',
-      contrastText: '#525562',
-    },
-  },
-  shadows: Array(25).fill('none') as Shadows,
-});
+// const theme2 = createTheme({
+//   palette: {
+//     primary: {
+//       main: '#f45757',
+//       contrastText: '#ffffff',
+//     },
+//     secondary: {
+//       main: '#E2E5EC',
+//       contrastText: '#525562',
+//     },
+//   },
+//   shadows: Array(25).fill('none') as Shadows,
+// });
 
 /** Редактор форм. */
 export const FormEditor: React.FC = () => {

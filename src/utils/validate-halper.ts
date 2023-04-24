@@ -1,117 +1,104 @@
-import { object, setLocale, string, array } from 'yup';
-import { FORM_GROUP_DIRECTION, IFormGroup, IFormItem, ITabPage, ITabPageController } from '../interfaces/form-config';
-import { IFormElement } from '../interfaces/form-element';
-import { CONTROL_TYPE, IFormControl } from '../interfaces/form-control';
 import { ErrorObject, Schema } from 'ajv/lib/types';
 
-setLocale({
-  // mixed: {
-  //   default: 'Não é válido',
-  // },
-  // number: {
-  //   min: 'Deve ser maior que ${min}',
-  // },
-});
+// const formElement = object<IFormElement>().shape({
+//   code: string().required(),
+//   name: string().required(),
+//   properties: object().optional(),
+// });
+//
+// const formControl = object<IFormControl>()
+//   .shape({
+//     dataSource: string().required(),
+//     type: string().oneOf(Object.values(CONTROL_TYPE)).required(),
+//   })
+//   .test((value) => {
+//     return new Promise((res, rej) => {
+//       formElement
+//         .validate(value)
+//         .then(() => res(true))
+//         .catch((e) => {
+//           rej(e);
+//         });
+//     });
+//   });
 
-const formElement = object<IFormElement>().shape({
-  code: string().required(),
-  name: string().required(),
-  properties: object().optional(),
-});
+// const formItem = object<IFormItem>().test((value) => {
+//   return new Promise((res, rej) => {
+//     formElement
+//       .validate(value)
+//       .then(() => {
+//         tabPageController
+//           .validate(value)
+//           .then(() => res(true))
+//           .catch((e1) => {
+//             formControl
+//               .validate(value)
+//               .then(() => res(true))
+//               .catch((e2) => {
+//                 formGroup
+//                   .validate(value)
+//                   .then(() => res(true))
+//                   .catch((e3) => {
+//                     let errors = '';
+//                     errors += `tabPageController ${e1}\n`;
+//                     errors += `formControl ${e2}\n`;
+//                     errors += `formGroup ${e3}\n`;
+//                     rej(`IFormItem ${errors}`);
+//                   });
+//               });
+//           });
+//       })
+//       .catch((e) => {
+//         rej(e);
+//       });
+//   });
+// });
 
-const formControl = object<IFormControl>()
-  .shape({
-    dataSource: string().required(),
-    type: string().oneOf(Object.values(CONTROL_TYPE)).required(),
-  })
-  .test((value) => {
-    return new Promise((res, rej) => {
-      formElement
-        .validate(value)
-        .then(() => res(true))
-        .catch((e) => {
-          rej(e);
-        });
-    });
-  });
-
-const formItem = object<IFormItem>().test((value) => {
-  return new Promise((res, rej) => {
-    formElement
-      .validate(value)
-      .then(() => {
-        tabPageController
-          .validate(value)
-          .then(() => res(true))
-          .catch((e1) => {
-            formControl
-              .validate(value)
-              .then(() => res(true))
-              .catch((e2) => {
-                formGroup
-                  .validate(value)
-                  .then(() => res(true))
-                  .catch((e3) => {
-                    let errors = '';
-                    errors += `tabPageController ${e1}\n`;
-                    errors += `formControl ${e2}\n`;
-                    errors += `formGroup ${e3}\n`;
-                    rej(`IFormItem ${errors}`);
-                  });
-              });
-          });
-      })
-      .catch((e) => {
-        rej(e);
-      });
-  });
-});
-
-const formGroup = object<IFormGroup>()
-  .shape({
-    direction: string().oneOf(Object.values(FORM_GROUP_DIRECTION)).required(),
-    items: array(formItem).optional(),
-  })
-  .test((value) => {
-    return new Promise((res, rej) => {
-      formElement
-        .validate(value)
-        .then(() => res(true))
-        .catch((e) => {
-          rej(e);
-        });
-    });
-  });
-
-const tabPage = object<ITabPage>()
-  .shape({
-    items: array(formItem).required(),
-  })
-  .test((value) => {
-    return new Promise((res, rej) => {
-      formElement
-        .validate(value)
-        .then(() => res(true))
-        .catch((e) => {
-          rej(e);
-        });
-    });
-  });
-
-const tabPageController = object<ITabPageController>()
-  .shape({
-    pages: array(tabPage).required(),
-  })
-  .test((value) => {
-    return new Promise((res, rej) => {
-      formElement
-        .validate(value)
-        .then(() => res(true))
-        .catch((e) => {
-          rej(e);
-        });
-    });
-  });
+// const formGroup = object<IFormGroup>()
+//   .shape({
+//     direction: string().oneOf(Object.values(FORM_GROUP_DIRECTION)).required(),
+//     items: array(formItem).optional(),
+//   })
+//   .test((value) => {
+//     return new Promise((res, rej) => {
+//       formElement
+//         .validate(value)
+//         .then(() => res(true))
+//         .catch((e) => {
+//           rej(e);
+//         });
+//     });
+//   });
+//
+// const tabPage = object<ITabPage>()
+//   .shape({
+//     items: array(formItem).required(),
+//   })
+//   .test((value) => {
+//     return new Promise((res, rej) => {
+//       formElement
+//         .validate(value)
+//         .then(() => res(true))
+//         .catch((e) => {
+//           rej(e);
+//         });
+//     });
+//   });
+//
+// const tabPageController = object<ITabPageController>()
+//   .shape({
+//     pages: array(tabPage).required(),
+//   })
+//   .test((value) => {
+//     return new Promise((res, rej) => {
+//       formElement
+//         .validate(value)
+//         .then(() => res(true))
+//         .catch((e) => {
+//           rej(e);
+//         });
+//     });
+//   });
 
 const schemaFormElement: Schema = {
   type: 'object',
