@@ -17,6 +17,7 @@ import { SelectType } from './types/select-type';
 
 interface ElementProps {
   zoom: number;
+  readOnly: boolean;
   value: IFormControl;
   selectedItem: IFormElement | undefined;
   onSelectItem: (value: IFormElement | undefined) => void;
@@ -54,7 +55,7 @@ function renderSwitch(value: IFormControl) {
 }
 
 export const Element: React.FC<ElementProps> = (props) => {
-  const { zoom, value, selectedItem, onSelectItem } = props;
+  const { zoom, readOnly, value, selectedItem, onSelectItem } = props;
 
   const onClick = () => {
     if (selectedItem == value) {

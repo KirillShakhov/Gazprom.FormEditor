@@ -20,6 +20,8 @@ interface GroupProps {
 export const FormView: React.FC<GroupProps> = (props) => {
   const { zoom, scrollable, form, selectedItem, onSelectItem, update, setDraggable } = props;
 
+  const [readOnly, setReadOnly] = React.useState(true);
+
   const print = () => {
     console.log(JSON.stringify(form.items));
   };
@@ -80,44 +82,62 @@ export const FormView: React.FC<GroupProps> = (props) => {
         }
       >
         <div style={{ overflowY: 'auto', height: '100%' }}>
-          <Container
-            getChildPayload={(i) => (form.items ? form.items[i] : [])}
-            groupName={'pages-groups'}
-            onDrop={onDrop}
-            dropPlaceholder={{
-              className: 'dropPlaceholderPageGroup',
-              animationDuration: 250,
-              showOnTop: true,
-            }}
-            getGhostParent={() => document.body}
-            shouldAcceptDrop={shouldAcceptDrop}
-            onDragStart={() => {
-              console.log('setDraggable(true)');
-              if (setDraggable) {
-                setDraggable(true);
-              }
-            }}
-            onDragEnd={() => {
-              if (setDraggable) {
-                setDraggable(false);
-              }
-            }}
-          >
-            {form.items?.map((item, index) => {
+          {!readOnly && (
+            <Container
+              getChildPayload={(i) => (form.items ? form.items[i] : [])}
+              groupName={'pages-groups'}
+              onDrop={onDrop}
+              dropPlaceholder={{
+                className: 'dropPlaceholderPageGroup',
+                animationDuration: 250,
+                showOnTop: true,
+              }}
+              getGhostParent={() => document.body}
+              shouldAcceptDrop={shouldAcceptDrop}
+              onDragStart={() => {
+                console.log('setDraggable(true)');
+                if (setDraggable) {
+                  setDraggable(true);
+                }
+              }}
+              onDragEnd={() => {
+                if (setDraggable) {
+                  setDraggable(false);
+                }
+              }}
+            >
+              {form.items?.map((item, index) => {
+                return (
+                  <Draggable key={item.code + item.name + index}>
+                    <FormItem
+                      readOnly={readOnly}
+                      zoom={zoom}
+                      form={form}
+                      formItem={item}
+                      onSelectItem={onSelectItem}
+                      selectedItem={selectedItem}
+                      update={update}
+                    />
+                  </Draggable>
+                );
+              })}
+            </Container>
+          )}
+          {readOnly &&
+            form.items?.map((item, index) => {
               return (
-                <Draggable key={item.code + item.name + index}>
-                  <FormItem
-                    zoom={zoom}
-                    form={form}
-                    formItem={item}
-                    onSelectItem={onSelectItem}
-                    selectedItem={selectedItem}
-                    update={update}
-                  />
-                </Draggable>
+                <FormItem
+                  key={item.code + item.name + index}
+                  zoom={zoom}
+                  readOnly={readOnly}
+                  form={form}
+                  formItem={item}
+                  onSelectItem={onSelectItem}
+                  selectedItem={selectedItem}
+                  update={update}
+                />
               );
             })}
-          </Container>
         </div>
         <div style={{ zoom: zoom, display: 'flex', gap: 20, marginTop: 20 }}>
           <Button variant="contained" onClick={print}>

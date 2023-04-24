@@ -9,6 +9,7 @@ import { Group } from '../group';
 
 interface GroupProps {
   zoom: number;
+  readOnly: boolean;
   form: IForm;
   formItem: IFormItem;
   selectedItem: IFormElement | undefined;
@@ -17,13 +18,14 @@ interface GroupProps {
 }
 
 export const FormItem: React.FC<GroupProps> = (props) => {
-  const { zoom, form, formItem, selectedItem, onSelectItem, update } = props;
+  const { zoom, readOnly, form, formItem, selectedItem, onSelectItem, update } = props;
 
   return (
     <div>
       {isTabPageController(formItem) && (
         <PageGroup
           zoom={zoom}
+          readOnly={readOnly}
           form={form}
           value={formItem as ITabPageController}
           selectedItem={selectedItem}
@@ -34,6 +36,7 @@ export const FormItem: React.FC<GroupProps> = (props) => {
       {isFormGroup(formItem) && (
         <Group
           zoom={zoom}
+          readOnly={readOnly}
           form={form}
           formGroup={formItem as IFormGroup}
           selectedItem={selectedItem}
@@ -42,7 +45,13 @@ export const FormItem: React.FC<GroupProps> = (props) => {
         />
       )}
       {isFormControl(formItem) && (
-        <Element zoom={zoom} value={formItem as IFormControl} selectedItem={selectedItem} onSelectItem={onSelectItem} />
+        <Element
+          zoom={zoom}
+          readOnly={readOnly}
+          value={formItem as IFormControl}
+          selectedItem={selectedItem}
+          onSelectItem={onSelectItem}
+        />
       )}
     </div>
   );

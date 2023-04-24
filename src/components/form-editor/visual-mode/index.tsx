@@ -6,7 +6,6 @@ import { useLocalStorage } from '../../../utils/local-storage';
 import { FormView } from './form';
 import './style.css';
 import { IconButton } from '@mui/material';
-import AddBoxRoundedIcon from '@mui/icons-material/AddBoxRounded';
 import RemoveRoundedIcon from '@mui/icons-material/RemoveRounded';
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import ZoomOutMapRoundedIcon from '@mui/icons-material/ZoomOutMapRounded';
