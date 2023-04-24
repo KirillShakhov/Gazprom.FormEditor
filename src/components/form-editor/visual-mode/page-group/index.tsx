@@ -19,16 +19,27 @@ interface PageGroupProps {
 
 export const PageGroup: React.FC<PageGroupProps> = (props) => {
   const { zoom, form, value, selectedItem, onSelectItem, update } = props;
-  const [tabIndex, setTabIndex] = React.useState(0);
+  const [tabCode, setTabCode] = React.useState('');
+  const getTabIndex = useCallback(() => {
+    if (value.pages == undefined) return 0;
+    let index = 0;
+    value.pages.forEach((p, i) => {
+      if (p.code == tabCode) {
+        index = i;
+      }
+    });
+    return index;
+  }, [tabCode, value.pages]);
+
   const theme = useTheme();
 
-  const handleChange = (newValue: number) => {
-    setTabIndex(newValue);
-    if (selectedItem == value.pages[newValue]) {
+  const handleChange = (newValue: string) => {
+    setTabCode(newValue);
+    if (selectedItem == value.pages[getTabIndex()]) {
       onSelectItem(undefined);
       return;
     }
-    onSelectItem(value.pages[newValue]);
+    onSelectItem(value.pages[getTabIndex()]);
   };
 
   const calculateWidth = useCallback(() => {
@@ -43,14 +54,14 @@ export const PageGroup: React.FC<PageGroupProps> = (props) => {
     return width;
   }, [value.pages]);
 
-  const onMouseEnter = (e: any, id: number) => {
+  const onMouseEnter = (e: any, code: string) => {
     if (!Experimental.GROUP_DRAG_AND_DROP) return;
     if (e.nativeEvent.which) {
       const ghost = document.getElementsByClassName('smooth-dnd-ghost');
       const item = ghost.item(0)?.className;
       if (item === undefined) return;
       if (item.includes('page-ghost')) return;
-      setTabIndex(id);
+      setTabCode(code);
     }
   };
 
@@ -66,13 +77,6 @@ export const PageGroup: React.FC<PageGroupProps> = (props) => {
         }
         if (addedIndex != null) {
           value.pages?.splice(addedIndex, 0, page);
-        }
-        if (removedIndex != null && addedIndex != null) {
-          if (removedIndex == tabIndex) {
-            setTabIndex(addedIndex);
-          } else if (addedIndex == tabIndex) {
-            setTabIndex(removedIndex);
-          }
         }
         update();
       }
@@ -141,10 +145,10 @@ export const PageGroup: React.FC<PageGroupProps> = (props) => {
                         }}
                         role={'presentation'}
                         onMouseEnter={(e) => {
-                          onMouseEnter(e, index);
+                          onMouseEnter(e, item.code);
                         }}
                         onClick={() => {
-                          handleChange(index);
+                          handleChange(item.code);
                         }}
                       >
                         <div
@@ -157,7 +161,7 @@ export const PageGroup: React.FC<PageGroupProps> = (props) => {
                           {item.name}
                         </div>
                       </div>
-                      {tabIndex == index && (
+                      {getTabIndex() == index && (
                         <div
                           style={{
                             height: 2 * zoom,
@@ -177,7 +181,7 @@ export const PageGroup: React.FC<PageGroupProps> = (props) => {
           </div>
           {value.pages.map((item, index) => {
             return (
-              index == tabIndex && (
+              index == getTabIndex() && (
                 <Page
                   form={form}
                   key={index}
