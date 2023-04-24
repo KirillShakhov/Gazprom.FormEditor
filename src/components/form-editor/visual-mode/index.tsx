@@ -121,7 +121,7 @@ export const VisualMode: React.FC<VisualModeProps> = (props) => {
           zoom={zoom}
           hideLeftPanel={hideLeftPanel}
           setHideLeftPanel={setHideLeftPanel}
-          hideRightPanel={hideLeftPanel}
+          hideRightPanel={hideRightPanel}
           setHideRightPanel={setHideRightPanel}
           setZoom={setZoom}
           scrollable={scrollable}

@@ -121,6 +121,7 @@ export const PageGroup: React.FC<PageGroupProps> = (props) => {
               style={{
                 width: calculateWidth() * zoom,
                 display: 'flex',
+                minHeight: 0,
               }}
               dropPlaceholder={{
                 className: 'dropPlaceholderPage',

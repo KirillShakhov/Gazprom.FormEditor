@@ -84,7 +84,7 @@ export const FormEditor: React.FC = () => {
     if (value) {
       sizes[2] = '0%';
     } else {
-      sizes[2] = '20%';
+      sizes[2] = '25%';
     }
     setSizes([...sizes]);
   };
