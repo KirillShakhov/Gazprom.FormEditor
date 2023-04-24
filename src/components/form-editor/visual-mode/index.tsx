@@ -10,13 +10,26 @@ import { ViewControlPanel } from './view-control-panel';
 
 interface VisualModeProps {
   form: IForm;
+  hideLeftPanel: boolean;
+  hideRightPanel: boolean;
+  setHideLeftPanel: (value: boolean) => void;
+  setHideRightPanel: (value: boolean) => void;
   selectedItem: IFormElement | undefined;
   onSelectItem: (value: IFormElement | undefined) => void;
   update: () => void;
 }
 
 export const VisualMode: React.FC<VisualModeProps> = (props) => {
-  const { form, selectedItem, onSelectItem, update } = props;
+  const {
+    form,
+    selectedItem,
+    onSelectItem,
+    update,
+    hideLeftPanel,
+    hideRightPanel,
+    setHideLeftPanel,
+    setHideRightPanel,
+  } = props;
 
   const [scrollable, setScrollable] = React.useState(true);
 
@@ -106,6 +119,10 @@ export const VisualMode: React.FC<VisualModeProps> = (props) => {
       >
         <ViewControlPanel
           zoom={zoom}
+          hideLeftPanel={hideLeftPanel}
+          setHideLeftPanel={setHideLeftPanel}
+          hideRightPanel={hideLeftPanel}
+          setHideRightPanel={setHideRightPanel}
           setZoom={setZoom}
           scrollable={scrollable}
           setScrollable={setScrollable}

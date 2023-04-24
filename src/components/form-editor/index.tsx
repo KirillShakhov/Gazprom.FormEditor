@@ -1,5 +1,5 @@
 import { Shadows, Box, Tab, Tabs, createTheme, ThemeProvider, Button } from '@mui/material';
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { CommandLine } from './command-line';
 import { VisualMode } from './visual-mode';
 import { TextMode } from './text-mode/text-mode';
@@ -62,6 +62,32 @@ export const FormEditor: React.FC = () => {
   const [selectedItem, setSelectedItem] = useState<IFormElement>();
   const [tabIndex, setTabIndex] = React.useState(1);
   const [mode, setMode] = useState(Modes.Visual);
+
+  const hideLeftPanel = useCallback(() => {
+    return sizes[0] == '0%';
+  }, [sizes]);
+
+  const setHideLeftPanel = (value: boolean) => {
+    if (value) {
+      sizes[0] = '0%';
+    } else {
+      sizes[0] = '20%';
+    }
+    setSizes([...sizes]);
+  };
+
+  const hideRightPanel = useCallback(() => {
+    return sizes[2] == '0%';
+  }, [sizes]);
+
+  const setHideRightPanel = (value: boolean) => {
+    if (value) {
+      sizes[2] = '0%';
+    } else {
+      sizes[2] = '20%';
+    }
+    setSizes([...sizes]);
+  };
 
   const changeMode = () => {
     if (mode === Modes.Text) {
@@ -181,7 +207,16 @@ export const FormEditor: React.FC = () => {
           </Pane>
           <div style={{ background: '#d5d7d9', height: '100%' }}>
             {mode == Modes.Visual && (
-              <VisualMode form={data} selectedItem={selectedItem} onSelectItem={setSelectedItem} update={updateAll} />
+              <VisualMode
+                form={data}
+                hideLeftPanel={hideLeftPanel()}
+                hideRightPanel={hideRightPanel()}
+                setHideLeftPanel={setHideLeftPanel}
+                selectedItem={selectedItem}
+                onSelectItem={setSelectedItem}
+                update={updateAll}
+                setHideRightPanel={setHideRightPanel}
+              />
             )}
             {mode == Modes.Text && (
               <TextMode

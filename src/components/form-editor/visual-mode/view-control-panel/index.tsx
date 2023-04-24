@@ -8,7 +8,8 @@ import LockOpenRoundedIcon from '@mui/icons-material/LockOpenRounded';
 import LockRoundedIcon from '@mui/icons-material/LockRounded';
 import Grid3x3RoundedIcon from '@mui/icons-material/Grid3x3Rounded';
 import Grid4x4RoundedIcon from '@mui/icons-material/Grid4x4Rounded';
-
+import ArrowBackIosRoundedIcon from '@mui/icons-material/ArrowBackIosRounded';
+import ArrowForwardIosRoundedIcon from '@mui/icons-material/ArrowForwardIosRounded';
 interface ViewControlPanelProps {
   zoom: number;
   setZoom: (value: number) => void;
@@ -18,13 +19,46 @@ interface ViewControlPanelProps {
   setReadOnly: (value: boolean) => void;
   formWidth: number;
   setFormWidth: (value: number) => void;
+  hideLeftPanel: boolean;
+  setHideLeftPanel: (value: boolean) => void;
+  hideRightPanel: boolean;
+  setHideRightPanel: (value: boolean) => void;
 }
 
 export const ViewControlPanel: React.FC<ViewControlPanelProps> = (props) => {
-  const { scrollable, setScrollable, zoom, setZoom, readOnly, setReadOnly, formWidth, setFormWidth } = props;
+  const {
+    scrollable,
+    setScrollable,
+    zoom,
+    setZoom,
+    readOnly,
+    setReadOnly,
+    formWidth,
+    setFormWidth,
+    hideLeftPanel,
+    setHideLeftPanel,
+    hideRightPanel,
+    setHideRightPanel,
+  } = props;
 
   return (
     <div>
+      <IconButton
+        style={{ height: 30, width: 30 }}
+        onClick={() => {
+          setHideLeftPanel(!hideLeftPanel);
+        }}
+      >
+        <ArrowBackIosRoundedIcon />
+      </IconButton>
+      <IconButton
+        style={{ height: 30, width: 30 }}
+        onClick={() => {
+          setHideRightPanel(!hideRightPanel);
+        }}
+      >
+        <ArrowForwardIosRoundedIcon />
+      </IconButton>
       <IconButton
         style={{ height: 30, width: 30 }}
         onClick={() => {
