@@ -54,7 +54,7 @@ export const FormView: React.FC<FormViewProps> = (props) => {
               padding: 20,
             }
           : {
-              padding: 150,
+              padding: 50,
             }
       }
     >
