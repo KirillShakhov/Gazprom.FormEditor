@@ -12,6 +12,8 @@ import ZoomOutMapRoundedIcon from '@mui/icons-material/ZoomOutMapRounded';
 import ZoomInMapRoundedIcon from '@mui/icons-material/ZoomInMapRounded';
 import Grid3x3RoundedIcon from '@mui/icons-material/Grid3x3Rounded';
 import Grid4x4RoundedIcon from '@mui/icons-material/Grid4x4Rounded';
+import LockOpenRoundedIcon from '@mui/icons-material/LockOpenRounded';
+import LockRoundedIcon from '@mui/icons-material/LockRounded';
 import { TransformComponent, TransformWrapper } from 'react-zoom-pan-pinch';
 
 interface VisualModeProps {
@@ -47,6 +49,7 @@ export const VisualMode: React.FC<VisualModeProps> = (props) => {
     console.log('Escape');
   }, ['Escape', 'Control']);
 
+  const [readOnly, setReadOnly] = React.useState(true);
   const [draggable, setDraggable] = React.useState(false);
   const [formWidth, setFormWidth] = React.useState(800);
 
@@ -73,6 +76,7 @@ export const VisualMode: React.FC<VisualModeProps> = (props) => {
             <div style={{ width: formWidth }}>
               <FormView
                 zoom={zoom}
+                readOnly={readOnly}
                 scrollable={scrollable}
                 form={form}
                 onSelectItem={onSelectItem}
@@ -87,6 +91,7 @@ export const VisualMode: React.FC<VisualModeProps> = (props) => {
       {!scrollable && (
         <FormView
           zoom={zoom}
+          readOnly={readOnly}
           scrollable={scrollable}
           form={form}
           onSelectItem={onSelectItem}
@@ -138,6 +143,17 @@ export const VisualMode: React.FC<VisualModeProps> = (props) => {
           {scrollable && <ZoomInMapRoundedIcon />}
           {!scrollable && <ZoomOutMapRoundedIcon />}
         </IconButton>
+
+        <IconButton
+          style={{ height: 30, width: 30 }}
+          onClick={() => {
+            setReadOnly(!readOnly);
+          }}
+        >
+          {!readOnly && <LockOpenRoundedIcon />}
+          {readOnly && <LockRoundedIcon />}
+        </IconButton>
+
         {scrollable && (
           <IconButton
             style={{ height: 30, width: 30 }}

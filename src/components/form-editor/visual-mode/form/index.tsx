@@ -1,4 +1,4 @@
-import React, { CSSProperties, useCallback } from 'react';
+import React from 'react';
 import { IForm } from '../../../../interfaces/form-config';
 import { IFormElement } from '../../../../interfaces/form-element';
 import { isFormItem } from '../../../../utils/form-config';
@@ -7,8 +7,9 @@ import { Button } from '@mui/material';
 import { FormItem } from '../form-item';
 import '../style.css';
 
-interface GroupProps {
+interface FormViewProps {
   zoom: number;
+  readOnly: boolean;
   scrollable: boolean;
   form: IForm;
   selectedItem: IFormElement | undefined;
@@ -17,10 +18,8 @@ interface GroupProps {
   setDraggable?: (value: boolean) => void;
 }
 
-export const FormView: React.FC<GroupProps> = (props) => {
-  const { zoom, scrollable, form, selectedItem, onSelectItem, update, setDraggable } = props;
-
-  const [readOnly, setReadOnly] = React.useState(true);
+export const FormView: React.FC<FormViewProps> = (props) => {
+  const { zoom, readOnly, scrollable, form, selectedItem, onSelectItem, update, setDraggable } = props;
 
   const print = () => {
     console.log(JSON.stringify(form.items));

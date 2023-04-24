@@ -19,7 +19,6 @@ import { DropZone } from './drop-zone';
 import SplitPane, { Pane } from 'split-pane-react';
 import 'split-pane-react/esm/themes/default.css';
 import { useLocalStorage } from '../../utils/local-storage';
-import { TransformComponent, TransformWrapper } from 'react-zoom-pan-pinch';
 
 enum Modes {
   Visual,
@@ -195,7 +194,7 @@ export const FormEditor: React.FC = () => {
             )}
           </div>
           <Pane minSize="15%" maxSize="70%">
-            <div style={{ background: '#a1a5a9', height: '100%', borderLeft: '1px solid', borderColor: '#dadada' }}>
+            <div style={{ background: '#a1a5a9', height: '95%', borderLeft: '1px solid', borderColor: '#dadada' }}>
               <ComponentSettings
                 form={data}
                 value={selectedItem}

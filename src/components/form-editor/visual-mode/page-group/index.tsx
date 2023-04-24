@@ -10,6 +10,7 @@ import { isFormPage } from '../../../../utils/form-config';
 
 interface PageGroupProps {
   zoom: number;
+  readOnly: boolean;
   form: IForm;
   value: ITabPageController;
   selectedItem: IFormElement | undefined;
@@ -18,7 +19,7 @@ interface PageGroupProps {
 }
 
 export const PageGroup: React.FC<PageGroupProps> = (props) => {
-  const { zoom, form, value, selectedItem, onSelectItem, update } = props;
+  const { zoom, readOnly, form, value, selectedItem, onSelectItem, update } = props;
   const [tabCode, setTabCode] = React.useState('');
   const getTabIndex = useCallback(() => {
     if (value.pages == undefined) return 0;
