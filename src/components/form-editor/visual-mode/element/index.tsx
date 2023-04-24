@@ -55,7 +55,7 @@ function renderSwitch(value: IFormControl) {
 }
 
 export const Element: React.FC<ElementProps> = (props) => {
-  const { zoom, readOnly, value, selectedItem, onSelectItem } = props;
+  const { zoom, value, selectedItem, onSelectItem } = props;
 
   const onClick = () => {
     if (selectedItem == value) {

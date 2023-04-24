@@ -113,27 +113,86 @@ export const PageGroup: React.FC<PageGroupProps> = (props) => {
         </span>
         <div style={{ marginTop: 10 * zoom, height: '90%' }}>
           <div style={{ width: '100%', overflowY: 'hidden', paddingBottom: zoom }} className={'no-scroll'}>
-            <Container
-              getChildPayload={(i) => value.pages[i]}
-              groupName={'pages'}
-              orientation={'horizontal'}
-              onDrop={onDrop}
+            {!readOnly && (
+              <Container
+                getChildPayload={(i) => value.pages[i]}
+                groupName={'pages'}
+                orientation={'horizontal'}
+                onDrop={onDrop}
+                style={{
+                  width: calculateWidth() * zoom,
+                  display: 'flex',
+                  minHeight: 0,
+                }}
+                dropPlaceholder={{
+                  className: 'dropPlaceholderPage',
+                  animationDuration: 250,
+                  showOnTop: true,
+                }}
+                getGhostParent={() => document.body}
+              >
+                {value.pages.map((item, index) => {
+                  return (
+                    <Draggable key={item.code + item.name + index} className={'page-ghost'}>
+                      <div>
+                        <div
+                          style={{
+                            padding: 5 * zoom,
+                            paddingLeft: 10 * zoom,
+                            paddingRight: 10 * zoom,
+                            background: '#ffffff',
+                            border: 1,
+                            borderRadius: 6,
+                            borderColor: selectedItem == item ? '#3373d9' : '#e0e0e0',
+                            borderStyle: 'dotted',
+                          }}
+                          role={'presentation'}
+                          onMouseEnter={(e) => {
+                            onMouseEnter(e, item.code);
+                          }}
+                          onClick={() => {
+                            handleChange(item.code);
+                          }}
+                        >
+                          <div
+                            style={{
+                              fontSize: 16 * zoom,
+                              whiteSpace: 'nowrap',
+                              color: theme.palette.text.primary,
+                            }}
+                          >
+                            {item.name}
+                          </div>
+                        </div>
+                        {getTabIndex() == index && (
+                          <div
+                            style={{
+                              height: 2 * zoom,
+                              marginTop: -4 * zoom,
+                              marginLeft: 10 * zoom,
+                              marginRight: 15 * zoom,
+                              borderRadius: 10 * zoom,
+                              background: theme.palette.primary.main,
+                            }}
+                          />
+                        )}
+                      </div>
+                    </Draggable>
+                  );
+                })}
+              </Container>
+            )}
+            <div
               style={{
                 width: calculateWidth() * zoom,
                 display: 'flex',
                 minHeight: 0,
               }}
-              dropPlaceholder={{
-                className: 'dropPlaceholderPage',
-                animationDuration: 250,
-                showOnTop: true,
-              }}
-              getGhostParent={() => document.body}
             >
-              {value.pages.map((item, index) => {
-                return (
-                  <Draggable key={item.code + item.name + index} className={'page-ghost'}>
-                    <div>
+              {readOnly &&
+                value.pages.map((item, index) => {
+                  return (
+                    <div key={item.code + item.name + index}>
                       <div
                         style={{
                           padding: 5 * zoom,
@@ -176,16 +235,16 @@ export const PageGroup: React.FC<PageGroupProps> = (props) => {
                         />
                       )}
                     </div>
-                  </Draggable>
-                );
-              })}
-            </Container>
+                  );
+                })}
+            </div>
           </div>
           {value.pages.map((item, index) => {
             return (
               index == getTabIndex() && (
                 <Page
                   form={form}
+                  readOnly={readOnly}
                   key={index}
                   value={item}
                   selectedItem={selectedItem}

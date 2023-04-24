@@ -151,21 +151,30 @@ export const Group: React.FC<GroupProps> = (props) => {
           })}
         </Container>
       )}
-      {readOnly &&
-        formGroup.items?.map((item, index) => {
-          return (
-            <FormItem
-              key={item.code + item.name + index}
-              readOnly={readOnly}
-              form={form}
-              formItem={item}
-              onSelectItem={onSelectItem}
-              selectedItem={selectedItem}
-              update={update}
-              zoom={zoom}
-            />
-          );
-        })}
+      {readOnly && (
+        <div
+          style={{
+            display: 'flex',
+            flexWrap: dropped ? 'nowrap' : getFlexWrap(),
+            flexDirection: dropped ? 'column' : getFlexDirection(),
+          }}
+        >
+          {formGroup.items?.map((item, index) => {
+            return (
+              <FormItem
+                key={item.code + item.name + index}
+                readOnly={readOnly}
+                form={form}
+                formItem={item}
+                onSelectItem={onSelectItem}
+                selectedItem={selectedItem}
+                update={update}
+                zoom={zoom}
+              />
+            );
+          })}
+        </div>
+      )}
     </div>
   );
 };
