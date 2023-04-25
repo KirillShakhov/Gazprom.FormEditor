@@ -78,7 +78,7 @@ export const VisualMode: React.FC<VisualModeProps> = (props) => {
           zoomAnimation={{ disabled: true }}
         >
           <TransformComponent>
-            <div style={{ width: formWidth, paddingRight: 1000 }}>
+            <div style={{ width: formWidth, paddingRight: 1000, paddingBottom: 1000 }}>
               <FormView
                 zoom={zoom}
                 readOnly={readOnly}

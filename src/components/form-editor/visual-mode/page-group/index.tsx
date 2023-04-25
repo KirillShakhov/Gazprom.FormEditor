@@ -34,13 +34,13 @@ export const PageGroup: React.FC<PageGroupProps> = (props) => {
 
   const theme = useTheme();
 
-  const handleChange = (newValue: string) => {
-    setTabCode(newValue);
-    if (selectedItem == value.pages[getTabIndex()]) {
+  const handleChange = (item: IFormElement) => {
+    setTabCode(item.code);
+    if (selectedItem == item) {
       onSelectItem(undefined);
       return;
     }
-    onSelectItem(value.pages[getTabIndex()]);
+    onSelectItem(item);
   };
 
   const calculateWidth = useCallback(() => {
@@ -151,7 +151,7 @@ export const PageGroup: React.FC<PageGroupProps> = (props) => {
                             onMouseEnter(e, item.code);
                           }}
                           onClick={() => {
-                            handleChange(item.code);
+                            handleChange(item);
                           }}
                         >
                           <div
@@ -209,7 +209,7 @@ export const PageGroup: React.FC<PageGroupProps> = (props) => {
                           onMouseEnter(e, item.code);
                         }}
                         onClick={() => {
-                          handleChange(item.code);
+                          handleChange(item);
                         }}
                       >
                         <div
