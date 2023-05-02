@@ -1,4 +1,4 @@
-import { Shadows, Box, Tab, Tabs, createTheme, ThemeProvider, Button } from '@mui/material';
+import { Shadows, Box, Tab, Tabs, createTheme, ThemeProvider } from '@mui/material';
 import React, { useCallback, useState } from 'react';
 import { CommandLine } from './command-line';
 import { VisualMode } from './visual-mode';
@@ -133,10 +133,7 @@ export const FormEditor: React.FC = () => {
     }
   };
 
-  const [test, setTest] = useState(false);
-  const testClick = () => {
-    setTest(!test);
-  };
+  const test = false;
 
   const tabStyle = {
     fontSize: 12,
@@ -167,10 +164,10 @@ export const FormEditor: React.FC = () => {
           sizes={sizes}
           onChange={setSizes}
           style={{ height: '100%', width: '100%' }}
-          // sashRender={(index, active) => {
-          //   console.log(`index ${index} active ${active}`);
-          //   // return <SashContent active={active} type="vscode" />;
-          // }}
+          sashRender={(index, active) => {
+            console.log(`index ${index} active ${active}`);
+            // return <SashContent active={active} type="vscode" />;
+          }}
         >
           <Pane minSize="15%" maxSize="30%">
             <div style={{ height: '95%', borderRight: '1px solid', borderColor: '#dadada' }}>
@@ -199,9 +196,6 @@ export const FormEditor: React.FC = () => {
               </div>
               <div style={{ width: '100%', height: '8%' }}>
                 <DropZone />
-                <Button onClick={testClick} style={{ height: '100px', width: '100px', background: '#36c5d2' }}>
-                  Тест
-                </Button>
               </div>
             </div>
           </Pane>

@@ -1,9 +1,5 @@
 import React from 'react';
-import {FormControl, IconButton, InputLabel, MenuItem, Select, SelectChangeEvent} from '@mui/material';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
+import {FormControl, InputLabel, MenuItem, Select, SelectChangeEvent} from '@mui/material';
 import {IPropertyConfig} from "../../../../interfaces/property-metadata";
 
 interface ElementProps {

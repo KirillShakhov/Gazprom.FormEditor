@@ -1,6 +1,6 @@
 import React from 'react';
 import { IFormControl } from '../../../../../interfaces/form-control';
-import { Box, Button, FormControl, InputLabel, MenuItem, Select } from '@mui/material';
+import { Box, FormControl, InputLabel, MenuItem, Select } from '@mui/material';
 
 interface ElementProps {
   value: IFormControl;
