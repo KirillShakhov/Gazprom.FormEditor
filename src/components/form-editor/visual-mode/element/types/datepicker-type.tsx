@@ -22,7 +22,7 @@ export const DatePickerType: React.FC<ElementProps> = (props) => {
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <DatePicker label={value.name} value={date} onChange={handleChange} disabled />
+      <DatePicker label={value.name} value={date} onChange={handleChange} sx={{ height: 40 }} disabled />
     </LocalizationProvider>
   );
 };

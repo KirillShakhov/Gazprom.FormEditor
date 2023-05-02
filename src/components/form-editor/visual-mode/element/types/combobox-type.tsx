@@ -14,11 +14,12 @@ export const ComboBoxType: React.FC<ElementProps> = (props) => {
       disablePortal
       id="combo-box-demo"
       options={[]}
-      fullWidth
       size={'small'}
       disabled
       // sx={{ width: 300 }}
       renderInput={(params) => <TextField {...params} label={value.name} />}
+      style={{ minWidth: 160 }}
+      fullWidth
     />
   );
 };

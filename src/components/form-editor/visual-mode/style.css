@@ -1,9 +1,3 @@
-.visual-mode{
-    height: 100%;
-    background: #565963;
-    padding: 20px;
-}
-
 .box{
     display: flex;
     flex-direction: column;

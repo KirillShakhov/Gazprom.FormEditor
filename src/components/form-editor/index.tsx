@@ -1,5 +1,5 @@
 import { Shadows, Box, Tab, Tabs, createTheme, ThemeProvider } from '@mui/material';
-import React from 'react';
+import React, { useCallback, useState } from 'react';
 import { CommandLine } from './command-line';
 import { VisualMode } from './visual-mode';
 import { TextMode } from './text-mode/text-mode';
@@ -13,10 +13,12 @@ import { IForm } from '../../interfaces/form-config';
 import { ParametersTab } from './parameters-tab';
 import { TreeViewForm } from './tree-view-form';
 import { ComponentsTab } from './components-tab';
-import './style.css';
 import { IFormElement } from '../../interfaces/form-element';
 import { findAndDeleteFromForm } from '../../utils/find-and-delete-from-form';
 import { DropZone } from './drop-zone';
+import SplitPane, { Pane } from 'split-pane-react';
+import 'split-pane-react/esm/themes/default.css';
+import { useLocalStorage } from '../../utils/local-storage';
 
 enum Modes {
   Visual,
@@ -36,7 +38,8 @@ const theme = createTheme({
   },
   shadows: Array(25).fill('none') as Shadows,
 });
-// const theme = createTheme({
+
+// const theme2 = createTheme({
 //   palette: {
 //     primary: {
 //       main: '#f45757',
@@ -52,12 +55,39 @@ const theme = createTheme({
 
 /** Редактор форм. */
 export const FormEditor: React.FC = () => {
-  const [mode, setMode] = React.useState(Modes.Visual);
-  const [parameters, setParameters] = React.useState<IParameter[]>(standardParameters);
-  const [data, setData] = React.useState<IForm>(standardForm);
-  const [config] = React.useState<IPropertyMetadata>(metadata);
-  const [selectedItem, setSelectedItem] = React.useState<IFormElement>();
+  const [sizes, setSizes] = useLocalStorage<number[] | string[]>('sizes', ['20%', '50%', '25%']);
+  const [parameters, setParameters] = useState<IParameter[]>(standardParameters);
+  const [data, setData] = useLocalStorage<IForm>('form', standardForm);
+  const [config] = useState<IPropertyMetadata>(metadata);
+  const [selectedItem, setSelectedItem] = useState<IFormElement>();
   const [tabIndex, setTabIndex] = React.useState(1);
+  const [mode, setMode] = useState(Modes.Visual);
+
+  const hideLeftPanel = useCallback(() => {
+    return sizes[0] == '0%';
+  }, [sizes]);
+
+  const setHideLeftPanel = (value: boolean) => {
+    if (value) {
+      sizes[0] = '0%';
+    } else {
+      sizes[0] = '20%';
+    }
+    setSizes([...sizes]);
+  };
+
+  const hideRightPanel = useCallback(() => {
+    return sizes[2] == '0%';
+  }, [sizes]);
+
+  const setHideRightPanel = (value: boolean) => {
+    if (value) {
+      sizes[2] = '0%';
+    } else {
+      sizes[2] = '25%';
+    }
+    setSizes([...sizes]);
+  };
 
   const changeMode = () => {
     if (mode === Modes.Text) {
@@ -103,6 +133,8 @@ export const FormEditor: React.FC = () => {
     }
   };
 
+  const test = false;
+
   const tabStyle = {
     fontSize: 12,
     minHeight: 30,
@@ -113,71 +145,96 @@ export const FormEditor: React.FC = () => {
 
   return (
     <ThemeProvider theme={theme}>
-      <div className="layout">
-        <header>
-          <CommandLine
-            newData={newBlankJson}
-            loadData={loadProperties}
-            saveData={() => {
-              return JSON.stringify(data);
-            }}
-            changeMode={changeMode}
-          >
-            Редактор форм
-          </CommandLine>
-        </header>
-        <div className="left-side">
-          <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-            <Tabs
-              value={tabIndex}
-              onChange={(event: React.SyntheticEvent, newValue: number) => {
-                setTabIndex(newValue);
-              }}
-              textColor="inherit"
-              style={{
-                minHeight: 0,
-              }}
-            >
-              <Tab label="Параметры" style={tabStyle} />
-              <Tab label="Форма" style={tabStyle} />
-              <Tab label="Компоненты" style={tabStyle} />
-            </Tabs>
-          </Box>
-          <div style={{ width: '100%', height: '84%' }}>
-            {tabIndex === 0 && <ParametersTab form={data} properties={parameters} />}
-            {tabIndex === 1 && <TreeViewForm form={data} onSelectItem={setSelectedItem} update={updateAll} />}
-            {tabIndex === 2 && (
-              <ComponentsTab form={data} parameters={parameters} selectedItem={selectedItem} update={updateAll} />
+      <div style={{ height: '5%', borderBottom: '1px solid', borderColor: '#dadada' }}>
+        <CommandLine
+          newData={newBlankJson}
+          loadData={loadProperties}
+          saveData={() => {
+            return JSON.stringify(data);
+          }}
+          changeMode={changeMode}
+        >
+          Редактор форм
+        </CommandLine>
+      </div>
+      <div style={{ height: '100%' }}>
+        <SplitPane
+          performanceMode={false}
+          split={test ? 'horizontal' : 'vertical'}
+          sizes={sizes}
+          onChange={setSizes}
+          style={{ height: '100%', width: '100%' }}
+          sashRender={(index, active) => {
+            console.log(`index ${index} active ${active}`);
+            // return <SashContent active={active} type="vscode" />;
+          }}
+        >
+          <Pane minSize="15%" maxSize="30%">
+            <div style={{ height: '95%', borderRight: '1px solid', borderColor: '#dadada' }}>
+              <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+                <Tabs
+                  value={tabIndex}
+                  onChange={(event: React.SyntheticEvent, newValue: number) => {
+                    setTabIndex(newValue);
+                  }}
+                  textColor="inherit"
+                  style={{
+                    minHeight: 0,
+                  }}
+                >
+                  <Tab label="Параметры" style={tabStyle} />
+                  <Tab label="Форма" style={tabStyle} />
+                  <Tab label="Компоненты" style={tabStyle} />
+                </Tabs>
+              </Box>
+              <div style={{ width: '100%', height: '84%' }}>
+                {tabIndex === 0 && <ParametersTab form={data} properties={parameters} />}
+                {tabIndex === 1 && <TreeViewForm form={data} onSelectItem={setSelectedItem} update={updateAll} />}
+                {tabIndex === 2 && (
+                  <ComponentsTab form={data} parameters={parameters} selectedItem={selectedItem} update={updateAll} />
+                )}
+              </div>
+              <div style={{ width: '100%', height: '8%' }}>
+                <DropZone />
+              </div>
+            </div>
+          </Pane>
+          <div style={{ background: '#d5d7d9', height: '100%' }}>
+            {mode == Modes.Visual && (
+              <VisualMode
+                form={data}
+                hideLeftPanel={hideLeftPanel()}
+                hideRightPanel={hideRightPanel()}
+                setHideLeftPanel={setHideLeftPanel}
+                selectedItem={selectedItem}
+                onSelectItem={setSelectedItem}
+                update={updateAll}
+                setHideRightPanel={setHideRightPanel}
+              />
+            )}
+            {mode == Modes.Text && (
+              <TextMode
+                value={data}
+                onChange={(newData) => {
+                  if (JSON.stringify(data) !== JSON.stringify(newData)) setData(newData);
+                  setSelectedItem(undefined);
+                }}
+              />
             )}
           </div>
-          <div style={{ width: '100%', height: '8%' }}>
-            <DropZone />
-          </div>
-        </div>
-        <main>
-          {mode == Modes.Visual && (
-            <VisualMode form={data} selectedItem={selectedItem} onSelectItem={setSelectedItem} update={updateAll} />
-          )}
-          {mode == Modes.Text && (
-            <TextMode
-              value={data}
-              onChange={(newData) => {
-                if (JSON.stringify(data) !== JSON.stringify(newData)) setData(newData);
-                setSelectedItem(undefined);
-              }}
-            />
-          )}
-        </main>
-        <div className="right-side">
-          <ComponentSettings
-            form={data}
-            value={selectedItem}
-            properties={parameters}
-            config={config}
-            update={updateAll}
-            deleteObject={deleteObject}
-          />
-        </div>
+          <Pane minSize="15%" maxSize="70%">
+            <div style={{ background: '#a1a5a9', height: '95%', borderLeft: '1px solid', borderColor: '#dadada' }}>
+              <ComponentSettings
+                form={data}
+                value={selectedItem}
+                properties={parameters}
+                config={config}
+                update={updateAll}
+                deleteObject={deleteObject}
+              />
+            </div>
+          </Pane>
+        </SplitPane>
       </div>
     </ThemeProvider>
   );

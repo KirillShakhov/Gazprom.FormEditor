@@ -13,6 +13,8 @@ import 'ace-builds/src-noconflict/ext-language_tools';
 import { validate } from '../../../utils/validate-halper';
 import { checkUniqueCode } from '../../../utils/check-unique-code';
 import { ErrorComponent, Error, ErrorType } from '../error-component';
+import { useMouseWheelZoom } from '../../../utils/key-down';
+import { useLocalStorage } from '../../../utils/local-storage';
 
 interface TextModeProps {
   value: IForm;
@@ -27,6 +29,16 @@ export const TextMode: React.FC<TextModeProps> = (props) => {
   useEffect(() => {
     setText(JSON.stringify(value, null, 2));
   }, [value]);
+
+  const [fontSize, setFontSize] = useLocalStorage('textModeFontSize', 24);
+  useMouseWheelZoom((delta) => {
+    if (Math.abs(delta) < 4) return;
+    const newZoom = fontSize + (delta > 0 ? 1 : -1);
+    if (newZoom > 4 && newZoom < 48) {
+      setFontSize(newZoom);
+    }
+    console.log('fontSize ' + fontSize);
+  });
 
   function handleChange(text: string) {
     try {
@@ -79,14 +91,15 @@ export const TextMode: React.FC<TextModeProps> = (props) => {
         name="json-editor"
         editorProps={{ $blockScrolling: true }}
         setOptions={{
+          useWorker: false,
           tabSize: 2,
         }}
         value={text}
         style={{
           height: '100%',
           width: '100%',
-          fontSize: 8,
         }}
+        fontSize={fontSize}
       />
     </div>
   );

@@ -7,6 +7,8 @@ import { IFormElement } from '../../../../interfaces/form-element';
 import { FormItem } from '../form-item';
 
 interface PageProps {
+  zoom: number;
+  readOnly: boolean;
   form: IForm;
   value: ITabPage;
   selectedItem: IFormElement | undefined;
@@ -15,7 +17,7 @@ interface PageProps {
 }
 
 export const Page: React.FC<PageProps> = (props) => {
-  const { form, value, selectedItem, onSelectItem, update } = props;
+  const { zoom, readOnly, form, value, selectedItem, onSelectItem, update } = props;
 
   const onDrop = (dropResult: DropResult) => {
     const { removedIndex, addedIndex } = dropResult;
@@ -38,7 +40,7 @@ export const Page: React.FC<PageProps> = (props) => {
     return isFormItem(payload);
   };
 
-  return (
+  return !readOnly ? (
     <Container
       groupName={'groups'}
       getChildPayload={(i) => (value.items ? value.items[i] : [])}
@@ -58,15 +60,34 @@ export const Page: React.FC<PageProps> = (props) => {
           <Draggable key={item.code + item.name + index}>
             <FormItem
               form={form}
+              readOnly={readOnly}
               formItem={item}
               key={index}
               selectedItem={selectedItem}
               onSelectItem={onSelectItem}
               update={update}
+              zoom={zoom}
             />
           </Draggable>
         );
       })}
     </Container>
+  ) : (
+    <div>
+      {value.items?.map((item, index) => {
+        return (
+          <FormItem
+            form={form}
+            readOnly={readOnly}
+            formItem={item}
+            key={item.code + item.name + index}
+            selectedItem={selectedItem}
+            onSelectItem={onSelectItem}
+            update={update}
+            zoom={zoom}
+          />
+        );
+      })}
+    </div>
   );
 };

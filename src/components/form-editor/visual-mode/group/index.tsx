@@ -1,12 +1,15 @@
 import React from 'react';
-import { IForm, IFormGroup } from '../../../../interfaces/form-config';
+import { FORM_GROUP_DIRECTION, IForm, IFormGroup } from '../../../../interfaces/form-config';
 import { Container, Draggable, DropResult } from 'react-smooth-dnd';
 import '../style.css';
 import { IFormElement } from '../../../../interfaces/form-element';
 import { FormItem } from '../form-item';
 import { isFormItem } from '../../../../utils/form-config';
+import type { Property } from 'csstype';
 
 interface GroupProps {
+  zoom: number;
+  readOnly: boolean;
   form: IForm;
   formGroup: IFormGroup;
   selectedItem: IFormElement | undefined;
@@ -15,7 +18,7 @@ interface GroupProps {
 }
 
 export const Group: React.FC<GroupProps> = (props) => {
-  const { form, formGroup, selectedItem, onSelectItem, update } = props;
+  const { zoom, readOnly, form, formGroup, selectedItem, onSelectItem, update } = props;
 
   const onDrop = (dropResult: DropResult) => {
     const { removedIndex, addedIndex } = dropResult;
@@ -31,6 +34,7 @@ export const Group: React.FC<GroupProps> = (props) => {
         formGroup.items?.splice(addedIndex, 0, param);
       }
     }
+    setDropped(false);
     update();
   };
 
@@ -46,6 +50,31 @@ export const Group: React.FC<GroupProps> = (props) => {
     if (formGroup == payload) return false;
     return isFormItem(payload);
   };
+
+  const getFlexDirection = (): Property.FlexDirection => {
+    switch (formGroup.direction) {
+      case FORM_GROUP_DIRECTION.FORCE_HORIZONTAL:
+        return 'row';
+      case FORM_GROUP_DIRECTION.HORIZONTAL:
+        return 'row';
+      case FORM_GROUP_DIRECTION.VERTICAL:
+        return 'column';
+    }
+    return 'column';
+  };
+  const getFlexWrap = (): Property.FlexWrap => {
+    switch (formGroup.direction) {
+      case FORM_GROUP_DIRECTION.FORCE_HORIZONTAL:
+        return 'nowrap';
+      case FORM_GROUP_DIRECTION.HORIZONTAL:
+        return 'wrap';
+      case FORM_GROUP_DIRECTION.VERTICAL:
+        return 'wrap';
+    }
+    return 'wrap';
+  };
+
+  const [dropped, setDropped] = React.useState<boolean>(false);
 
   return (
     <div
@@ -66,41 +95,86 @@ export const Group: React.FC<GroupProps> = (props) => {
       role="presentation"
     >
       <span
-        style={{ fontSize: 16, margin: 0, marginTop: 10 }}
+        style={{
+          zoom: zoom,
+          fontSize: 16,
+          margin: 0,
+          marginTop: 10,
+        }}
         key={formGroup.code}
         role="presentation"
         onClick={handleClick}
       >
-        {formGroup.name} {formGroup.direction}
+        {formGroup.name}
       </span>
-      <Container
-        getChildPayload={(i) => (formGroup.items ? formGroup.items[i] : [])}
-        groupName={'parameters'}
-        onDrop={onDrop}
-        dropPlaceholder={{
-          className: 'dropPlaceholderElement',
-          animationDuration: 250,
-          showOnTop: true,
-        }}
-        getGhostParent={(): HTMLElement => {
-          return document.body;
-        }}
-        shouldAcceptDrop={shouldAcceptDrop}
-      >
-        {formGroup.items?.map((item, index) => {
-          return (
-            <Draggable key={item.code + item.name + index}>
+      {!readOnly && (
+        <Container
+          getChildPayload={(i) => (formGroup.items ? formGroup.items[i] : [])}
+          orientation={'vertical'}
+          groupName={'parameters'}
+          onDrop={onDrop}
+          dropPlaceholder={{
+            className: 'dropPlaceholderElement',
+            animationDuration: 250,
+            showOnTop: true,
+          }}
+          style={{
+            display: 'flex',
+            flexWrap: dropped ? 'nowrap' : getFlexWrap(),
+            flexDirection: dropped ? 'column' : getFlexDirection(),
+          }}
+          onDragEnter={() => {
+            setDropped(true);
+          }}
+          onDragEnd={() => {
+            setDropped(false);
+          }}
+          getGhostParent={(): HTMLElement => {
+            return document.body;
+          }}
+          shouldAcceptDrop={shouldAcceptDrop}
+        >
+          {formGroup.items?.map((item, index) => {
+            return (
+              <Draggable key={item.code + item.name + index}>
+                <FormItem
+                  form={form}
+                  readOnly={readOnly}
+                  formItem={item}
+                  onSelectItem={onSelectItem}
+                  selectedItem={selectedItem}
+                  update={update}
+                  zoom={zoom}
+                />
+              </Draggable>
+            );
+          })}
+        </Container>
+      )}
+      {readOnly && (
+        <div
+          style={{
+            display: 'flex',
+            flexWrap: dropped ? 'nowrap' : getFlexWrap(),
+            flexDirection: dropped ? 'column' : getFlexDirection(),
+          }}
+        >
+          {formGroup.items?.map((item, index) => {
+            return (
               <FormItem
+                key={item.code + item.name + index}
+                readOnly={readOnly}
                 form={form}
                 formItem={item}
                 onSelectItem={onSelectItem}
                 selectedItem={selectedItem}
                 update={update}
+                zoom={zoom}
               />
-            </Draggable>
-          );
-        })}
-      </Container>
+            );
+          })}
+        </div>
+      )}
     </div>
   );
 };

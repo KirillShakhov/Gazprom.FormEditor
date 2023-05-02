@@ -1,6 +1,6 @@
 import React from 'react';
 import { IFormControl } from '../../../../../interfaces/form-control';
-import {Box, Button, FormControl, InputLabel, MenuItem, Select} from '@mui/material';
+import { Box, FormControl, InputLabel, MenuItem, Select } from '@mui/material';
 
 interface ElementProps {
   value: IFormControl;
@@ -11,7 +11,7 @@ export const SelectType: React.FC<ElementProps> = (props) => {
 
   return (
     <Box>
-      <FormControl size={'small'} fullWidth>
+      <FormControl style={{ minWidth: 160 }} size={'small'} fullWidth>
         <InputLabel id="simple-select-type-label">{value.name}</InputLabel>
         <Select
           labelId="simple-select-type-label"
@@ -19,6 +19,7 @@ export const SelectType: React.FC<ElementProps> = (props) => {
           // value={}
           label={value.name}
           disabled
+          fullWidth
         >
           {/*<MenuItem value={10}>Ten</MenuItem>*/}
           {/*<MenuItem value={20}>Twenty</MenuItem>*/}
